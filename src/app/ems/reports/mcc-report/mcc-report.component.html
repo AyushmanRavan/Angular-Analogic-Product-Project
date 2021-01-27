@@ -1,0 +1,157 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">MCC Report</h2>
+</div>
+
+
+<div class="production main-column">
+    <report-form type="mcc_dashboard" flag="false" (select)="onSelect($event)"></report-form>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedspinner">
+        <app-spinner></app-spinner>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="headerCol1">
+                <span class="headerData">
+                    Monitoring Parameters
+                </span>
+            </div>
+            <div class="thumbnail col1">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Voltage(Vrms)</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["voltage"]'>
+                            {{mccReportSummaryData["voltage"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Current(Irms) </dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["current"]'>
+                            {{mccReportSummaryData["current"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Frequency(Hz)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["frequency"]'>
+                            {{mccReportSummaryData["frequency"]}} </span></dd>
+                            
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Meter Value(kWh)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["meter_running_value"]'> {{mccReportSummaryData["meter_running_value"]}} </span></dd>
+                  </dl>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="headerCol2">
+                <span class="headerData">
+                    Power Monitoring
+                </span>
+            </div>
+            <div class="thumbnail col2">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Active Power(kVA)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["active_power"]'>
+                            {{mccReportSummaryData["active_power"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Reactive Power(kVA)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["reactive_power"]'>
+                            {{mccReportSummaryData["reactive_power"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Apparent Power(kVA)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["apparent_power"]'>
+                            {{mccReportSummaryData["apparent_power"]}} </span></dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="headerCol3">
+                <span class="headerData">
+                    Power Quality Data
+                </span>
+            </div>
+            <div class="thumbnail col3">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Power Factor</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["power_factor"]'>
+                            {{mccReportSummaryData["power_factor"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">THD(%)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["thd"]'> {{mccReportSummaryData["thd"]}}
+                        </span></dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="headerCol4">
+                <span class="headerData">
+                    Demand Analysis
+                </span>
+            </div>
+            <div class="thumbnail col4">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Demand(kVA)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["average_demand"]'>
+                            {{mccReportSummaryData["average_demand"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Peak Demand(kVA)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["peak_demand"]'>
+                            {{mccReportSummaryData["peak_demand"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Demand(kVA)</dt><span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='mccReportSummaryData["demand"]'>
+                            {{mccReportSummaryData["demand"]}} </span></dd>
+                </dl>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="mat-elevation-z8">
+    <mat-table #aircompressortable [dataSource]="dataSource">
+
+        <ng-container matColumnDef="{{header.value}}" *ngFor="let header of headerWithColumns">
+            <mat-header-cell *matHeaderCellDef> {{header.headers}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[header.value]}} </mat-cell>
+        </ng-container>
+        <!-- Position Column -->
+
+        <!-- <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+    </ng-container> -->
+
+        <!-- Name Column -->
+        <!-- <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container> -->
+
+        <!-- Weight Column -->
+        <!-- <ng-container matColumnDef="weight">
+      <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+    </ng-container> -->
+
+        <!-- Symbol Column -->
+        <!-- <ng-container matColumnDef="symbol">
+      <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+    </ng-container> -->
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+    <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}"
+        [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+</div>
+<template #pdfContainer>
+</template>

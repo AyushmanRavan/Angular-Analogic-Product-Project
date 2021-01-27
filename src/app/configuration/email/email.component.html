@@ -1,0 +1,92 @@
+<div class="email">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Email Configuration</h2>
+    </div>
+
+    <div class="action">
+        <button mat-button (click)="addmail()" color="accent">Add</button>
+    </div>
+
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+        <div [hidden]="hiddenData">
+            <mat-accordion *ngIf="!hiddenData">
+                <mat-expansion-panel (opened)="item.open = true" (closed)="item.open = false" class="panel" [expanded]="item.open" *ngFor="let item of data">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Subject: {{item.subject}} | Date: {{item.emailDate}}</strong>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="inner-actions">
+                        <button mat-icon-button matTooltip="Update Email" matTooltipPosition="below" (click)="update(item,'edit')">
+                            <mat-icon aria-label="Update">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Remove Email" matTooltipPosition="below" (click)="update(item,'delete','shifts')">
+                            <mat-icon aria-label="Remove">delete</mat-icon>
+                        </button>
+                    </div>
+
+                    <h1>Body</h1>
+                    <p>{{item.body}}</p>
+                    <h1 *ngIf="item.frequency=='Hours'">Hour: {{item.hour}} Hr | StartTime: {{item.startTime}}</h1>
+                    <h1 *ngIf="item.frequency=='Daily'">StartTime: {{item.startTime}}</h1>
+                    <h1 *ngIf="item.frequency=='Weekly'">Day: {{item.day}} | StartTime: {{item.startTime}}</h1>
+                    <h1 *ngIf="item.frequency=='Monthly'">Month: {{item.months.month}}</h1>
+                    <div fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+                        <div class="c1" fxFlex="50%" fxFlex.gt-sm="100%">
+                            <h1>Plant: {{item.plants.plantName}}</h1>
+
+                        </div>
+                        <div class="c1" fxFlex="50%" fxFlex.gt-sm="100%">
+                            <h1>Frequency: {{item.frequency}}</h1>
+
+                        </div>
+                    </div>
+                    <div fxLayout.xs="column" fxLayoutAlign="end">
+                        <div fxFlex.gt-sm="10%">
+                            <button mat-mini-fab matTooltip="Reports" [matMenuTriggerFor]="menuOfFile">
+                                <mat-icon>attachment</mat-icon>
+                            </button>
+                            <mat-menu #menuOfFile="matMenu">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let item of item.attachment">{{item.attachmentType}}</mat-list-item>
+                                </mat-list>
+                            </mat-menu>
+                        </div>
+
+                        <div fxFlex.gt-sm="10%">
+                            <button mat-mini-fab matTooltip="Users" [matMenuTriggerFor]="menuOfUser">
+                                <mat-icon>supervisor_account</mat-icon>
+                            </button>
+                            <mat-menu #menuOfUser="matMenu">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let item of item.users">{{item.userName}}</mat-list-item>
+                                </mat-list>
+                            </mat-menu>
+                        </div>
+                        <div fxFlex.gt-sm="10%">
+                            <button mat-mini-fab matTooltip="Machines" [matMenuTriggerFor]="menuOfMachines">
+                                <mat-icon>dvr</mat-icon>
+                            </button>
+                            <mat-menu #menuOfMachines="matMenu">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let item of item.machines">{{item.machineName}}</mat-list-item>
+                                </mat-list>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent  = updateDataset($event)" [length]="datasetLength" [pageSize]="10" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>{{dialog.title}} PDF</h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="pdf">
+    <mat-dialog-content>
+        <div class="pdf" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput formControlName="companyName" placeholder="Company Name">
+                    <mat-error *ngIf="pdf.get('companyName').hasError('required')">
+                        Company Name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                        <textarea matInput formControlName="companyAddress" #message maxlength="50" placeholder="Company Address" rows="1" cols="50"></textarea>
+                        <mat-hint align="end">{{message.value.length}} / 50</mat-hint>
+                        <mat-error *ngIf="pdf.get('companyAddress').hasError('required')">
+                        Company Address is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <h4>Upload logo</h4> 
+                    <button mat-icon-button (click)="imgFileInput.click()">
+                            <mat-icon aria-label="logo">create_new_folder</mat-icon>
+                      </button>
+                        <input hidden type="file" #imgFileInput (change)="changeListener($event)"/>
+                <span *ngIf="image">
+                    <img height="150" width="150" src="{{image}}" alt="">
+                </span> 
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!pdf.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>PDF header</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)" [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

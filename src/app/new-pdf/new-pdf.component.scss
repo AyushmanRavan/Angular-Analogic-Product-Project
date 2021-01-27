@@ -1,0 +1,67 @@
+
+
+  .line {
+    top: 60px;
+   // left: 25px;
+    position: absolute;
+    width: 95%;
+  }
+  .compName {
+    font-size: 8px;
+    bottom: 5px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .dateAndTime {
+    font-size: 8px;
+    bottom: 20px;
+    right: 10px;
+    position: absolute;
+  }
+  .logo {
+    position: absolute;
+    top: 15px;
+  }
+  .header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15px;
+    font-weight: bold;
+    top: 30px;
+  }
+  .pageNum {
+    font-size: 8px;
+    bottom: 20px;
+    position: absolute;
+  }
+  .pdfBody {
+    margin-top: 50px;
+  }
+  .productionReportDetails {
+    width: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    font-size: 12px;
+  }
+  .productionReportSecondHalf {
+    box-flex: 1;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    width: 55%;
+  }
+  .productionReportKeysSecondHalf {
+    width: 30%;
+    box-flex: 1;
+  }
+  .colon {
+    box-flex: 1;
+    width: 5%;
+  }
+  .productionReportValuesSecondHalf {
+    width: 65%;
+    box-flex: 1;
+  }

@@ -1,0 +1,18 @@
+.energy {
+    margin-top: 10px;
+    .pieChart{
+        mat-card{
+            position: relative;
+            margin: auto;
+            width: 100%;
+            display:block;
+            mat-card-content{
+                height: 40vh;
+            canvas{
+                background-color: #fafafa;
+                border-radius: 2px;
+            }
+        }
+      }
+    }
+}

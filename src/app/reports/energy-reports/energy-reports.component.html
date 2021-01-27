@@ -1,0 +1,33 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Energy Report</h2>
+</div>
+<div class="energy">
+    <report-form type="energy_report" flag="false" (select)="onSelect($event)"></report-form>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedspinner">
+        <app-spinner></app-spinner>
+    </div>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    <section [hidden]="loaded">
+
+        <div [ngStyle]="{'background-color': ' #ffa000','color':'#fff','margin-bottom': '10px'}" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+            <h2 class="mat-h2 highlight">{{highlightForTable}}</h2>
+        </div>
+        <div class="table-container">
+            <div *ngIf="!pdfReady">
+                <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+            </div>
+            <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData" [highlight]="highlightForTable"></report-pdf>
+            <mat-table [dataSource]="dataSource">
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                    <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+            </mat-table>
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#ffa000','font-size':'15px','font-weigth':'bold'}" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+        </div>
+
+    </section>
+</div>

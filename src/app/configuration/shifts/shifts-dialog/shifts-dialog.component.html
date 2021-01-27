@@ -1,0 +1,182 @@
+<h2 mat-dialog-title>{{dialog.title + ' ' + dialog.type}}</h2>
+<ng-template [ngIf]="showShift">
+    <form [formGroup]="shift" (ngSubmit)="onShiftSubmit(shift.value)">
+        <mat-dialog-content>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="10px">
+                    <mat-form-field>
+                        <input matInput placeholder="Name" formControlName="shiftName">
+                        <mat-error *ngIf="shift.get('shiftName').hasError('required')">
+                            Shift Name is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="shift.get('shiftName').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="From" formControlName="shiftFrom" [owlDateTime]="shiftFrom" [owlDateTimeTrigger]="shiftFrom">
+                        <owl-date-time  [pickerType]="'timer'" #shiftFrom></owl-date-time>
+                        <mat-error *ngIf="shift.get('shiftFrom').hasError('required')">
+                            From is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="To" formControlName="shiftTo" [owlDateTime]="shiftTo" [owlDateTimeTrigger]="shiftTo">
+                        <owl-date-time [pickerType]="'timer'" #shiftTo></owl-date-time>
+                        <mat-error *ngIf="shift.get('shiftTo').hasError('required')">
+                            To is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" [disabled]="!shift.valid">{{dialog.btnCaptions.ok}}</button>
+            <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+            <app-spinner *ngIf="loading"></app-spinner>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+
+<ng-template [ngIf]="showBreak">
+    <form [formGroup]="breaks">
+        <mat-form-field>
+            <input matInput placeholder="Name" formControlName="breakType">
+            <mat-error *ngIf="breaks.get('breakType').hasError('required')">
+                Break Name is
+                <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="breaks.get('breakType').hasError('incorrect')">
+                <strong> Already existing</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [min]="minBreak" [max]="maxBreak" readonly="true" placeholder="From" formControlName="breakFrom" [owlDateTime]="breakFrom"
+                [owlDateTimeTrigger]="breakFrom">
+            <owl-date-time (afterPickerClosed)="setMinToBreakTime(i)" [pickerType]="'timer'" #breakFrom></owl-date-time>
+            <mat-error *ngIf="breaks.get('breakFrom').hasError('required')">
+                From is
+                <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [min]="minBreakTo" [max]="maxBreak" readonly="true" placeholder="To" formControlName="breakTo" [owlDateTime]="breakTo"
+                [owlDateTimeTrigger]="breakTo">
+            <owl-date-time [pickerType]="'timer'" #breakTo></owl-date-time>
+            <mat-error *ngIf="breaks.get('breakTo').hasError('required')">
+                To is
+                <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="breaks.get('breakTo').hasError('owlDateTimeMin')">
+                To should be greater than From.
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button [disabled]="!breaks.valid" (click)="addBreaks()" color="accent">Add Header</button>
+
+        <mat-table  [ngStyle]="{'margin-top':'10px'}" [dataSource]="dataSource" class="header-table mat-elevation-z3">
+            <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>
+                    <button mat-icon-button (click)="removeBreaks()">
+                        <mat-icon aria-label="delete">delete</mat-icon>
+                    </button>
+                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <span class="mobile-label">
+                        <button mat-icon-button (click)="removeBreaks()">
+                            <mat-icon aria-label="delete">delete</mat-icon>
+                        </button>
+                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </span>
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"></mat-checkbox>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="breakType">
+                <mat-header-cell *matHeaderCellDef>Break Name</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Break name</span> {{element.breakType}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="breakFrom">
+                <mat-header-cell *matHeaderCellDef>Break From</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Break From</span> {{element.breakFrom}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="breakTo">
+                <mat-header-cell *matHeaderCellDef> Break To</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Break To</span>{{element.breakTo}}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </mat-row>
+        </mat-table>
+    </form>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="!valid" (click)="onBreakSubmit(dataSource.data,'add','breaks')">Submit</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template [ngIf]="showUpdateBreak">
+    <form [formGroup]="breaks" (ngSubmit)="onBreakSubmit(breaks.value)">
+        <mat-dialog-content>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="10px">
+                    <mat-form-field>
+                        <input matInput placeholder="Name" formControlName="breakType">
+                        <mat-error *ngIf="breaks.get('breakType').hasError('required')">
+                            Break Name is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="breaks.get('breakType').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [min]="minBreak" [max]="maxBreak" readonly="true" placeholder="From" formControlName="breakFrom" [owlDateTime]="breakFrom"
+                            [owlDateTimeTrigger]="breakFrom">
+                        <owl-date-time (afterPickerClosed)="setMinToBreakTime(i)" [pickerType]="'timer'" #breakFrom></owl-date-time>
+                        <mat-error *ngIf="breaks.get('breakFrom').hasError('required')">
+                            From is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [min]="minBreakTo" [max]="maxBreak" readonly="true" placeholder="To" formControlName="breakTo" [owlDateTime]="breakTo"
+                            [owlDateTimeTrigger]="breakTo">
+                        <owl-date-time [pickerType]="'timer'" #breakTo></owl-date-time>
+                        <mat-error *ngIf="breaks.get('breakTo').hasError('owlDateTimeMin')">
+                            To should be greater than From.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" [disabled]="!breaks.valid">{{dialog.btnCaptions.ok}}</button>
+            <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+            <app-spinner *ngIf="loading"></app-spinner>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+
+<ng-template [ngIf]="showDelete">
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{title}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode,dialog.type,itemId)" [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,115 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Plant Report</h2>
+</div>
+
+<form [formGroup]="plantDashboardReport" (ngSubmit)="onGenerate()">
+    <div class="selection">
+        <mat-card class="custom-card">
+            <mat-card-content>
+
+                <div class="report-type" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                    <div fxFlex="100%">
+                        <mat-form-field>
+                            <mat-select placeholder="Plant Name" formControlName="plant">
+                                <mat-option *ngFor="let option of plantOptions" [value]="option.id">
+                                    {{ option.plantName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportFrom" matSuffix>date_range</mat-icon>
+                            <input [max]="max" readonly matInput placeholder="From" formControlName="from" [owlDateTime]="reportFrom" [owlDateTimeTrigger]="reportFrom">
+                            <owl-date-time (afterPickerClosed)="setMinToDate()" [startAt]="fromStartAt" #reportFrom></owl-date-time>
+                            <mat-error *ngIf="plantDashboardReport.get('from').hasError('required')">
+                                From is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportTo" matSuffix>date_range</mat-icon>
+                            <input [max]="max" [min]="min" readonly matInput placeholder="To" formControlName="to" [owlDateTime]="reportTo" [owlDateTimeTrigger]="reportTo">
+                            <owl-date-time [startAt]="toStartAt" #reportTo></owl-date-time>
+                            <mat-error *ngIf="plantDashboardReport.get('to').hasError('required')">
+                                To is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                    <div fxFlex="33%" fxFlex.gt-sm="100%">
+                        <button [disabled]="!plantDashboardReport.valid" mat-raised-button color="accent">GENERATE</button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>
+
+<div fxLayout fxLayoutAlign="center" *ngIf="spinerLoaded">
+    <app-spinner></app-spinner>
+</div>
+<error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+<section [hidden]="loaded">
+
+
+    <div class="example-container mat-elevation-z8">
+        <div *ngIf="!pdfReady">
+            <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData"></report-pdf>
+
+        <mat-table #table [dataSource]="dataSource">
+            <ng-container matColumnDef="plantName">
+                <mat-header-cell *matHeaderCellDef> PlantName </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">PlantName:</span>{{element.plantName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="machineName">
+                <mat-header-cell *matHeaderCellDef> MachineName </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">MachineName</span> {{element.machineName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="totalGoodProduction">
+                <mat-header-cell *matHeaderCellDef> Good Products(pkts) </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Good Products(pkts)</span> {{element.totalGoodProduction}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="totalRejectProduction">
+                <mat-header-cell *matHeaderCellDef> Rejected Products(pkts) </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label"> Rejected Products(pkts)</span>{{element.totalRejectProduction}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="totalAlarms">
+                <mat-header-cell *matHeaderCellDef> Total Alarms </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Total Alarms</span> {{element.totalAlarms}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="machineProductionTime">
+                <mat-header-cell *matHeaderCellDef> Running Time </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Running Time </span> {{element.machineProductionTime}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="machineIdleTime">
+                <mat-header-cell *matHeaderCellDef> Idle Time </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Idle Time </span> {{element.machineIdleTime}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="machineDownTime">
+                <mat-header-cell *matHeaderCellDef> Stoppage Time </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Stoppage Time</span> {{element.machineDownTime}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="energy_machine_wise_count">
+                <mat-header-cell *matHeaderCellDef> Energy(kWh) </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label"> Energy(kWh)</span> {{element.energy_machine_wise_count}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [ngStyle]="{'font-size':'15px','font-weigth':'bold'}" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+    </div>
+</section>

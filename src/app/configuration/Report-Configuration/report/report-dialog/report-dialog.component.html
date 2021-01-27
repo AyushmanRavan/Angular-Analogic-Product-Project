@@ -1,0 +1,154 @@
+<h2 mat-dialog-title>{{dialog.title}} report</h2>
+<form *ngIf="dialog.mode == 'add' || dialog.mode == 'edit'" [formGroup]="report" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div class="report" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput formControlName="report_name" placeholder="Report Name">
+                    <mat-error *ngIf="report.get('report_name').hasError('required')">
+                        Report Name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Machine Type" formControlName="machine_type">
+                        <mat-option *ngFor="let type of machineTypes" [value]="type">{{type}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="report.get('machine_type').hasError('required')">
+                        Machine Type is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="report" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Filter Type" formControlName="filter_type"
+                        (change)="onFilterTypeChange($event.value)">
+                        <mat-option *ngFor="let type of filterTypes" [value]="type">{{type}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="report.get('filter_type').hasError('required')">
+                        Filter Type is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div> 
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field *ngIf="showInterval">
+                    <input matInput type="number" formControlName="interval" placeholder="Interval (minute)">
+                    <mat-error *ngIf="report.get('interval').hasError('incorrect')">
+                        Interval is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary"
+            [disabled]="!report.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+
+<ng-template [ngIf]="dialog.mode == 'view'">
+    <mat-dialog-content [ngStyle]="{'height':'100%'}">
+        <div *ngIf="!view" fxLayout fxLayoutAlign="center">
+            <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <div *ngIf="view">
+            <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+            <div fxLayout fxLayoutAlign="center">
+                <h2 class="mat-h2">{{dialog.details.report_name}}</h2>
+            </div>
+            <!-- display Chart -->
+
+            <div *ngIf="chart">
+                <div *ngFor="let key of objectKeys(Charts)">
+                    <span *ngIf="key == 'pie'">
+                        <div class="container">
+                            <div class="item" *ngFor="let chart of Charts[key]; let i=index">
+                                <div fxLayout fxLayoutAlign="center">
+                                    <h3 class="mat-h3">{{chart.chartName}}</h3>
+                                </div>
+                                <canvas width='270px' height='270px' baseChart
+                                    [data]="setChartDetails(i,key,'datasets')"
+                                    [labels]="setChartDetails(i,key,'labels')" [options]="PieChartOptions" legend="true"
+                                    [colors]="setChartDetails(i,key,'colors')"
+                                    [chartType]="setChartDetails(i,key,'chartType')"></canvas>
+                            </div>
+                        </div>
+                    </span>
+                    <span *ngIf="key == 'lineBar'">
+                        <div *ngFor="let chart of Charts[key]; let i=index">
+                            <h3 class="mat-h3">{{chart.chartName}}</h3>
+                            <canvas baseChart [datasets]="setChartDetails(i,key,'datasets')"
+                                [labels]="setChartDetails(i,key,'labels')" [options]="setChartDetails(i,key,'options')"
+                                legend="true" [colors]="setChartDetails(i,key,'colors')"
+                                [chartType]="setChartDetails(i,key,'chartType')"></canvas>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+
+            <!-- display Summary Table -->
+            <div *ngIf="summary">
+                <h3 class="mat-h3">Summary Table</h3>
+                <mat-table class="example-container mat-elevation-z8" [dataSource]="SummaryData">
+                    <ng-container [matColumnDef]="column" *ngFor="let column of summaryColumns">
+                        <mat-header-cell *matHeaderCellDef> {{column}}</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="summaryColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: summaryColumns;"></mat-row>
+                </mat-table>
+            </div>
+
+            <!-- display highlights -->
+            <mat-card *ngIf="showhighlight" class="highlights-card">
+                <mat-card-header>{{highlight}}</mat-card-header>
+            </mat-card>
+
+            <!-- display Monitoring Table -->
+            <div *ngIf="monitoring">
+                <h3 class="mat-h3">Monitoring Table</h3>
+                <mat-table class="example-container mat-elevation-z8" [dataSource]="MonitoringData">
+                    <ng-container [matColumnDef]="column" *ngFor="let column of monitoringColumns">
+                        <mat-header-cell *matHeaderCellDef> {{column}}</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="monitoringColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: monitoringColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>
+
+
+
+<ng-template [ngIf]="dialog.mode == 'delete'">
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.report_name}}</strong>
+
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

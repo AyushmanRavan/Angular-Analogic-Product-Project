@@ -1,0 +1,55 @@
+<div class="report">
+    
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Report Configuration</h2>
+    </div>
+
+    <div class="action">
+        <button matTooltip="Add Report" mat-button (click)="addReport()" color="accent">Add</button>
+    </div>
+
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+        <div [hidden]="hiddenData">
+            <mat-accordion *ngIf="!hiddenData">
+                <mat-expansion-panel class="panel" [expanded]="item.open" *ngFor="let item of dataSource">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Report Name: {{item.report_name}} | Machine Type: {{item.machine_type}}</strong>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="inner-actions">
+                        <button mat-icon-button matTooltip="Update Report" (click)="update(item,'edit')">
+                            <mat-icon aria-label="Edit">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Delete Report" (click)="update(item,'delete')">
+                            <mat-icon aria-label="Edit">delete</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="View Report" (click)="view(item,'view')">
+                            <mat-icon aria-label="View">visibility</mat-icon>
+                        </button>
+                    </div>
+                    <strong>Filter Type: {{item.filter_type}} | Interval: {{item.interval}}</strong>
+                    <div fxLayout fxLayoutAlign="center" [ngStyle]="{'margin-top':'10px'}">
+                        <strong>Report Schema</strong>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div [ngStyle]="{'margin-top':'10px'}" fxLayout.xs="column" fxLayout fxLayoutAlign="center" fxLayoutGap="45px">
+                        <button (click)="onNavigate('/dashboard/config/report-highlight',item)" mat-stroked-button color="primary">Highlight</button>
+                        <button (click)="onNavigate('/dashboard/config/chart',item)" mat-stroked-button color="primary">Chart</button>
+                        <button (click)="onNavigate('/dashboard/config/report-table',item)" mat-stroked-button color="primary">Table</button>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent  = updateDataset($event)" [length]="datasetLength" [pageSize]="10" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+        </div>
+    </section>
+</div>

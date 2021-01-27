@@ -1,0 +1,34 @@
+<div *ngFor="let row of summaryData, let i= index">
+  <!-- <div [ngClass]="'boxRow' + i"> -->
+    <div class="RowOfTable">
+      <!-- <div class="col-md-6"> -->
+         <div class="inlineTable" *ngFor="let test of row,let colIndex=index, let isEven = even,let isOdd = odd"> 
+          <table  >
+            <thead>
+              <tr>
+                <th colspan="2" *ngIf="test.TITLE">{{ test.TITLE }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- <tr *ngFor="let key of objectKeys(test.boxdata)">
+                <td *ngIf="key != ''; else EmptyRow"> {{ key}}</td>
+                <td *ngIf="key != ''; else EmptyRow"> {{ test.boxdata[key] }} </td>
+              </tr> -->
+
+              <tr *ngFor="let key of objectKeys(test.boxdata)">
+                <td *ngIf="test.boxdata[key] != ''; else EmptyRow"> {{ key}}</td>
+                <td *ngIf="test.boxdata[key] != ''; else EmptyRow"> {{ test.boxdata[key] }} </td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div> 
+      <!-- </div> -->
+    </div>
+  <!-- </div> -->
+</div>
+
+<ng-template #EmptyRow>
+  <td> &nbsp;</td>
+</ng-template>
+

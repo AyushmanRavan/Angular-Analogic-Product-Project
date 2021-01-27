@@ -1,0 +1,40 @@
+
+    <h4>Production Report</h4>
+    <div class="productionReportDetails">
+      <div class="productionReportFirstHalf">
+        <div class="productionReportKeysFirstHalf">
+          <span> Plant </span><br>
+          <span> Department </span><br>
+          <span> Machine </span><br>
+        </div>
+        <div class="colon">
+          <span>:</span><br>
+          <span>:</span><br>
+          <span>:</span><br>
+        </div>
+        <div class="productionReportValuesFirstHalf">
+          <span> {{ plantDetails.plant }} </span><br>
+          <span> {{ plantDetails.department }} </span><br>
+          <span> {{ plantDetails.machine}} </span><br>
+        </div>
+      </div>
+      <div class="productionReportSecondHalf">
+        <div class="productionReportKeysSecondHalf">
+          <span> From </span><br>
+          <span> To </span><br>
+          <span> Inteval(mins) </span><br>
+        </div>
+        <div class="colon">
+          <span>:</span><br>
+          <span>:</span><br>
+          <span>:</span><br>
+        </div>
+        <div class="productionReportValuesSecondHalf">
+          <span> {{ formattedFromDate }} {{ formattedFromTime }} </span><br>
+          <span> {{ formattedToDate }} {{ formattedToTime }}</span><br>
+          <span> {{ plantDetails.interval}} </span><br>
+        </div>
+      </div>
+    </div>
+    <hr>
+  

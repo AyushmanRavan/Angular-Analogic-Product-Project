@@ -1,0 +1,159 @@
+<div class="product machine-air-compressor">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Compressor</h2>
+    </div>
+    <selection dashboardtype="air_compressor_dashboard" (select)="onSelect($event)"></selection>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+        <app-spinner></app-spinner>
+    </div>
+
+    <!-- Summary details  -->
+    <div class="col-md-12" *ngIf='airData || !loadedSpinner'>
+        <div class="col-md-6 alaram-ele" (click)="goTo('monitoringparams')">
+            <div class="headerCol1">
+                <span class="headerData">
+                    Operational Data
+                </span>
+            </div>
+            <div class="thumbnail col1">
+                <ng-container *ngIf=" airData && airData['operational_data']">
+                    <ng-container *ngTemplateOutlet="keyAndValue,context : {data: airData['operational_data']}">
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="col-md-6 alaram-ele" (click)="goTo('monitoringparams')">
+            <div class="headerCol2">
+                <span class="headerData">
+                    Energy Data
+                </span>
+            </div>
+            <div class="thumbnail col2">
+                <ng-container *ngIf=" airData && airData['energy_data']">
+                    <ng-container *ngTemplateOutlet="keyAndValue,context : {data: airData['energy_data']}">
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="col-md-6 alaram-ele" (click)="goTo('monitoringparams')">
+            <div class="headerCol3">
+                <span class="headerData">
+                    Efficiency Data
+                </span>
+            </div>
+            <div class="thumbnail col3">
+                <ng-container *ngIf=" airData && airData['efficiency_data']">
+                    <ng-container *ngTemplateOutlet="keyAndValue,context : {data: airData['efficiency_data']}">
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="col-md-6 alaram-ele" (click)="goTo('machinealaram')">
+            <div class="headerCol4">
+                <span class="headerData">
+                    Alarms
+                </span>
+            </div>
+            <div class="thumbnail col4">
+                <ng-container *ngIf=" airData && airData['alarm_data']">
+                    <ng-container *ngTemplateOutlet="keyAndValue,context : {data: airData['alarm_data']}">
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="col-md-6 alaram-ele last-box" (click)="goTo('machinestatus')">
+            <div class="headerCol5">
+                <span class="headerData">
+                    Machine Status
+                </span>
+            </div>
+            <div class="thumbnail col5">
+                <ng-container *ngIf=" airData && airData['machine_status_data']">
+                    <ng-container *ngTemplateOutlet="keyAndValue,context : {data: airData['machine_status_data']}">
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  No record found for Summary -->
+<div class="col-md-12" *ngIf='!airData && !loadedSpinner'>
+    <div class="no-record">
+        No Records Found
+    </div>
+</div>
+
+<!-- No record found for Chart -->
+<ng-template #other_content_found class="no-record">No Records Found</ng-template>
+
+<!-- All Chart Content -->
+<div class="col-md-12" *ngIf='!loadedSpinner'>
+    <h3>Operational Data</h3>
+    <div class="chart-content">
+        <canvas baseChart *ngIf="lineChartData" [datasets]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [legend]="lineChartLegend" [colors]="lineChartColors"
+            chartType="line"></canvas>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <h3>Energy Data</h3>
+    <div class="chart-content">
+        <canvas baseChart *ngIf="barChartData" [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend" [colors]="chartColors" chartType="bar"></canvas>
+    </div>
+</div>
+
+<!-- Monitoring Table -->
+<div class="mat-elevation-z8">
+    <mat-table #aircompressortable [dataSource]="dataSource" *ngIf="dataSource.data.length && !loadedSpinner">
+        <ng-container matColumnDef="{{header.value}}" *ngFor="let header of headerWithColumns">
+            <mat-header-cell *matHeaderCellDef> {{header.headers}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[header.value]}} </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <hr>
+    <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}"
+        [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+    <div *ngIf="dataSource.data.length == 0" class="no-record">No Records found</div>
+</div>
+
+<ng-template #keyAndValue let-data="data">
+    <dl class="keyvalue" *ngFor="let row of data">
+        <dt class="keyItem"> {{ row.parameterName }} </dt> <span class="colon">:</span>
+        <dd class="valueItem">
+            <span ng-if="row.currentData">{{ row.convertedCurrentData }} </span>
+            <ng-container
+                *ngTemplateOutlet="arrowTemplate,context:{increasedValue:row.increasedValue,forward:row.forward}">
+            </ng-container>
+            <span>{{ row.convertedIncreasedValue }}</span>
+        </dd>
+    </dl>
+</ng-template>
+
+<ng-template #arrowTemplate let-increasedValue="increasedValue" let-isForward="forward">
+    <span *ngIf="(increasedValue >= 0 && increasedValue != null); else downArrow">
+        <span *ngIf="(increasedValue == 0); then checkForZero else upArrow"></span>
+    </span>
+
+    <ng-template #checkForZero>
+        <span *ngIf="(isForward !== false); then upArrow else downArrow"></span>
+    </ng-template>
+
+    <ng-template #upArrow>
+        <span *ngIf="increasedValue != null">
+            <i [ngClass]="getArrowColor(increasedValue,isForward) ? 'greenClass': 'redClass'"
+                class="fa fa-long-arrow-up" aria-hidden="true"></i>
+        </span>
+    </ng-template>
+
+    <ng-template #downArrow>
+        <span *ngIf="increasedValue != null">
+            <i [ngClass]="getArrowColor(increasedValue,isForward) ? 'greenClass': 'redClass'"
+                class="fa fa-long-arrow-down" aria-hidden="true"></i>
+        </span>
+    </ng-template>
+</ng-template>

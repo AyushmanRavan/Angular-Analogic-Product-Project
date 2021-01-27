@@ -1,0 +1,105 @@
+<div class="app-fullpage">
+    <header>
+      <app-toolbar [menudisplay]="true" ></app-toolbar>
+    </header>
+    <div fxLayout class="summary" layout="row" flex  fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px" rowHeight="200px">
+      
+      <mat-card (click)="goTo('dashboard')" class="c1 common-height first-container" fxFlex="50%" fxFlex.gt-sm="100%" rowHeight="200px" [style.backgroundImage] = "'url(../../assets/image/Main_Home_Production.png)'">
+          <mat-card-content>
+              <mat-card-title class="custom-title">
+                  <!-- <mat-icon mat-list-icon>insert_chart</mat-icon> -->
+                  <!-- <i class="fa fa-th" aria-hidden="true"></i> -->
+                  <!-- <span class="text">PMS</span> -->
+              </mat-card-title>
+              <mat-grid-list cols="3" rowHeight="300px" ></mat-grid-list> 
+          </mat-card-content>
+          <!-- <div class="card-footer">
+              <a (click)="onCardClick('dashboard')">View</a>
+          </div> -->
+      </mat-card>
+  
+        <mat-card (click)="goTo('machinedetail')" class="c2 common-height first-container" fxFlex="50%" fxFlex.gt-sm="100%" rowHeight="200px" [style.backgroundImage] = "'url(../../assets/image/Main_Home_Utility.png)'">
+          <mat-card-content>
+              <mat-card-title class="custom-title">
+                  <!-- <mat-icon mat-list-icon>insert_chart</mat-icon>
+                  <span class="text">UMS</span> -->
+              </mat-card-title>
+              <!-- <mat-grid-list cols="3" rowHeight="300px" [style.backgroundImage] = "'url(../../assets/image/utility-management.jpg)'"></mat-grid-list> -->
+              <mat-grid-list cols="3" rowHeight="300px" ></mat-grid-list>
+          </mat-card-content>
+          <!-- <div class="card-footer">
+              <a (click)="onCardClick('machinedetail')">View</a>
+          </div> -->
+      </mat-card>
+
+      <mat-card (click)="goTo('ems')" class="c3 common-height first-container" fxFlex="50%" fxFlex.gt-sm="100%" rowHeight="200px" [style.backgroundImage] = "'url(../../assets/image/Main_Home_Energy.png)'">
+          <mat-card-content>
+              <mat-card-title class="custom-title">
+                  <!-- <mat-icon mat-list-icon>insert_chart</mat-icon>
+                  <span class="text">EMS</span> -->
+              </mat-card-title>
+              <!-- <mat-grid-list cols="3" rowHeight="300px" [style.backgroundImage] = "'url(../../assets/image/energy.jpg)'"></mat-grid-list> -->
+              <mat-grid-list cols="3" rowHeight="300px"></mat-grid-list>
+          </mat-card-content>
+          <!-- <div class="card-footer">
+              <a (click)="onCardClick('ems')">View</a>
+          </div> -->
+      </mat-card>
+      
+  </div>
+  <!-- <div fxLayout class="summary" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+
+      <mat-card (click)="goTo('boiler')" class="c2 common-height" fxFlex="50%" fxFlex.gt-sm="100%" rowHeight="200px">
+          <mat-card-content>
+              <mat-card-title class="custom-title">
+                  <mat-icon mat-list-icon>alarm</mat-icon>
+                  <span class="text">EMS</span>
+              </mat-card-title>
+              <mat-grid-list cols="3" rowHeight="90px"></mat-grid-list>
+          </mat-card-content>
+          <div class="card-footer">
+              <a (click)="onCardClick('boiler')">View</a>
+          </div>
+      </mat-card>
+
+  </div> -->
+    <!-- <main>
+           <div class="col-md-12">
+                  <div class="col-md-3">
+                      <a href="/dashboard/" >
+                        <div class="thumbnail col1">
+                          
+                            <h1 class="center-text">PMS</h1>
+                          
+                            
+                            
+                        </div>
+                      </a>
+                  
+                  </div>
+                  <div class="col-md-3">
+                    <a href="/machinedetail">
+                      <div class="thumbnail col2">
+                        <h1 class="center-text">UMS</h1>
+                        
+                      </div>
+                    </a>
+                  
+                  </div>
+                  <div class="col-md-3">
+                    <a href="#">
+                      <div class="thumbnail col3">
+                        <h1 class="center-text">EMS</h1>
+                        
+                      </div>
+                    </a>
+                  
+                  </div>
+          </div>    
+    </main> -->
+    
+    <div class="footer" [style.backgroundImage] = "'url(../../assets/image/Copy_right_footer.png)'">
+        
+    </div>
+</div>
+

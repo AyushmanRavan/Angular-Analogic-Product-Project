@@ -1,0 +1,258 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Chiller Report</h2>
+  </div> 
+  <div class="production main-column">
+          <report-form type="chiller_report" flag="false" (select)="onSelect($event)"></report-form>
+          <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+              <app-spinner></app-spinner>
+          </div>
+ 
+          <div class="col-md-12" *ngIf='airData["net_heat_removed"] || !loadedSpinner'>
+            <div class="col-md-6">
+                <div class="headerCol1">
+                    <span class="headerData">
+                      Operational Data
+                    </span>
+                  </div>
+                <div class="thumbnail col1">
+                    <dl class="keyvalue">
+                        <dt class="keyItem">Total Net Heat Removed (Btu/Hr)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["net_heat_removed"]'>{{airData["net_heat_removed"] | number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                      <dl class="keyvalue">
+                        <dt class="keyItem">Total kWh Of Refrigeration (kW)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["kwh_of_refrigeration"]'>{{airData["kwh_of_refrigeration"] |
+                            number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                      <dl class="keyvalue">
+                        <dt class="keyItem">Total Coolant Flow Rate (GPH)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["flow_rate"]'>{{airData["flow_rate"] | number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+
+                    <!-- <div class="keyValue">
+                      <div class="keyItem"><span>Net Heat Removed (Btu/Hr)</span></div> 
+                      <div class="colon"><span> : </span></div>
+                      <div class="valueItem"><span ng-if='airData["net_heat_removed"]'>{{airData["net_heat_removed"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  <div class="keyValue">
+                      <div class="keyItem"><span>KWH Of Refrigeration (KW)</span></div> 
+                      <div class="colon"><span> : </span></div>
+                      <div class="valueItem"><span ng-if='airData["kwh_of_refrigeration"]'>{{airData["kwh_of_refrigeration"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  <div class="keyValue">
+                    <div class="keyItem"><span>Flow Rate (GPH)</span></div> 
+                    <div class="colon"><span> : </span></div>
+                    <div class="valueItem"><span ng-if='airData["flow_rate"]'>{{airData["flow_rate"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  -->
+                    <!-- <p>Net Heat Removed : <span ng-if='airData["net_heat_removed"]'>{{airData["net_heat_removed"]}}</span> </p>
+                    <p>KWH Of Refrigeration  : <span ng-if='airData["kwh_of_refrigeration"]'>{{airData["kwh_of_refrigeration"]}}</span> </p>
+                    <p>Flow Rate  : <span ng-if='airData["flow_rate"]'>{{airData["flow_rate"]}}</span> </p> -->
+                </div>
+            
+            </div>
+            <div class="col-md-6">
+                <div class="headerCol2">
+                    <span class="headerData">
+                      Energy Data
+                    </span>
+                  </div>
+                <div class="thumbnail col2">
+                    <dl class="keyvalue">
+                        <dt class="keyItem">Total Energy Consumption (kWh)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["energy_consumption"]'>{{airData["energy_consumption"] | number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                      <dl class="keyvalue">
+                        <dt class="keyItem">Total Chiller Fan Power (kW)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["chiller_fan_power"]'>{{airData["chiller_fan_power"] | number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                      <dl class="keyvalue">
+                        <dt class="keyItem">Total Compressor Power (kW)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["compressor_power"]'>{{airData["compressor_power"] | number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                      <dl class="keyvalue">
+                        <dt class="keyItem">Average Chiller Motor Current (Amp)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["chiller_motor_current"]'>{{airData["chiller_motor_current"] |
+                            number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                      <dl class="keyvalue">
+                        <dt class="keyItem">Average Compressor Motor Current (Amp)</dt> <span class="colon">:</span>
+                        <dd class="valueItem"><span ng-if='airData["compressor_motor_current"]'>{{airData["compressor_motor_current"]
+                            | number :
+                            '1.2-2'}} </span></dd>
+                      </dl>
+                  <!-- <div class="keyValue">
+                    <div class="keyItem"><span>Energy Consumption (KWH)</span></div> 
+                    <div class="colon"><span> : </span></div>
+                    <div class="valueItem"><span ng-if='airData["energy_consumption"]'>{{airData["energy_consumption"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  <div class="keyValue">
+                    <div class="keyItem"><span>Chiller Fan Power(KW)</span></div> 
+                    <div class="colon"><span> : </span></div>
+                    <div class="valueItem"><span ng-if='airData["chiller_fan_power"]'>{{airData["chiller_fan_power"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  <div class="keyValue">
+                    <div class="keyItem"><span>Compressor power (KW)</span></div> 
+                    <div class="colon"><span> : </span></div>
+                    <div class="valueItem"><span ng-if='airData["compressor_power"]'>{{airData["compressor_power"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  <div class="keyValue">
+                    <div class="keyItem"><span>Chiller Motor Current(AMP)</span></div> 
+                    <div class="colon"><span> : </span></div>
+                    <div class="valueItem"><span ng-if='airData["chiller_motor_current"]'>{{airData["chiller_motor_current"] | number : '1.2-2'}}</span></div>
+                  </div>
+                  <div class="keyValue">
+                    <div class="keyItem"><span>Compressor Motor Current(AMP)</span></div> 
+                    <div class="colon"><span> : </span></div>
+                    <div class="valueItem"><span ng-if='airData["compressor_motor_current"]'>{{airData["compressor_motor_current"] | number : '1.2-2'}}</span></div>
+                  </div> -->
+                  
+                  <!-- <p>Energy Consumption  : <span ng-if='airData["energy_consumption"]'>{{airData["energy_consumption"]}}</span> </p>
+                  <p>Chiller Fan Power  : <span ng-if='airData["chiller_fan_power"]'>{{airData["chiller_fan_power"]}}</span> </p>
+                  <p>Compressor power  : <span ng-if='airData["compressor_power"]'>{{airData["compressor_power"]}}</span> </p>
+                  <p>Chiller Motor Current  : <span ng-if='airData["chiller_motor_current"]'>{{airData["chiller_motor_current"]}}</span> </p>
+                  <p>Compressor Motor Current  : <span ng-if='airData["compressor_motor_current"]'>{{airData["compressor_motor_current"]}}</span> </p>
+                  <span ng-if='airData["er"]'>{{airData["eer"] | number : '1.2-2'}}</span> -->
+                </div>
+            
+            </div>       
+            <div class="col-md-6">
+                <div class="headerCol3">
+                    <span class="headerData">
+                      Efficiency Data
+                    </span>
+                  </div>
+              <div class="thumbnail col3">
+                  <dl class="keyvalue">
+                      <dt class="keyItem">Specific Power Consumption</dt> <span class="colon">:</span>
+                      <dd class="valueItem"><span ng-if='airData["specific_power_consumption"]'>{{airData["specific_power_consumption"]
+                          | number :
+                          '1.2-2'}} </span></dd>
+                    </dl>
+                    <dl class="keyvalue">
+                      <dt class="keyItem">Energy Efficiency Ratio</dt> <span class="colon">:</span>
+                      <dd class="valueItem"><span ng-if='airData["eer"]'>{{airData["eer"]
+                          | number :
+                          '1.2-2'}} </span></dd>
+                    </dl>
+                    <dl class="keyvalue">
+                      <dt class="keyItem">Co-efficient Of Performance</dt> <span class="colon">:</span>
+                      <dd class="valueItem"><span ng-if='airData["cop"]'>{{airData["cop"]
+                          | number :
+                          '1.2-2'}} </span></dd>
+                    </dl>
+                <!-- <div class="keyValue">
+                  <div class="keyItem"><span>Specific Power consumption</span></div> 
+                  <div class="colon"><span> : </span></div>
+                  <div class="valueItem"><span ng-if='airData["specific_power_consumption"]'>{{airData["specific_power_consumption"] | number : '1.2-2'}}</span></div>
+                </div>
+                <div class="keyValue">
+                  <div class="keyItem"><span>Energy Efficiency Ratio </span></div> 
+                  <div class="colon"><span> : </span></div>
+                  <div class="valueItem"><span ng-if='airData["eer"]'>{{airData["eer"] | number : '1.2-2'}}</span></div>
+                </div>
+                <div class="keyValue">
+                  <div class="keyItem"><span>COP</span></div> 
+                  <div class="colon"><span> : </span></div>
+                  <div class="valueItem"><span ng-if='airData["cop"]'>{{airData["cop"] | number : '1.2-2'}}</span></div>
+                </div> -->
+                <!-- <p>Specific Power consumption  : <span ng-if='airData["specific_power_consumption"]'>{{airData["specific_power_consumption"]}}</span> </p>
+                <p>Energy Efficiency Ratio  : <span ng-if='airData["eer"]'>{{airData["eer"]}}</span> </p>
+                <p>COP  : <span ng-if='airData["cop"]'>{{airData["cop"]}}</span> </p> -->
+              </div>
+          
+          </div>
+          <div class="col-md-6 alaram-ele" (click) ="goTo('machinealaram')">
+              <div class="headerCol4">
+                  <span class="headerData">
+                    Alarms
+                  </span>
+                </div>
+            <div class="thumbnail col4">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Chiller Fan Trip Count</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["chiller_fan_trip"]'>{{airData["chiller_fan_trip"]}} </span></dd>
+                  </dl>
+                  <dl class="keyvalue">
+                    <dt class="keyItem">Compressor Motor Trip Count</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["compressor_motor_trip"]'>{{airData["compressor_motor_trip"]}} </span></dd>
+                  </dl>
+              <!-- <div class="keyValue">
+                <div class="keyItem"><span>Chiller Fan Trip</span></div> 
+                <div class="colon"><span> : </span></div>
+                <div class="valueItem"><span ng-if='airData["chiller_fan_trip"]'>{{airData["chiller_fan_trip"] | number : '1.2-2'}}</span></div>
+              </div>
+              <div class="keyValue">
+                <div class="keyItem"><span>Compressor Motor Trip</span></div> 
+                <div class="colon"><span> : </span></div>
+                <div class="valueItem"><span ng-if='airData["compressor_motor_trip"]'>{{airData["compressor_motor_trip"] | number : '1.2-2'}}</span></div>
+              </div> -->
+              <!-- <p>Chiller Fan Trip  : <span ng-if='airData["chiller_fan_trip"]'>{{airData["chiller_fan_trip"]}}</span> </p>
+              <p>Compressor Motor Trip  : <span ng-if='airData["compressor_motor_trip"]'>{{airData["compressor_motor_trip"]}}</span> </p> -->
+            </div>
+        
+        </div>
+        </div>
+
+          
+  </div>
+
+  <!-- <div class="col-md-12" *ngIf='!airData["net_heat_removed"] && !loadedSpinner'>
+    <div class="no-record">
+         No Records Found
+    </div>
+  </div> -->
+  <div class="mat-elevation-z8">
+    <mat-table #aircompressortable [dataSource]="dataSource" *ngIf="dataSource.data.length" >
+      
+      <ng-container matColumnDef="{{header.value}}" *ngFor="let header of headerWithColumns">
+        <mat-header-cell *matHeaderCellDef> {{header.headers}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element[header.value]}} </mat-cell>
+      </ng-container>
+      <!-- Position Column -->
+  
+      <!-- <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+      </ng-container> -->
+  
+      <!-- Name Column -->
+      <!-- <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container> -->
+  
+      <!-- Weight Column -->
+      <!-- <ng-container matColumnDef="weight">
+        <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+      </ng-container> -->
+  
+      <!-- Symbol Column -->
+      <!-- <ng-container matColumnDef="symbol">
+        <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+      </ng-container> -->
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <div *ngIf="dataSource.data.length == 0" class="no-record">No Records found</div>
+  
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+    <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+  </div>
+  
+  <template #pdfContainer>
+  </template>
+  
+  
+  

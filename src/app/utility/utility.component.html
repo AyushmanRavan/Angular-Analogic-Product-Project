@@ -1,0 +1,29 @@
+<div class="utility">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Utility</h2>
+    </div>
+    <selection dashboardtype="utility_dashboard" (select)="onSelect($event)"></selection>
+
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+        <app-spinner></app-spinner>
+    </div>
+
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    <section [hidden]="loaded">
+        <div class="example-container mat-elevation-z8">
+            <mat-table [dataSource]="data">
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                    <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element"><span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+
+            </mat-table>
+            <mat-paginator showFirstLastButtons [ngStyle]="{'font-size':'15px','font-weigth':'bold'}" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+        </div>
+
+    </section>
+
+</div>

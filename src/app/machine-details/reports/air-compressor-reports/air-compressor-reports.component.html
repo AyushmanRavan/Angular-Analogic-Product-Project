@@ -1,0 +1,176 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Air Compressor Report</h2>
+</div>
+<div class="production main-column">
+    <report-form type="air_compressor_dashboard" flag="false" (select)="onSelect($event)"></report-form>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+        <app-spinner></app-spinner>
+    </div>
+    <div class="col-md-12" *ngIf='airData["total_air_flow"] || !loadedSpinner'>
+        <ng-template #other_content>No Data</ng-template>
+        <div class="col-md-6">
+            <div class="headerCol1">
+                <span class="headerData">
+                    Operational Data
+                </span>
+            </div>
+            <div class="thumbnail col1">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Total Air Flow (CFM)</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["total_air_flow"]'>{{airData["total_air_flow"] | number
+                            :
+                            '1.2-2'}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Total Compressed Air Flow Volume (Ton)</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["total_air_compressed"]'>{{airData["total_air_compressed"]
+                            | number
+                            :
+                            '1.2-2'}} </span></dd>
+                </dl>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="headerCol2">
+                <span class="headerData">
+                    Energy Data
+                </span>
+            </div>
+            <div class="thumbnail col2">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Total Power Consumption (kWh)</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["total_energy_consumed"]'>{{airData["total_energy_consumed"]
+                            | number
+                            :
+                            '1.2-2'}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Average Current (Amp)</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["motor_current"]'>{{airData["motor_current"] | number
+                            :
+                            '1.2-2'}} </span></dd>
+                </dl>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="headerCol3">
+                <span class="headerData">
+                    Efficiency Data
+                </span>
+            </div>
+            <div class="thumbnail col3">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Specific Power Consumption</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["specific_power_consumption"]'>{{airData["specific_power_consumption"]
+                            | number
+                            :
+                            '1.2-2'}} </span></dd>
+                </dl>
+            </div>
+
+        </div>
+        <div class="col-md-6 alaram-ele" (click)="goTo('machinealaram')">
+            <div class="headerCol4">
+                <span class="headerData">
+                    Alarms
+                </span>
+            </div>
+            <div class="thumbnail col4">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Compressor Motor Trip Count</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["trip"]'>{{airData["trip"] }}
+                        </span></dd>
+                </dl>
+            </div>
+
+        </div>
+        <div class="col-md-6 alaram-ele last-box" (click)="goTo('machinestatus')">
+            <div class="headerCol5">
+                <span class="headerData">
+                    Machine Status
+                </span>
+            </div>
+            <div class="thumbnail col5">
+                <dl class="keyvalue">
+                    <dt class="keyItem">Running Hours</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["running_hours"]'>{{airData["running_hours"]}} </span>
+                    </dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Idle Hours</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["idle_hours"]'>{{airData["idle_hours"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Stop Hours</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["stop_hours"]'>{{airData["stop_hours"]}} </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Stoppages</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["number_of_stopages"]'>{{airData["number_of_stopages"]}}
+                        </span></dd>
+                </dl>
+                <dl class="keyvalue">
+                    <dt class="keyItem">Current Status</dt> <span class="colon">:</span>
+                    <dd class="valueItem"><span ng-if='airData["current_status"]'>{{airData["current_status"]}} </span>
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- <div class="col-md-12" *ngIf='!airData["total_air_flow"] && !loadedSpinner'>
+        <div class="no-record">
+            No Records Found
+        </div>
+    </div> -->
+</div>
+
+
+<div class="mat-elevation-z8">
+    <mat-table #aircompressortable [dataSource]="dataSource" *ngIf="dataSource.data.length">
+        <!-- <mat-table #aircompressortable [dataSource]="dataSource"> -->
+
+        <ng-container matColumnDef="{{header.value}}" *ngFor="let header of headerWithColumns">
+            <mat-header-cell *matHeaderCellDef> {{header.headers}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[header.value]}} </mat-cell>
+        </ng-container>
+        <!-- Position Column -->
+
+        <!-- <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+    </ng-container> -->
+
+        <!-- Name Column -->
+        <!-- <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container> -->
+
+        <!-- Weight Column -->
+        <!-- <ng-container matColumnDef="weight">
+      <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+    </ng-container> -->
+
+        <!-- Symbol Column -->
+        <!-- <ng-container matColumnDef="symbol">
+      <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+    </ng-container> -->
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div *ngIf="dataSource.data.length == 0" class="no-record">No Records found</div>
+
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+    <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}"
+        [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+</div>
+<template #pdfContainer>
+</template>

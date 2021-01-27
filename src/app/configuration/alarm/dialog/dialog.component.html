@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>{{dialog.title}} alarm</h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="alarm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div class="alarm" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput formControlName="alarmName" placeholder="Name">
+                    <mat-error *ngIf="alarm.get('alarmName').hasError('required')">
+                        Name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Type" formControlName="alarmType">
+                        <mat-option *ngFor="let type of alramTypes" [value]="type">{{type}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="alarm.get('alarmType').hasError('required')">
+                        Type is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput formControlName="repetition" placeholder="Repetition">
+                    <mat-error *ngIf="alarm.get('repetition').hasError('required')">
+                        Repetition is
+                        <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="alarm.get('repetition').hasError('pattern')">
+                        Repetition
+                        <strong>must be in numbers</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput placeholder="Action" formControlName="action">
+                    <mat-error *ngIf="alarm.get('action').hasError('required')">
+                        Action is
+                        <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="alarm.get('action').hasError('pattern')">
+                        Action
+                        <strong>must be in alphabets</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="!alarm.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.alarmName}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)" [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

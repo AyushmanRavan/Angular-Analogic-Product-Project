@@ -1,0 +1,156 @@
+<h2 mat-dialog-title *ngIf="dialog.mode == 'delete'" class="titleHead">{{dialog.title}} User</h2>
+<h2 mat-dialog-title *ngIf="dialog.mode !== 'delete'">{{dialog.title}} User</h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="user" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <mat-tab-group>
+            <mat-tab label="User Details">
+                <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">          
+                    <div fxFlex="50%" fxFlex.gt-sm="100%">
+                        <mat-form-field>
+                            <input matInput formControlName="name" placeholder="Full Name">
+                            <mat-error *ngIf="user.get('name').hasError('required')">
+                                Full name is
+                                 <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="user.get('name').hasError('pattern')">
+                                Enter
+                                <strong>valid name</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.gt-sm="100%">
+                        <mat-form-field>
+                            <mat-select [disabled]="disabledRole" placeholder="Role" formControlName="uiRole"
+                                [(ngModel)]="roleID">
+                                <mat-option *ngFor="let type of roleList" [value]="type.user_authority_id">
+                                    {{type.authority}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="user.get('uiRole').hasError('required')">
+                                Role is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+                   
+                    <div fxFlex="50%" fxFlex.gt-sm="100%">
+                        <mat-form-field>
+                            <mat-icon matSuffix>person</mat-icon>
+                            <input matInput formControlName="username" placeholder="User Name">
+                            <mat-error *ngIf="user.get('username').hasError('required')">
+                                User name is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.gt-sm="100%">
+                        <mat-form-field>
+                            <mat-icon [matTooltip]="passwordPolicyString" matSuffix>lock</mat-icon>
+                            <input matInput type="password" placeholder="Password" formControlName="password">
+                            <mat-error *ngIf="user.get('password').hasError('required')">
+                                Password is
+                                <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="user.get('password').hasError('incorrect')">
+                                {{ invalidPasswordMsg }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+                   
+                    <div fxFlex="50%" fxFlex.gt-sm="100%">
+                        <mat-form-field>
+                            <mat-icon matSuffix>email</mat-icon>
+                            <input matInput formControlName="email" placeholder="Email">
+                            <mat-error *ngIf="user.get('email').hasError('required')">
+                                Email is
+                                <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="user.get('email').hasError('email')">
+                                Enter valid
+                                <strong>email</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.gt-sm="100%">
+                        <mat-form-field>
+                            <mat-icon matSuffix>phone</mat-icon>
+                            <input matInput placeholder="Contact No." formControlName="mobile">
+                            <mat-error *ngIf="user.get('mobile').hasError('required')">
+                                Contact number is
+                                <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="user.get('mobile').hasError('pattern')">
+                                Enter valid
+                                <strong>contact number</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </mat-tab>
+             
+            <mat-tab *ngIf="HIDE_ACCESS_DETAILS !== true" label="Access Details">
+                <div [style.padding.px]="15">
+                    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-checkbox (change)="onChange($event,'passwordExpiry')" formControlName="passwordExpiry">
+                                Password
+                                Expiry</mat-checkbox>
+
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-checkbox (change)="onChange($event, 'lock')" formControlName="lock">Lock
+                            </mat-checkbox>
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%" #enabledCheckbox>
+                            <mat-checkbox (change)="onChange($event,'enabled')" formControlName="enabled">Enabled
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div [style.padding.px]="15">
+                    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+                        <div *ngIf="user.value.passwordExpiry === true">
+                            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                                <mat-form-field>
+                                    <input matInput type="number" placeholder="Interval"
+                                        (change)="onChange($event,'interval')" formControlName="interval">
+                                    <mat-error *ngIf="user.get('interval').hasError('required')">
+                                        Interval is
+                                        <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="!user.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+ 
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.alarmName}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

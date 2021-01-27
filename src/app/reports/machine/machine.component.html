@@ -1,0 +1,53 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Machine Report</h2>
+</div>
+<div class="machine">
+    <report-form type="machine_report" flag="false" (select)="onSelect($event)"></report-form>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedspinner">
+        <app-spinner></app-spinner>
+    </div>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+    <section [hidden]="loaded">
+        <div [ngStyle]="{'background-color':'#00897b','color':'#fff','margin-bottom': '10px'}" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+            <h2 class="mat-h2 highlight">{{highlightForTable}}</h2>
+        </div>
+        <div class="table-container">
+            <div *ngIf="!pdfReady">
+                <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+            </div>
+
+            <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData" [highlight]="highlightForTable"></report-pdf>
+
+            <mat-table #machineTable [dataSource]="dataSource">
+                <ng-container matColumnDef="start_time">
+                    <mat-header-cell *matHeaderCellDef> Start Date-Time</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Start Date-Time</span>{{element.start_time}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="end_time">
+                    <mat-header-cell *matHeaderCellDef>End Date-Time</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">End Date-Time</span>{{element.end_time}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Status</span>{{element.status | uppercase }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="reason">
+                    <mat-header-cell *matHeaderCellDef> Reason </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Reason</span>{{element.reason}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#00897b','font-size':'15px','font-weigth':'bold'}" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+        </div>
+    </section>
+</div>

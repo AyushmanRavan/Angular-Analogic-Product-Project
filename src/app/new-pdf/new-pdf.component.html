@@ -1,0 +1,70 @@
+<div>
+  <kendo-pdf-export #pdf [paperSize]="paperSize">
+
+    <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+      <!-- LOGO -->
+      <div class="logo">
+        <img src="../../assets/Logo/analogic_icon.PNG" alt="company-logo" height="45" width="75">
+      </div>
+      <!-- HEADER -->
+      <div class="header">
+        <span>{{ PDF_CONSTANT.PDF_HEADER }}</span>
+      </div>
+      <!-- LINE -->
+      <div class="line">
+        <hr>
+      </div>
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="pageNum">Page {{ pageNum }} of {{ totalPages }}</div>
+      </div>
+      <div class="compName">
+        <span>{{ PDF_CONSTANT.PDF_FOOTER }}</span>
+      </div>
+      <div class="dateAndTime">
+        <span>Created on: {{ formattedDate}}, {{ strTime }}</span>
+      </div>
+      <!-- FOOTER END -->
+    </ng-template>
+    <div class="page">
+      <div class="pdfBody">
+          <div *ngIf="pdfData.REPORT_TYPE == 'simpleReport'">
+            <div class="productionReport" *ngIf="pdfData.plantDetails"> 
+              <app-plant-details [plantDetails]="pdfData.plantDetails"></app-plant-details>
+             </div>
+            <div *ngIf="pdfData.summaryData">
+              <app-summary-table [summaryData]="pdfData.summaryData"></app-summary-table>
+            </div> 
+          </div>
+          <div *ngIf="pdfData.REPORT_TYPE == 'machineComparisonReport'">
+              <h4>Machine Comparison Report</h4>
+              <div class="productionReportDetails">
+                  <div class="productionReportSecondHalf">
+                      <div class="productionReportKeysSecondHalf">
+                          <span> From </span><br>
+                          <span> To </span><br>
+                      </div>
+                      <div class="colon">
+                          <span>:</span><br>
+                          <span>:</span><br>
+                      </div>
+                      <div class="productionReportValuesSecondHalf">
+                          <span> {{ pdfData.fromDate }} {{ pdfData.fromTime }} </span><br>
+                          <span> {{ pdfData.toDate }} {{ pdfData.toTime }}</span><br>
+                      </div>
+                  </div>
+              </div>
+              <hr>
+          </div>
+            <app-monitoring-details [monitoringDataColumn]="pdfData.monitoringDataColumn" [monitoringDataRow]="pdfData.monitoringDataRow"></app-monitoring-details>
+      </div>
+    </div>
+  </kendo-pdf-export>
+</div>
+
+
+<div class="example-config">
+  <button kendo-button #downloadBtn (click)="pdf.saveAs('fromMain.pdf')">
+    Save As PDF...
+  </button>
+</div>

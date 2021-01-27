@@ -1,0 +1,92 @@
+<div class="machine">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Machine Configuration</h2>
+    </div>
+
+    <div class="action" [hidden]="hideAddMachine">
+        <button matTooltip="Add Machine" mat-button (click)="addMachine()" color="accent">Add</button>
+    </div>
+
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+ 
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+        <div [hidden]="hiddenData">
+
+            <mat-accordion *ngIf="!hiddenData">
+                <mat-expansion-panel (opened)="item.open = true" (closed)="item.open = false" class="panel" [expanded]="item.open" *ngFor="let item of dataSource">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Machine : {{item.machineName}}</strong>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <div class="inner-actions">
+                        <button mat-icon-button matTooltip="Update machine" matTooltipPosition="below" (click)="update(item,'edit')">
+                            <mat-icon aria-label="Update">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Remove machine" matTooltipPosition="below" (click)="update(item,'delete','shifts',i)">
+                            <mat-icon aria-label="Remove">delete</mat-icon>
+                        </button>
+                    </div>
+
+                    <mat-checkbox [disabled]=true [(ngModel)]="item.alarm">Alarm Table</mat-checkbox>
+
+                    <div class="cardList">
+                        <ng-container>
+                            <mat-card class="cardListItem c1">
+                                <h4>Plant</h4>{{item.plantName}}</mat-card>
+                            <mat-card class="cardListItem c2">
+                                <h4>Department</h4>{{item.departmentName}}</mat-card>
+                            <mat-card class="cardListItem c3">
+                                <h4>Assembly</h4>{{item.assemblyName}}</mat-card>
+                            <mat-card class="cardListItem c4">
+                                <h4>Sequence Number</h4>{{item.sequenceNumber}}</mat-card>
+                            <mat-card class="cardListItem c5">
+                                <h4>Machine Type</h4>{{item.machineType}}</mat-card>
+                            <mat-card class="cardListItem c6">
+                                <h4>Associated Machine Name</h4>{{item.assosiativeName}}</mat-card>
+                        </ng-container>
+                    </div>
+
+                    <mat-divider [ngStyle]="{'margin-top':'20px'}"></mat-divider>
+                    <div fxLayout fxLayoutAlign="center">
+                        <strong>Parameters</strong>
+                    </div>
+                    <mat-table #table [dataSource]="item.cbmParameter" class="header-table">
+
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Name</span>{{element?.name}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Value</span>{{element?.value }} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unit">
+                            <mat-header-cell *matHeaderCellDef>Unit</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Unit</span> {{element?.unit }} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <!-- <mat-paginator [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" [length]="datasetLength" (page)="updateDataset($event)" [pageSize]="10" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator> -->
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent  = updateDataset($event)" [length]="datasetLength" [pageSize]="pageSize" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+
+        </div>
+    </section>
+</div>

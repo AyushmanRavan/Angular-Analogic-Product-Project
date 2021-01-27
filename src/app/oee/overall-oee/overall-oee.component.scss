@@ -1,0 +1,6 @@
+@import "../../shared/styles/shared";
+.product {
+    margin-top: 10px;
+    @include chart-container();
+    @include tbl();
+}

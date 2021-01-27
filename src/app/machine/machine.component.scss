@@ -1,0 +1,61 @@
+@mixin title() {
+  .custom-title {
+    margin-bottom: 0;
+    padding: 16px 16px 0;
+  }
+}
+@mixin legend($color) {
+  &:before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    background-color: $color;
+    margin: 4px -25px;
+  }
+}
+.machine {
+  .row {
+    margin-top: 30px;
+  }
+  .timeline {
+    padding: 0;
+    @include title();
+    .block {
+      text-align: center;
+      .count {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .chart {
+    margin-bottom: 20px;
+    .legend {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+      position: relative;
+      .on,
+      .stop,
+      .idle {
+        color: #757575;
+        margin-right: 30px;
+      }
+      .on {
+        @include legend(#5cb85c);
+      }
+      .stop {
+        @include legend(#d9534f);
+      }
+      .idle {
+        @include legend(#f0ad4e);
+      }
+    }
+    .chart-content {
+      width: 100%;
+      display: block;
+      @include title();
+    }    
+  }
+}

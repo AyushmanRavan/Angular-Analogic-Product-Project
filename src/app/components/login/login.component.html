@@ -1,0 +1,36 @@
+<div class="login" fxLayout fxLayoutAlign="center center">
+    <div class="custom-card mat-elevation-z7">
+        <div fxLayout fxLayoutAlign="center center" class="card-header">
+            <h2 class="mat-h2">Login</h2>
+        </div>
+        <form [formGroup]="login" (ngSubmit)="onSubmit()">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <mat-form-field>
+                    <mat-icon matSuffix>email</mat-icon>
+                    <input matInput placeholder="User name" formControlName="id">
+                    <mat-error *ngIf="login.get('id').hasError('required')">
+                        User Name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-icon matSuffix>lock</mat-icon>
+                    <input matInput type="password" placeholder="Password" formControlName="password"
+                        autocomplete="password">
+                    <mat-error *ngIf="login.get('password').hasError('required')">
+                        Password is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <div *ngIf="errMessage">
+                    <div class="custom-error">{{errMessage}}</div>
+                </div>
+                <div class="card-footer" fxLayout="row">
+                    <button mat-raised-button color="primary" [disabled]="!login.valid || loading">Submit</button>
+                    <app-spinner class="loader" *ngIf="loading"></app-spinner>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

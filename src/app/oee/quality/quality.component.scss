@@ -1,0 +1,22 @@
+@import "../../shared/styles/shared";
+.quality {
+    margin-top: 10px;
+    @include chart-container();
+    @include tbl();
+    .pieChart{
+        mat-card{
+            position: relative;
+            margin: auto;
+            width: 100%;
+            display:block;
+            mat-card-content{
+                height: 40vh;
+            canvas{
+                background-color: #fafafa;
+                border-radius: 2px;
+            }
+        }
+      }
+    }
+}
+

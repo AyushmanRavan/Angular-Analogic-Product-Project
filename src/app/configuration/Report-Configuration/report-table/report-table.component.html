@@ -1,0 +1,98 @@
+<div class="table">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Table Configuration</h2>
+    </div>
+    <div class="back">
+        <button mat-button (click)="onNavigate('/dashboard/config/report')" color="accent">Back to report</button>
+    </div>
+    <div class="action">
+        <button [disabled]="validToAdd" mat-button (click)="add('add','table',report)" color="accent">Add</button>
+    </div>
+
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+        <div [hidden]="hiddenData">
+            <mat-accordion *ngIf="!hiddenData">
+                <mat-expansion-panel (opened)="item.open = true" (closed)="item.open = false" class="panel" [expanded]="item.open" *ngFor="let item of dataSource">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Table Name : {{item.table_name}} | Table Type : {{item.table_type}}</strong>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="inner-actions">
+                        <button mat-icon-button matTooltip="Update table" matTooltipPosition="below" (click)="update(item,'','edit','table',0)">
+                            <mat-icon aria-label="Update">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Remove table" matTooltipPosition="below" (click)="update(item,'','delete','table',0)">
+                            <mat-icon aria-label="Remove">delete</mat-icon>
+                        </button> 
+                        <button mat-button (click)="add('add','header',item)">Add Header</button>
+                        <button mat-button (click)="add('view','table',item)">Table View</button>
+                    </div>
+
+                    <h3 [ngStyle]="{'margin-top':'50px'}" class="mat-h3">Report Name : {{item.report.report_name}}</h3>
+                    <mat-divider></mat-divider>
+                    <div fxLayout fxLayoutAlign="center">
+                        <strong>Headers</strong>
+                    </div>
+                    <mat-table #table [dataSource]="item.headers" class="header-table">
+                        <ng-container matColumnDef="heading">
+                            <mat-header-cell *matHeaderCellDef> Header Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Header Name</span> {{element?.heading}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="parameter">
+                            <mat-header-cell *matHeaderCellDef> Parameter </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Parameter</span> {{element?.parameter.param_name}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unit">
+                            <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Unit</span> {{element?.unit}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="sequence_no">
+                            <mat-header-cell *matHeaderCellDef> Sequence No </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Sequence No</span> {{element?.sequence_no }} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="calculation">
+                            <mat-header-cell *matHeaderCellDef> Calculation </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <span class="mobile-label">Calculation</span> {{element?.calculation }} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                            <mat-cell *matCellDef="let element;let Index=index">
+                                <span class="mobile-label"> Actions </span>
+                                <button mat-icon-button matTooltip="Update header" (click)="update(item,element,'edit','header',Index)">
+                                    <mat-icon aria-label="Edit">edit</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="Remove header" (click)="update(item,element,'delete','header',0)">
+                                    <mat-icon aria-label="Edit">delete</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-paginator [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent  = updateDataset($event)" [length]="datasetLength" [pageSize]="pageSize" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+
+        </div>
+    </section>
+</div>

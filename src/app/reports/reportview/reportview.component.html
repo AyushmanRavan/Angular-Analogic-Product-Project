@@ -1,0 +1,105 @@
+<div class="DynamicReport">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Customized Report</h2>
+    </div> 
+
+    <report-form type="reportview" page="reportview" flag="true" (select)="onSelect($event)"></report-form>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+    <div *ngIf="loading">
+        <div *ngIf="!pdfReady">
+            <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+        </div>
+    </div>
+
+    <app-new-pdf (click)="downloadCanvas($event);" [monitoringHeaders]="HeadersForMonitoring" [monitoringdata]="pdfData"
+        [summarydata]="pdfDataForSummary" [highlight]="highlight" [chartdataurls]="ChartArray" [chartdata]="Charts"
+        [ready]="pdfReady" [report]="reportVal"></app-new-pdf>
+
+
+    <section [hidden]="loadHighlight" [ngStyle]="{'margin-top':'10px'}">
+        <div *ngIf="highlight" [ngStyle]="{'background-color': '#3e6ceb','color':'#fff'}" fxLayout fxLayout.xs="column"
+            fxLayoutAlign="center">
+            <h2 class="mat-h2 highlight">{{highlight}}</h2>
+        </div>
+    </section>
+
+    <div [hidden]="showChart" *ngFor="let key of objectKeys(Charts)">
+
+
+        <span *ngIf="key == 'doughnut' || key == 'pie'">
+            <div class="container mat-elevation-z3">
+                <div class="item" *ngFor="let chart of Charts[key]; let i=index">
+                    <h2 class="mat-h3">{{chart.chartName}}</h2>
+                    <canvas width='290px' height='290px' baseChart [data]="setChartDetails(i,key,'datasets')"
+                        [labels]="setChartDetails(i,key,'labels')" [options]="setChartDetails(i,key,'options')"
+                        [legend]="setChartDetails(i,key,'legend')" [colors]="setChartDetails(i,key,'colors')"
+                        [chartType]="setChartDetails(i,key,'chartType')"></canvas>
+                </div>
+            </div>
+        </span>
+
+        <span *ngIf="key == 'lineBar'">
+            <mat-card *ngFor="let chart of Charts[key]; let i=index" [ngStyle]="{'margin-bottom': '20px'}">
+                <mat-card-content class="chart-container">
+                    <h2 class="mat-h3">{{chart.chartName}}</h2>
+                    <canvas baseChart [datasets]="setChartDetails(i,key,'datasets')"
+                        [labels]="setChartDetails(i,key,'labels')" [options]="setChartDetails(i,key,'options')"
+                        [legend]="setChartDetails(i,key,'legend')" [colors]="setChartDetails(i,key,'colors')"
+                        [chartType]="setChartDetails(i,key,'chartType')"></canvas>
+                </mat-card-content>
+            </mat-card>
+        </span>
+
+        <span *ngIf="key == 'guage'">
+            <div class="container mat-elevation-z3">
+                <span class="item" *ngFor="let chart of Charts[key]; let l=index">
+                    <h2 class="mat-h3">{{chart.chartName}}</h2>
+                    <ngx-gauge class="guage" name=ngx-gauge [size]="setChartDetails(l,key,'size')"
+                        [type]="setChartDetails(l,key,'type')" value={{chart.value}}
+                        [append]="setChartDetails(l,key,'append')" [thresholds]="thresholdConfig"
+                        [min]="setChartDetails(l,key,'min')" [max]="setChartDetails(l,key,'max')"
+                        [cap]="setChartDetails(l,key,'cap')" [thick]="setChartDetails(l,key,'thick')">
+                    </ngx-gauge>
+                </span>
+            </div>
+        </span>
+
+    </div>
+
+
+
+    <section [hidden]="loadSummary">
+        <div class="example-container mat-elevation-z5">
+            <h2 class="mat-h2" fxLayout fxLayoutAlign="center">Summary Table</h2>
+            <mat-table [dataSource]="dataSource2">
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                    <mat-header-cell *matHeaderCellDef>{{column | titlecase }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">{{column | titlecase}}</span> {{element[column]}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+            </mat-table>
+        </div>
+    </section>
+
+    <section [ngStyle]="{'margin-top':'10px'}" [hidden]="loadMonitoring">
+        <div class="example-container mat-elevation-z5">
+            <h2 class="mat-h2" fxLayout fxLayoutAlign="center">Monitoring Table</h2>
+            <mat-table [dataSource]="dataSource1">
+                <ng-container [matColumnDef]="column" *ngFor="let column of keyForMonitoring;let i=index;">
+                    <mat-header-cell *matHeaderCellDef>{{HeadersForMonitoring[i]}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">{{HeadersForMonitoring[i]}}</span>{{element[column]}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="keyForMonitoring"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: keyForMonitoring;"></mat-row>
+            </mat-table>
+  
+            <mat-paginator showFirstLastButtons [ngStyle]="{'font-size':'15px','font-weigth':'bold'}" [pageSize]="10"
+                [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+        </div>
+    </section>
+
+</div>

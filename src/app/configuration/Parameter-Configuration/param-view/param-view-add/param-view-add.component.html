@@ -1,0 +1,188 @@
+<h2 mat-dialog-title>{{dialog.title}} Parameter</h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="parameter" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <mat-tab-group>
+            <mat-tab label="Parameter">
+                <div [style.padding.px]="15">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <input matInput placeholder="ParameterName" formControlName="paramName">
+                                <mat-error *ngIf="parameter.get('paramName').hasError('required')">
+                                    ParameterName is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <mat-select placeholder="ParameterType" formControlName="paramDataType"
+                                    (change)="onChange($event.value)">
+                                    <mat-option *ngFor="let paraType of dataTypes" [value]="paraType.dataTypeName">
+                                        {{paraType.dataTypeName}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="parameter.get('paramDataType').hasError('required')">
+                                    ParameterType is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div [hidden]="hiddencol" fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <input matInput placeholder="Size" class="input-full-width" formControlName="length">
+                                <mat-error *ngIf="parameter.get('length').hasError('required')">
+                                    Size is
+                                    <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="parameter.get('length').hasError('pattern')">
+                                    Enter
+                                    <strong>number for size</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field"
+                                *ngIf="parameter.value.paramDataType=='varchar' || dialog.details.paramDataType=='varchar'">
+                                <input matInput placeholder="Defualt Value" class="input-full-width"
+                                    formControlName="defaultValue">
+                                <mat-error *ngIf="parameter.get('defaultValue').hasError('required')">
+                                    DefualtValue is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="custom-form-field"
+                                *ngIf="parameter.value.paramDataType=='int' || parameter.value.paramDataType=='float' || dialog.details.paramDataType=='int' || dialog.details.paramDataType=='float'">
+                                <input matInput type="number" placeholder="Defualt Value" class="input-full-width"
+                                    formControlName="defaultValue">
+                                <mat-error *ngIf="parameter.get('defaultValue').hasError('required')">
+                                    DefualtValue is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="custom-form-field"
+                                *ngIf="parameter.value.paramDataType=='datetime' || dialog.details.paramDataType=='datetime'">
+                                <input readonly matInput placeholder="Defualt Value" formControlName="defaultValue"
+                                    [owlDateTime]="defVal" [owlDateTimeTrigger]="defVal">
+                                <owl-date-time #defVal></owl-date-time>
+                                <mat-error *ngIf="parameter.get('defaultValue').hasError('required')">
+                                    DefualtValue is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="custom-form-field"
+                                *ngIf="parameter.value.paramDataType=='bit' || dialog.details.paramDataType=='bit'">
+                                <mat-select placeholder="Defualt Value" formControlName="defaultValue">
+                                    <mat-option value="true">true</mat-option>
+                                    <mat-option value="false">false</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="parameter.get('defaultValue').hasError('required')">
+                                    DefualtValue is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <mat-select placeholder="Criticality" formControlName="criticality">
+                                    <mat-option value="Critical">Critical</mat-option>
+                                    <mat-option value="Severe">Severe</mat-option>
+                                    <mat-option value="Mild">Mild</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="parameter.get('criticality').hasError('required')">
+                                    Criticality is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-checkbox formControlName="countedParam">Counted Parameters</mat-checkbox>
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-checkbox formControlName="realParam">Real Parameters</mat-checkbox>
+                        </div>
+                         -->
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Parameter Details">
+                <div [style.padding.px]="15">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+                        <mat-radio-group formControlName="paramTypes">
+                            <mat-radio-button value="realParamIsSelected"
+                                (click)="removeValidators('realParamIsSelected')">Real Parameters</mat-radio-button>
+                            <mat-radio-button value="countParamIsSelected"
+                                (click)="removeValidators('countParamIsSelected')">Counted Parameters</mat-radio-button>
+                            <mat-radio-button value="rawParamIsSelected"
+                                (click)="removeValidators('rawParamIsSelected')">Raw Parameters</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <div [style.padding.px]="15">
+                    <div *ngIf="parameter.value.paramTypes == '' || parameter.value.paramTypes == 'realParamIsSelected' || parameter.value.paramTypes == 'rawParamIsSelected'"
+                        fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <input matInput type="number" placeholder="Minimum Value" formControlName="minValue">
+                                <mat-error *ngIf="parameter.get('paramName').hasError('required')">
+                                    Minimum Value is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <input matInput type="number" placeholder="Maximun Value" formControlName="maxValue">
+                                <mat-error *ngIf="parameter.get('paramName').hasError('required')">
+                                    Maximum value is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div *ngIf="parameter.value.paramTypes == '' || parameter.value.paramTypes == 'countParamIsSelected' "
+                        fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <mat-form-field class="custom-form-field">
+                                <input matInput type="number" placeholder="Reset Count" formControlName="resetCount">
+                                <mat-error *ngIf="parameter.get('paramName').hasError('required')">
+                                    Reset Value is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary"
+            [disabled]="!parameter.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.paramName}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,95 @@
+<div class="energy">
+  <div fxLayout fxLayoutAlign="center">
+      <h2 class="mat-h2"> Monitoring Parameter</h2>
+  </div>
+
+<selection dashboardtype="ems_monitoring_params" [routerParamsObj]="routerParamsObj" (select)="onSelect($event)"></selection>
+  <!-- <selection isPageType="true" dashboardtype="energy_dashboard" (select)="onSelect($event)"></selection> -->
+  <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+      <app-spinner></app-spinner>
+  </div>
+
+
+  <div class="param-dropdown">
+    <mat-card class="chart">
+      <mat-card-content>
+          <div class="loading-shade" *ngIf="isParamloading">
+              <app-spinner></app-spinner>
+          </div>
+          <mat-form-field>
+              <mat-select placeholder="Parameters" [formControl]="param" (change)="onParamsChange($event.value)" [compareWith]="compareParameter" [ngModel]="selectedParameter" multiple>
+                  <mat-option *ngFor="let paramObj of paramList" [value]="paramObj.value">{{paramObj.headers}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+
+          <div class="chart-content">
+              <canvas baseChart #baseChart="base-chart" [datasets]="chartData" [colors]="chartColors" [labels]="chartLabels" [options]="chartOptions" chartType="line" legend="true" *ngIf="chartData"></canvas>
+          </div>
+      </mat-card-content>
+      </mat-card>
+  </div>
+
+  <!-- <div class="param-table">
+    <div class="example-container mat-elevation-z8">
+
+
+        <div *ngIf="isPaginatorLoading">
+            <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <mat-table [dataSource]="data">
+            <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                <mat-header-cell *matHeaderCellDef> {{column}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"><span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+        </mat-table>
+
+        <mat-paginator [ngStyle]="{'color': '#E74C3C','font-size':'15px','font-weigth':'bold'}" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+    </div>
+  </div> -->
+</div>
+
+
+<div class="mat-elevation-z8" >
+<mat-table #aircompressortable [dataSource]="dataSource" *ngIf="dataSource.data.length" >
+  
+  <ng-container matColumnDef="{{header.value}}" *ngFor="let header of headerWithColumns">
+    <mat-header-cell *matHeaderCellDef> {{header.headers}} </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element[header.value]}} </mat-cell>
+  </ng-container>
+  <!-- Position Column -->
+
+  <!-- <ng-container matColumnDef="position">
+    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+  </ng-container> -->
+
+  <!-- Name Column -->
+  <!-- <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+  </ng-container> -->
+
+  <!-- Weight Column -->
+  <!-- <ng-container matColumnDef="weight">
+    <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+  </ng-container> -->
+
+  <!-- Symbol Column -->
+  <!-- <ng-container matColumnDef="symbol">
+    <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container> -->
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>    
+<hr>
+
+<!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+<mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+</div>

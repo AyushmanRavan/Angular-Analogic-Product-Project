@@ -1,0 +1,20 @@
+.bar-area {
+  margin: 20px 0;
+  .custom-h2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  .bar {
+    height: 51px;
+    transition: fill 0.3s ease;
+    cursor: pointer;
+    text {
+      fill: #555;
+    }
+    line {
+      stroke: #dedede;
+      stroke-width: 1;
+    }
+  }
+}

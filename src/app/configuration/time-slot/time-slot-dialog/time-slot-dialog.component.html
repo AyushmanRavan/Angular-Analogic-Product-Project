@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{dialog.title}} Reason</h2>
+<form [formGroup]="timeslot" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="left">
+            <div fxFlex="100%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <textarea matInput formControlName="reason" #message maxlength="50" placeholder="Update Reason" rows="4" cols="60"></textarea>
+                    <mat-hint align="end">{{message.value.length}} /50</mat-hint>
+                    <mat-error *ngIf="timeslot.get('reason').hasError('required')">
+                        Reason is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+             </div>
+        </div>        
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="!timeslot.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>

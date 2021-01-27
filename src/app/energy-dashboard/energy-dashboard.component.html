@@ -1,0 +1,39 @@
+<div class="energy">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Energy</h2>
+    </div>
+
+    <selection dashboardtype="energy_dashboard" (select)="onSelect($event)"></selection>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+        <app-spinner></app-spinner>
+    </div>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+    <section [hidden]="loaded">
+
+        <summary-highlight *ngIf="summary.totalConsumed != 0" color="#ffa000" [data]="summary" type="strip" entity="energy"></summary-highlight>
+        <mat-card class="chart">
+            <mat-card-content>
+                <div class="chart-content">
+                    <canvas *ngIf="chartData" baseChart [datasets]="chartData" [colors]="chartColors" [labels]="chartLabels" [options]="chartOptions" chartType="line" legend="true"></canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+
+        <div class="example-container mat-elevation-z8">
+            <mat-table [dataSource]="data">
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                    <mat-header-cell *matHeaderCellDef> {{column}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element"><span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+            </mat-table>
+
+            <mat-paginator [ngStyle]="{'color': '#ffa000','font-size':'15px','font-weigth':'bold'}" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+        </div>
+
+    </section>
+</div>

@@ -1,0 +1,74 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Alarm Report</h2>
+</div>
+<div class="alarm">
+    <report-form type="alarm_report" flag="false" (select)="onSelect($event)"></report-form>
+
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedspinner">
+        <app-spinner></app-spinner>
+    </div>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+    <section [hidden]="loaded">
+        <div [ngStyle]="{'background-color': '#ffa000','color':'#fff','margin-bottom': '10px'}" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+            <h2 class="mat-h2 highlight">{{highlights}}</h2>
+        </div>
+        <div class="table-container">
+            <div *ngIf="!pdfReady">
+                <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+            </div>
+            <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData" [alarmData]="alarmSummaryDatasource" [highlight]="highlights"></report-pdf>
+            <h2 class="mat-h2" [ngStyle]="{'text-align': 'center'}">Summary </h2>
+            <mat-table #alarmSummary [dataSource]="alarmSummaryDatasource">
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Name</span>{{element.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="count">
+                    <mat-header-cell *matHeaderCellDef> Count </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Count</span>{{element.count}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="duration">
+                    <mat-header-cell *matHeaderCellDef> Duration (HH:MM:SS)</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Duration (HH:MM:SS)</span>{{element.duration}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="alarmSummaryDisplayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: alarmSummaryDisplayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+        <br>
+
+        <div class="table-container">
+            <mat-table #alarmTable [dataSource]="dataSource">
+                <ng-container matColumnDef="alarmName">
+                    <mat-header-cell *matHeaderCellDef> Alarm Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Alarm Name</span>{{element.alarmName}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="alarmIntime">
+                    <mat-header-cell *matHeaderCellDef> Alarm InTime </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Alarm InTime</span>{{element.alarmIntime}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="alarmOntime">
+                    <mat-header-cell *matHeaderCellDef> OnTime </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">OnTime</span>{{element.alarmOntime}} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator [ngStyle]="{'color': '#ffa000','font-size':'15px','font-weigth':'bold'}" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+        </div>
+
+    </section>
+</div>

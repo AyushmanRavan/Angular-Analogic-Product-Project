@@ -1,0 +1,15 @@
+<div class="action">
+    <button [disabled]="!ready" mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Save report" matTooltipPosition="left" class="custom-button">
+  <mat-icon>save</mat-icon>
+</button>
+    <mat-menu #menu="matMenu">
+        <button (click)="onSave('pdf',headerInformation,logo)" mat-menu-item>
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>Save as PDF</span>
+  </button>
+        <button disabled (click)="onSave('excel',headerInformation,logo)" mat-menu-item>
+    <mat-icon>insert_drive_file</mat-icon>
+    <span>Save as Excel</span>
+  </button>
+    </mat-menu>
+</div>

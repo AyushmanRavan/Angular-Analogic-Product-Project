@@ -1,0 +1,36 @@
+table {
+  font-size: 11px;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+ // height : 100%;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+tr:hover {
+  background-color: #ddd;
+}
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+ // text-align: left;
+  background-color: #3f51b5;
+  color: white;
+} 
+.inlineTable{
+  display: inline-block;
+  width: 40%;
+  line-height: 30px;
+  padding-bottom: 15px;
+  padding-right: 5%;
+  padding-left: 5%;
+  padding-top: 15px;
+}
+
+.RowOfTable{
+  width : 100%;
+}

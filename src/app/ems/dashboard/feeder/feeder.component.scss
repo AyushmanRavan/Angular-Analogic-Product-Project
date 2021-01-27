@@ -1,0 +1,132 @@
+@import "../../../shared/styles/shared";
+
+.product {
+    @include chart-container();
+    @include tbl();
+}
+.machine-air-compressor{
+    .col-md-12{
+        width: 100%;
+        float: left;
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    .col-md-6 {
+        width: 45%;
+        float : left;
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+
+    }
+    .thumbnail {
+        display: block;
+        padding: 4px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: #fff;
+        border: 1px solid #ddd;
+       // border-radius: 4px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out;
+    }
+    // .headerClass{
+    //     text-align: center;
+    //     height: 40px;
+    //     margin-top: 10px;
+    //     background-color: #174cdf !important; //#4381f1
+    //     color: black;
+    //     border: 1px solid #174cdf;
+    //     color: white;
+    //     text-shadow: none;
+    //     padding-left: 10px;
+    // }
+    // .headerData{
+    //    text-align: center;
+    //     vertical-align: middle;
+    //     line-height: 40px;       
+    // }
+    // .col1{
+    //     margin-top: 10px;
+    //     background-color: #3e6ceb !important;
+    //     color: black;
+    //     height: 200px;
+    //     border: 1px solid #3e6ceb;
+    //     color: white;
+    //     text-shadow: none;
+    //     padding-left: 10px;
+    //     // outline-style: outset;
+    //     // outline-width: thick;
+    //     // outline-color: #4381f1;
+
+    // }
+    // .col2{
+    //     margin-top: 10px;
+    //     background-color: #f70e0ebf !important;
+    //     color: black;
+    //     height: 200px;
+    //     border: 1px solid #f70e0ebf;
+    //     color: white;
+    //     text-shadow: none;
+    //     padding-left: 10px;
+    //     // outline-style: outset;
+    //     // outline-width: thick;
+    //     // outline-color: #f70e0ebf;
+    // }
+    // .col3{
+    //     margin-top: 10px;
+    //     background-color: #288c08cf !important;
+    //     color: black;
+    //     height: 200px;
+    //     border: 1px solid #3b8a20cf; //#169e05;
+    //     color: white;
+    //     text-shadow: none;
+    //     padding-left: 10px;
+    //     // outline-style: outset;
+    //     // outline-width: thick;
+    //     // outline-color: #288c08cf;
+    // }
+    // .col4{
+    //     margin-top: 10px;
+    //     background-color: #f58007;
+    //     color: black;
+    //     height: 200px;
+    //     border: 1px solid #f58007;
+    //     color: white;
+    //     text-shadow: none;
+    //     padding-left: 10px;
+    //     // outline-width: thick;
+    //     // outline-style: outset;
+    //     // outline-color: #f58007;
+    // }
+    // h4{
+    //     text-align: center;
+    // }
+    // .keyvalue {
+    //     width :100%;
+    // }
+    // .keyItem {
+    //     display: inline-block;
+    //     text-align: right;
+    //     width: 45%;
+    // }
+    // .colon {
+    //     display: inline-block;
+    //     width: 5%;
+    //     text-align: center;
+    // }
+    // .valueItem {
+    //     display: inline-block;
+    //     width: 45%;
+    //     text-align: left;
+    // }
+    
+}
+
+mat-table {
+    width: 100%;
+  }

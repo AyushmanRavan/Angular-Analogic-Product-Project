@@ -1,0 +1,191 @@
+<ng-template #card>
+    <div fxLayout class="summary" layout="row" flex fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+        <mat-card (click)="goTo('products')" class="c1" fxFlex="50%" fxFlex.gt-sm="100%">
+            <mat-card-content>
+                <mat-card-title class="custom-title">
+                    <mat-icon mat-list-icon>insert_chart</mat-icon>
+                    <span class="text">Production</span>
+                </mat-card-title>
+                <mat-grid-list cols="3" rowHeight="90px">
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.totalProduction}}</h1>
+                            <div>
+                                <div>Total</div>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.totalGoodProduction}}</h1>
+                            <div>
+                                <div>Good</div>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.totalRejectProduction}}</h1>
+                            <div>
+                                <div>Rejection</div>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+            <div class="card-footer">
+                Avg / Hour : {{summary?.perdayProductionAverage}}
+            </div>
+        </mat-card>
+
+
+        <mat-card (click)="goTo('alarms')" class="c2" fxFlex="30%" fxFlex.gt-sm="100%">
+            <mat-card-content>
+                <mat-card-title class="custom-title">
+                    <mat-icon mat-list-icon>alarm</mat-icon>
+                    <span class="text">Alarms</span>
+                </mat-card-title>
+                <mat-grid-list cols="3" rowHeight="90px">
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.totalAlarms}}</h1>
+                            <span>Count</span>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+            <div class="card-footer">
+                <a (click)="goTo('alarms')">View</a>
+            </div>
+        </mat-card>
+
+        <mat-card (click)="goTo('energy')" class="c4" fxFlex="30%" fxFlex.gt-sm="100%">
+            <mat-card-content>
+                <mat-card-title class="custom-title">
+                    <mat-icon mat-list-icon>flash_on</mat-icon>
+                    <span class="text">Energy</span>
+                </mat-card-title>
+
+                <mat-grid-list cols="2" rowHeight="90px">
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.energy_overall_count}}</h1>
+                            <div>
+                                <div>Plant Consumption</div>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.energy_machine_wise_count}}</h1>
+                            <div>
+                                <div>Machine Consumption</div>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+
+                    <!-- [ngStyle]="{'background-color':'red','padding-right':'90x','width':'auto'}" -->
+                </mat-grid-list>
+            </mat-card-content>
+            <div class="card-footer">
+                <a (click)="goTo('energy')">View</a>
+            </div>
+        </mat-card>
+    </div>
+
+    <div fxLayout class="summary" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+        <div class="space"></div>
+
+        <mat-card (click)="goTo('machine')" class="c3" fxFlex="50%" fxFlex.gt-sm="100%">
+            <mat-card-content>
+                <mat-card-title class="custom-title">
+                    <mat-icon mat-list-icon>dvr</mat-icon>
+                    <span class="text">Machine Status</span>
+                </mat-card-title>
+                <mat-grid-list cols="4" rowHeight="95px">
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.machineProductionTime | humanize:'hh:mm'}}</h1>
+                            <div fxLayout="row wrap">Running</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.machineIdleTime | humanize:'hh:mm'}}</h1>
+                            <span>Idle</span>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.machineDownTime | humanize:'hh:mm'}}</h1>
+                            <div>Stopped</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.status}}</h1>
+                            <div class="unit">Current</div>
+                            <div>Status</div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+            <div class="card-footer">
+                <a (click)="goTo('machine')"> No. of stoppage : {{summary?.noOfTimeMachineStopages}}</a>
+            </div>
+        </mat-card>
+        
+        <mat-card (click)="goTo('oee')" class="c5" fxFlex="50%" fxFlex.gt-sm="100%">
+            <mat-card-content>
+                <mat-card-title class="custom-title">
+                    <mat-icon mat-list-icon>settings_input_svideo</mat-icon>
+                    <span class="text">OEE</span>
+                </mat-card-title>
+                <mat-grid-list cols="4" rowHeight="95px">
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.oee | number:'1.2-2'}}</h1>
+                            <div>OEE</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.productivityPercentage | number:'1.2-2'}}</h1>
+                            <div>Productivity</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.availablityPercentage | number:'1.2-2'}}</h1>
+                            <div>Availablity</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="block">
+                            <h1 class="mat-display-1 count">{{summary?.qualityPercentage | number:'1.2-2'}}</h1>
+                            <div>Quality</div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+            <div class="card-footer">
+                <a (click)="goTo('oee')">View</a>
+            </div>
+        </mat-card>
+
+        <div class="space"></div>
+    </div>
+</ng-template>
+
+
+
+<mat-card *ngIf="type == 'strip'; else card" class="strip" [ngStyle]="{'background-color':color}">
+    <mat-card-content>
+        <div fxLayout fxLayout.xs="column" fxLayoutGap="15px">
+            <div *ngFor="let item of blocks" fxFlex="25%" fxFlex.gt-sm="100%" class="block">
+                <h2 class="mat-h2">{{item.label}}</h2>
+                <h2 class="mat-h2">{{item.value}}</h2>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

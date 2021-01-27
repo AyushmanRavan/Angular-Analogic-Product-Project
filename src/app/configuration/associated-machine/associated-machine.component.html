@@ -1,0 +1,49 @@
+<div class="machine">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Associated Machine Configuration</h2>
+    </div>
+    <div class="action">
+        <button matTooltip="Add machine" mat-button (click)="addmachine()" color="accent">Add</button>
+    </div>
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+        <div [hidden]="hiddenData">
+
+            <div class="table-container">
+                <mat-table #table [dataSource]="dataSource">
+                    <ng-container matColumnDef="associated_name">
+                        <mat-header-cell *matHeaderCellDef>Machine Name</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Machine Name</span>{{element.associated_name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="assign_flag">
+                        <mat-header-cell *matHeaderCellDef>Assign Flag</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Assign Flag</span>{{element.assign_flag}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label"> Actions </span>
+                            <button mat-icon-button matTooltip="Delete Alarm" (click)="update(element,'delete')">
+                                <mat-icon aria-label="Edit">delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent  = updateDataset($event)" [length]="datasetLength" [pageSize]="pageSize" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+
+            </div>
+        </div>
+    </section>
+</div>

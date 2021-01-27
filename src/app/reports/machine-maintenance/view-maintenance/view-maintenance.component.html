@@ -1,0 +1,69 @@
+<div fxLayout fxLayoutAlign="center">
+  <h2 class="mat-h2">{{machineName}} Maintenance</h2>
+</div>
+<div class="viewMaintenance">
+
+  <div fxLayout fxLayoutAlign="center" *ngIf="loadedspinner">
+      <app-spinner></app-spinner>
+  </div>
+
+  <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+  <section [hidden]="loaded">
+     
+      <div class="table-container" *ngIf="dataSource">
+          <div *ngIf="!pdfReady">
+              <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+          </div>
+          <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData" [highlight]="highlightForTable"></report-pdf>
+          <mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="machine">
+                <mat-header-cell *matHeaderCellDef> Machine Name </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Machine Name</span>{{element.machine.machineName}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="maintenance_date">
+                <mat-header-cell *matHeaderCellDef> Maintenance Date</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Maintenance Date</span>{{element.maintenance_date}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="maintenance_hours">
+                <mat-header-cell *matHeaderCellDef> Maintenance Hours </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Maintenance Hours</span>{{element.maintenance_hours}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="remaining_hours">
+                <mat-header-cell *matHeaderCellDef> Remaining Hours </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Remaining Hours</span>{{element.remaining_hours}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="progress">
+                <mat-header-cell *matHeaderCellDef> Machine Health </mat-header-cell>
+                <mat-cell *matCellDef="let element" #canvas>
+                    <span class="mobile-label">Machine Health</span>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="100%" height="25" role="img">
+                        <g>
+                            <rect fill="#D3D3D3" stroke="#DEDEDE" stroke-width="0.65" x="0" y="0" width="100%"
+                                height="25" fill-opacity="1">
+                            </rect>
+                            <rect [attr.width]="element.progress.barValue" height="25"
+                                [attr.fill]="element.progress.barColor" fill-opacity="1" x="0" y="0"></rect>
+                            <text x="50%" y="50%" text-anchor="middle" fill="white" stroke="white"
+                                stroke-width="0.65" dy=".3em">{{element.progress.barValue}}</text>
+                        </g>
+                    </svg>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+  
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+  </section>
+</div>

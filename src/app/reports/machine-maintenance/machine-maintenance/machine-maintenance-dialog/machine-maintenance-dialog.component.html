@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{dialog.title}} maintenance</h2>
+<form [formGroup]="maintenance" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div class="maintenance" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput formControlName="machine" placeholder="Name" readonly="true">
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input matInput readonly="true" placeholder="From"
+                        formControlName="maintenance_date" [owlDateTime]="maintenance_date" [owlDateTimeTrigger]="maintenance_date">
+                    <owl-date-time #maintenance_date></owl-date-time>
+                    <mat-error *ngIf="maintenance.get('maintenance_date').hasError('required')">
+                        Maintenance date
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary"
+            [disabled]="!maintenance.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+

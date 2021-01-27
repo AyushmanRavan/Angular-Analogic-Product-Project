@@ -1,0 +1,7 @@
+@import "../shared/styles/shared";
+
+.product {
+    @include chart-container();
+    @include tbl();  
+}
+

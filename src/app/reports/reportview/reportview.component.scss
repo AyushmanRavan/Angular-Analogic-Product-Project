@@ -1,0 +1,43 @@
+@import "../../shared/styles/shared";
+.DynamicReport {
+    @include chart-container();
+    @include tbl();
+    .action {
+        float: right;
+    }
+    .container {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: top;
+        justify-content: center;
+        margin-bottom: 20px
+    }
+    .item {
+        margin: 10px;
+        text-align: center;
+    }
+    .item:nth-child(3n) {
+        page-break-after: always;
+    }
+    .pdfButton {
+        float: right;
+        margin-bottom: 10px;
+        background-color: red;
+    }
+}
+
+mat-header-cell {
+    text-align: center;
+}
+
+mat-cell {
+    text-align: center;
+}
+
+.guage {
+    text {
+        font-size: 12px;
+        fill: #666;
+        font-weight: bold;
+      }
+}

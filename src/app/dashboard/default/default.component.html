@@ -1,0 +1,13 @@
+<div fxLayout fxLayout.xs="column" fxLayoutAlign="center"><h2 class="mat-h2">Dashboard</h2></div>
+<selection dashboardtype="home_dashboard" (select)="onSelect($event)"></selection>
+
+
+<section *ngIf="loaded; else loader">
+    <summary-highlight (cardClick)="onCardClick($event)" type="card" [machineID]="machineID" entity="dashboard"></summary-highlight>
+</section>
+ 
+<ng-template #loader>
+    <div fxLayout fxLayoutAlign="center">
+        <app-spinner></app-spinner>
+    </div>
+</ng-template>

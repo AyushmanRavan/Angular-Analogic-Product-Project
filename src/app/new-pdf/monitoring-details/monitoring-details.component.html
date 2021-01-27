@@ -1,0 +1,16 @@
+<div>
+    <table class="table">
+        <thead>
+          <tr >
+            <th *ngFor="let tableHeader of monitoringDataColumn"> {{ tableHeader.headers}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tableRow of monitoringDataRow">
+            <td *ngFor="let key of objectKeys(tableRow)">{{ tableRow[key]  }}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+            

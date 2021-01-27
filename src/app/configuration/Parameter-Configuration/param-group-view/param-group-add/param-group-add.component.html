@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>{{dialog.title + ' ' + title}}</h2>
+<form *ngIf="dialog.mode != 'delete'; else deleteForm" [formGroup]="paramgroup">
+    <mat-dialog-content>
+        <div class="paramelement" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field class="custom-form-field">
+                    <input matInput placeholder="Group Name" formControlName="pg_name">
+                    <mat-error *ngIf="paramgroup.get('pg_name').hasError('required')">
+                        Group name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Import From Group" (change)="onGroupChange($event.value)">
+                        <mat-option *ngFor="let option of importedGroup" [value]="option.id">
+                            {{ option.pg_name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+            <div fxFlex="40%" fxFlex.gt-sm="100%">
+                Parameters
+                <mat-card class="textArea">
+                    <div class="space"></div>
+                    <div class="checkbox" *ngFor="let list of paramlist1">
+                        <label class="container">
+                            <input [checked]="checkboxFlag" type="checkbox" [checked]="isChecked" value="{{list.id}}" (change)="onCheckboxChange1(list,$event)">{{list.paramName}}
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </mat-card>
+            </div>
+
+            <div fxFlex="20%" fxFlex.gt-sm="100%">
+                <div class="btncss">
+                    <button mat-mini-fab (click)="onAddClick()">
+                        <mat-icon aria-label="push">fast_forward</mat-icon>
+                    </button>
+                    <div class="space"></div>
+                    <button mat-mini-fab (click)="onRemoveClick()">
+                        <mat-icon aria-label="pull">fast_rewind</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div fxFlex="40%" fxFlex.gt-sm="100%">
+                Import Parameters
+                <mat-card class="textArea">
+                    <div class="space"></div>
+                    <div class="checkbox" *ngFor="let list of paramlist2">
+                        <label class="container">
+                            <input [checked]="checkboxFlag" formControlName="imported_parameters" type="checkbox" [value]="list.id" (change)="onCheckboxChange2(list,$event)">{{list.paramName}}
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="onSubmit()" mat-raised-button color="primary" [disabled]="!paramgroup.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+
+</form>
+
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.pg_name}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,pg_name,imported_parameters,dialog.mode)" [ngStyle]="{backgroundColor: '#FE3F5F',color: '#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

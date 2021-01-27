@@ -1,0 +1,171 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Machine Comparison Report</h2>
+</div>
+
+<div class="machinecomparision">
+    <mat-card class="custom-card">
+        <mat-card-content>
+            <form [formGroup]="MachineCompare" (ngSubmit)="onSubmit()">
+
+                <mat-form-field>
+                    <mat-select placeholder="Machine Type" formControlName="machineType"
+                        (change)="onChangeMachineType($event.value)">
+                        <mat-option *ngFor="let option of machineTypes" [value]="option.machine_type">
+                            {{ option.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-tab-group >
+                    <mat-tab label="First">
+                        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                            <div fxFlex="100%" fxLayoutGap="20px">
+                                <mat-form-field>
+                                    <mat-select placeholder="Plant" formControlName="firstPlantId"
+                                        (change)="onChangePlant($event.value,1)">
+                                        <mat-option *ngFor="let option of plantsData" [value]="option">
+                                            {{ option.plantName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select placeholder="Machine" formControlName="firstMachineId"
+                                        (change)="onChangeMachine($event.value,1)">
+                                        <mat-option *ngFor="let option of firstmachines" [value]="option">
+                                            {{ option.machineName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Second">
+                        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                            <div fxFlex="100%" fxLayoutGap="20px">
+                                <mat-form-field>
+                                    <mat-select placeholder="Plant" formControlName="secondPlantId"
+                                        (change)="onChangePlant($event.value,2)">
+                                        <mat-option *ngFor="let option of plantsData" [value]="option">
+                                            {{ option.plantName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select placeholder="Machine" formControlName="secondMachineId"
+                                        (change)="onChangeMachine($event.value,2)">
+                                        <mat-option *ngFor="let option of secondmachines" [value]="option">
+                                            {{ option.machineName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab #tab [disabled]="invalid" label="Third">
+                        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                            <div fxFlex="100%" fxLayoutGap="20px">
+                                <mat-form-field>
+                                    <mat-select placeholder="Plant" formControlName="thirdPlantId"
+                                        (change)="onChangePlant($event.value,3)">
+                                        <mat-option *ngFor="let option of plantsData" [value]="option">
+                                            {{ option.plantName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select placeholder="Machine" formControlName="thirdMachineId"
+                                        (change)="onChangeMachine($event.value,3)">
+                                        <mat-option *ngFor="let option of thirdmachines" [value]="option">
+                                            {{ option.machineName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab #tab [disabled]="invalid" label="Fourth">
+                        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                            <div fxFlex="100%" fxLayoutGap="20px">
+                                <mat-form-field>
+                                    <mat-select placeholder="Plant" formControlName="fourthPlantId"
+                                        (change)="onChangePlant($event.value,4)">
+                                        <mat-option *ngFor="let option of plantsData" [value]="option">
+                                            {{ option.plantName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select placeholder="Machine" formControlName="fourthMachineId"
+                                        (change)="onChangeMachine($event.value,4)">
+                                        <mat-option *ngFor="let option of fourthmachines" [value]="option">
+                                            {{ option.machineName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+
+                <br>
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center" class="a" fxLayoutGap="20px">
+                    <div fxFlex="100%" fxLayoutGap="20px">
+
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportFrom" matSuffix>date_range</mat-icon>
+                            <input [max]="max" readonly matInput placeholder="From" formControlName="from"
+                                [owlDateTime]="reportFrom" [owlDateTimeTrigger]="reportFrom">
+                            <owl-date-time (afterPickerClosed)="setMinToDate()" [startAt]="fromStartAt" #reportFrom>
+                            </owl-date-time>
+                            <mat-error *ngIf="MachineCompare.get('from').hasError('required')">
+                                From is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportTo" matSuffix>date_range</mat-icon>
+                            <input [max]="max" [min]="min" readonly matInput placeholder="To" formControlName="to"
+                                [owlDateTime]="reportTo" [owlDateTimeTrigger]="reportTo">
+                            <owl-date-time [startAt]="toStartAt" #reportTo></owl-date-time>
+                            <mat-error *ngIf="MachineCompare.get('to').hasError('required')">
+                                To is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <button mat-raised-button color="accent" [disabled]="!MachineCompare.valid">GENERATE</button>
+                    </div>
+                </div>
+            </form>
+            <button mat-raised-button #downloadPdfBtn color="accent" [disabled]="true">Download PDF</button>
+        </mat-card-content>
+    </mat-card>
+
+
+    <div class="containe">
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" *ngIf="spinerLoaded">
+            <app-spinner></app-spinner>
+        </div>
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+        <section [hidden]="loaded">
+            <mat-card>
+                <mat-card-content>
+                    <!-- <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData"></report-pdf> -->
+                    <span class="mobile-label">{{textFormobile}}</span>
+                    <mat-table [dataSource]="data">
+                        <ng-container [matColumnDef]="column.value"
+                            *ngFor="let column of displayedColumns;trackBy: trackByIndex">
+                            <mat-header-cell *matHeaderCellDef> {{column.headers}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element[column.value]}}</mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+                    </mat-table>
+                </mat-card-content>
+            </mat-card>
+        </section>
+    </div>
+    <template #pdfContainer>
+    </template>
+</div>

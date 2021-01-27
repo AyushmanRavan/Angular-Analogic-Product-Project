@@ -1,0 +1,155 @@
+<h2 mat-dialog-title *ngIf="dialog.mode == 'delete'" class="titleHead">{{dialog.title}} Email</h2>
+<h2 mat-dialog-title *ngIf="dialog.mode !== 'delete'">{{dialog.title}} Email</h2>
+
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="email" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+      <div fxFlex="50%" fxFlex.gt-sm="100%">
+        <mat-form-field>
+          <mat-icon matSuffix>supervisor_account</mat-icon>
+          <mat-select placeholder="Users" formControlName="users" [compareWith]="compareUser" [ngModel]="editUser" multiple>
+            <mat-option *ngFor="let user of userList" [value]="user">{{user.userName}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="email.get('users').hasError('required')">
+            Users is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50%" fxFlex.gt-sm="100%">
+        <mat-form-field>
+          <mat-icon matSuffix>create</mat-icon>
+          <input matInput formControlName="subject" placeholder="Subject">
+          <mat-error *ngIf="email.get('subject').hasError('required')">
+            Subject is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+      <div fxFlex="100%" fxFlex.gt-sm="100%">
+        <mat-form-field class="bodyArea">
+          <textarea matInput formControlName="body" #message maxlength="256" placeholder="Body" rows="4" cols="50"></textarea>
+          <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+          <mat-error *ngIf="email.get('body').hasError('required')">
+            Body is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+      <div fxFlex="50%" fxFlex.gt-sm="100%">
+        <mat-form-field>
+          <mat-icon matSuffix>calendar_today</mat-icon>
+          <mat-select formControlName="frequency" placeholder="Frequency" [(ngModel)]="defaultFrequency" (change)="onChangeFrequency($event.value)">
+            <mat-option *ngFor="let f of frequency" [value]="f">
+              {{f}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="email.get('frequency').hasError('required')">
+            Frequency is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%" fxFlex.gt-sm="100%">
+        <mat-form-field *ngIf="showhour">
+          <mat-select formControlName="hour" placeholder="Hours" [(ngModel)]="defaultHours">
+            <mat-option *ngFor="let h of hours" [value]="h">
+              {{h}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field *ngIf="showDay">
+          <mat-select formControlName="day" placeholder="Day" [(ngModel)]="defaultDay">
+            <mat-option *ngFor="let d of days" [value]="d">
+              {{d}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="showMonth">
+          <mat-select formControlName="months" placeholder="Month" [ngModel]="defaultMonth" [compareWith]="compareMonth">
+            <mat-option *ngFor="let m of months" [value]="m">
+              {{m.month}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+      <div fxFlex="100%" fxFlex.gt-sm="100%">
+        <mat-form-field *ngIf="showStartTime">
+          <mat-icon matSuffix>access_time</mat-icon>
+          <input matInput readonly="true" placeholder="Time" formControlName="startTime" [owlDateTime]="startTime" [owlDateTimeTrigger]="startTime">
+          <owl-date-time [pickerType]="'timer'" #startTime></owl-date-time>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+      <div fxFlex="50%" fxFlex.gt-sm="100%">
+        <mat-form-field>
+          <mat-select placeholder="Plant" formControlName="plants" [compareWith]="comparePlant" [ngModel]="editPlant" (change)="onChangePlant($event.value)">
+            <mat-option *ngFor="let option of plantList" [value]="option">
+              {{ option.plantName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="email.get('plants').hasError('required')">
+            Plant is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%" fxFlex.gt-sm="100%">
+        <mat-form-field>
+          <mat-select placeholder="Machine" formControlName="machines" [compareWith]="compareMachine" [ngModel]="editMachine" multiple>
+            <mat-option *ngFor="let machine of machineList" [value]="machine">{{machine.machineName}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="email.get('machines').hasError('required')">
+            Machine is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+      <div fxFlex="100%" fxFlex.gt-sm="100%">
+        <mat-form-field>
+          <mat-icon matSuffix>attachment</mat-icon>
+          <mat-select placeholder="Attachment" formControlName="attachment" [compareWith]="compareFile" [ngModel]="editFile" multiple>
+            <mat-option *ngFor="let attachment of attachmentList" [value]="attachment">{{attachment.attachmentType}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="email.get('attachment').hasError('required')">
+            Attachment is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" [disabled]="!email.valid || loading">{{dialog.btnCaptions.ok}}</button>
+    <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+    <app-spinner *ngIf="loading"></app-spinner>
+  </mat-dialog-actions>
+</form>
+
+
+<ng-template #deleteForm>
+  <mat-dialog-content>
+    Do you want to delete
+    <strong>Email</strong>?
+  </mat-dialog-content>
+  <mat-dialog-actions [style.marginTop.px]="10">
+    <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)" [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <app-spinner *ngIf="loading"></app-spinner>
+  </mat-dialog-actions>
+</ng-template>

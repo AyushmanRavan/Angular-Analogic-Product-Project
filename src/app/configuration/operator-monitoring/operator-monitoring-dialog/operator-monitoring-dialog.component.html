@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>{{dialog.title}} Operator</h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="operator" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+
+        <div class="operator" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="User" formControlName="user_detail" [compareWith]="compareUser" [ngModel]="editUser">
+                        <mat-option *ngFor="let user of users" [value]="user">{{user.username}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="operator.get('user_detail').hasError('required')">
+                        User is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Shift Name" formControlName="shift_detail" [compareWith]="compareShift" [ngModel]="editShift">
+                        <mat-option *ngFor="let shift of shifts" [value]="shift">{{shift.shiftName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="operator.get('shift_detail').hasError('required')">
+                        Shift Name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="operator" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Machine Name" formControlName="machine_detail" [compareWith]="compareMachine" [ngModel]="editMachine">
+                        <mat-option *ngFor="let machine of machines" [value]="machine">{{machine.machineName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="operator.get('machine_detail').hasError('required')">
+                        Machine Name is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+
+                    <mat-icon [owlDateTimeTrigger]="reportFrom" matSuffix>date_range</mat-icon>
+                    <input readonly matInput placeholder="date" formControlName="day" [owlDateTime]="reportFrom" [owlDateTimeTrigger]="reportFrom">
+                    <owl-date-time [pickerType]="date" #reportFrom></owl-date-time>
+                    <mat-error *ngIf="operator.get('day').hasError('required')">
+                        Date
+                        <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="operator.get('day').hasError('incorrect')">
+                        Select another shift and machine
+                        <strong>for this date</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="!operator.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.user_detail.username}}</strong> operator?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)" [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

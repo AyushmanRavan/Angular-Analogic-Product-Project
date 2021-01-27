@@ -1,0 +1,58 @@
+<div class="alarm">
+      <div fxLayout fxLayoutAlign="center"><h2 class="mat-h2">Alarms</h2></div>
+      <ng-template #loader>
+          <div fxLayout fxLayoutAlign="center">
+              <app-spinner></app-spinner>
+          </div>
+      </ng-template>
+      <selection dashboardtype="ums_alarms" (select)="onSelect($event)"></selection>
+      <error *ngIf="errMessage" [message]="errMessage"></error>
+    <section *ngIf="loaded else loader">
+        <div *ngIf="!empty">
+            <summary-highlight color="#ff6e40" [machineID]="machineID" type="strip" entity="alarm-strip" [totalsecond]="totalSecond"></summary-highlight>
+            <mat-card class="chart">
+                <mat-card-content>
+                    <div class="chart-content">
+                        <canvas baseChart [colors]="chartColors" [datasets]="chartData" [options]="chartOptions" chartType="bar"></canvas>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="item.open" *ngFor="let item of tableData">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{item.type}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+              
+                <mat-table #table [dataSource]="item.data">
+
+                    <ng-container matColumnDef="alarmName">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.alarmName}} </mat-cell>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="alarmIntime">
+                            <mat-header-cell *matHeaderCellDef> Alarm InTime </mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.alarmIntime}} </mat-cell>
+                        </ng-container>
+
+                    <ng-container matColumnDef="alarmOntime">
+                        <mat-header-cell *matHeaderCellDef> On Time</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.alarmOntime}} </mat-cell>
+                    </ng-container>
+
+                  
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+             
+            </mat-expansion-panel>
+        </mat-accordion>
+    </section>
+
+  </div>

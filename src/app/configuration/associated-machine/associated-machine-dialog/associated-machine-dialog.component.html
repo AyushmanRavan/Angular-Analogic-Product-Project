@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>{{dialog.title}} Associated Machine </h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="machine" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input type="number" matInput formControlName="plant" placeholder="Number of plants">
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input type="number" matInput formControlName="department" placeholder="Number of departments">
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input type="number" matInput formControlName="assembly" placeholder="Number of assemblys">
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <input type="number" matInput formControlName="machine" placeholder="Number of Machines">
+                </mat-form-field>
+            </div>
+
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary"
+            [disabled]="!machine.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.associated_name}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

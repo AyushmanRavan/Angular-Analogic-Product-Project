@@ -1,0 +1,141 @@
+<h4>Machine Parameter Configuration</h4>
+<mat-form-field>
+  <mat-label>Select Machine: </mat-label>
+  <!-- [(ngModel)]="selectedMachineName" -->
+  <mat-select [(ngModel)]="selectedMachineName" (selectionChange)="applySelectFilter($event.value)">
+    <mat-option value="0" disabled>-- Select Any --</mat-option>
+    <mat-option *ngFor="let machine of machines" [value]="machine.assosiativeName">
+      {{ machine.machineName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="machine">
+  <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+    <div [hidden]="hiddenData">
+      <div class="table-container">
+        <mat-table #table [dataSource]="dataSource">
+
+          <ng-container matColumnDef="Id">
+            <mat-header-cell *matHeaderCellDef> Parameter Id </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Param Name">
+            <mat-header-cell *matHeaderCellDef> Parameter Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.param_name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Param Type">
+            <mat-header-cell *matHeaderCellDef> Parameter Type </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.param_type}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Column Name">
+            <mat-header-cell *matHeaderCellDef> Column Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.column_name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Param DataType">
+            <mat-header-cell *matHeaderCellDef> Parameter DataType </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.param_datatype}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Default Value">
+            <mat-header-cell *matHeaderCellDef> Default Value </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.paramDataType == 'datetime' ? (element.default_value | date:'short') : element.default_value}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Unit">
+            <mat-header-cell *matHeaderCellDef> Parameter Unit </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.unit}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Criticality">
+            <mat-header-cell *matHeaderCellDef> Criticality </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.criticality}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Counted Param">
+            <mat-header-cell *matHeaderCellDef> Counted Parameter </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.countedParameter}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Real Param">
+            <mat-header-cell *matHeaderCellDef> Real Parameter </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.realParameter}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Min Count">
+            <mat-header-cell *matHeaderCellDef> Parameter MinCount </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.min_count}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Max Count">
+            <mat-header-cell *matHeaderCellDef> Parameter MaxCount </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.max_count}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Reset Count">
+            <mat-header-cell *matHeaderCellDef> Parameter ResetCount </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.reset_count}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-icon-button matTooltip="Update Parameter" (click)="update(element,'edit')">
+                <mat-icon aria-label="Edit">edit</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}"
+          [length]="totalSize" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions"
+          (page)="updateDataSet($event)">
+        </mat-paginator>
+
+      </div>
+    </div>
+  </section>
+
+  <ng-template #loader>
+    <div class="loadedStyle">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <ng-template *ngIf="show;then showBlock; else notShowBlock">
+</ng-template>
+
+<ng-template #showBlock>
+  <p>
+    Show this only if "show" is true
+  </p>
+</ng-template>
+
+<ng-template #notShowBlock>
+  <p>
+    Show this only if "show" is not true
+  </p>
+</ng-template> -->

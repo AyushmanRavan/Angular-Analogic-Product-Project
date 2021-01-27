@@ -1,0 +1,112 @@
+<h2 mat-dialog-title *ngIf="dialog.mode == 'delete'" class="titleHead">{{dialog.title}} SMS</h2>
+<h2 mat-dialog-title *ngIf="dialog.mode !== 'delete'">{{dialog.title}} SMS</h2>
+
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="sms" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+            <div class="SMS" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <mat-select placeholder="User" formControlName="users" multiple [compareWith]="compareUsers"
+                            [ngModel]="editedUers">
+                            <mat-option *ngFor="let user of Users" [value]="user">{{user.userName}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="sms.get('users').hasError('required')">
+                            Users is
+                            <strong>required</strong>
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <mat-select placeholder="Sms Type" formControlName="smsType"
+                            (change)="onTypeChange($event.value)">
+                            <mat-option *ngFor="let type of smsType" [value]="type">
+                                {{type}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="sms.get('smsType').hasError('required')">
+                            Type is
+                            <strong>required</strong>
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </div>
+
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Plant" formControlName="plants" (change)="onPlantChange($event.value)"
+                        [compareWith]="comparePlants" [ngModel]="editedPlant">
+                        <mat-option *ngFor="let plant of Plants" [value]="plant">
+                            {{plant.plantName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="sms.get('plants').hasError('required')">
+                        Plant is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Machine" formControlName="machines" multiple
+                        [compareWith]="compareMachines" [ngModel]="editedMachine">
+                        <mat-option *ngFor="let machine of machines" [value]="machine">
+                            {{machine.machineName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="sms.get('machines').hasError('required')">
+                        Machine is
+                        <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+                <mat-form-field>
+                    <mat-select placeholder="Frequency" formControlName="frequency">
+                        <mat-option *ngFor="let freq of frequency" [value]="freq">
+                            {{freq}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+
+                <mat-form-field>
+                    <input matInput placeholder="Start Time" [owlDateTime]="startTime" formControlName="startTime"
+                        [owlDateTimeTrigger]="startTime">
+                    <owl-date-time [pickerType]="'timer'" #startTime></owl-date-time>
+
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary" [disabled]="!sms.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+ 
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>SMS</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

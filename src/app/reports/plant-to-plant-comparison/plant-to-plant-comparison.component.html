@@ -1,0 +1,95 @@
+<div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Plant Comparision Report</h2>
+</div>
+
+<form [formGroup]="PlantToPlant" (ngSubmit)="onGenerate()">
+    <div class="selection">
+        <mat-card class="custom-card">
+            <mat-card-content>
+                <div class="report-type" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                    <div fxFlex="100%">
+                        <mat-form-field>
+                            <mat-select placeholder="Plant" formControlName="plant1" (change)="onChangePlant($event.value,1)">
+                                <mat-option *ngFor="let option of plantOptions1" [value]="option.id">
+                                    {{ option.plantName }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="PlantToPlant.get('plant1').hasError('required')">
+                                Plant is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Plant" formControlName="plant2" (change)="onChangePlant($event.value,2)">
+                                <mat-option *ngFor="let option of plantOptions2" [value]="option.id">
+                                    {{ option.plantName }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="PlantToPlant.get('plant2').hasError('required')">
+                                Plant is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportFrom" matSuffix>date_range</mat-icon>
+                            <input [max]="max" readonly matInput placeholder="From" formControlName="from" [owlDateTime]="reportFrom" [owlDateTimeTrigger]="reportFrom">
+                            <owl-date-time (afterPickerClosed)="setMinToDate()" [startAt]="fromStartAt" #reportFrom></owl-date-time>
+                            <mat-error *ngIf="PlantToPlant.get('from').hasError('required')">
+                                From is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportTo" matSuffix>date_range</mat-icon>
+                            <input [max]="max" [min]="min" readonly matInput placeholder="To" formControlName="to" [owlDateTime]="reportTo" [owlDateTimeTrigger]="reportTo">
+                            <owl-date-time [startAt]="toStartAt" #reportTo></owl-date-time>
+                            <mat-error *ngIf="PlantToPlant.get('to').hasError('required')">
+                                To is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <button [disabled]="!PlantToPlant.valid" mat-raised-button color="accent">GENERATE</button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</form>
+
+<div class="containe">
+    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" *ngIf="spinerLoaded">
+        <app-spinner></app-spinner>
+    </div>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    <section [hidden]="loaded">
+        <div class="action">
+            <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData" [plants]="plants"></report-pdf>
+        </div>
+        <mat-card>
+            <mat-card-content>
+                <mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="parameter">
+                        <mat-header-cell *matHeaderCellDef>Parameters</mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.parameter}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="plant1">
+                        <mat-header-cell *matHeaderCellDef>Plant : {{plants[0]}} </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.plant1}} </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="plant2">
+                        <mat-header-cell *matHeaderCellDef>Plant : {{plants[1]}} </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.plant2}} </mat-cell>
+                    </ng-container>
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
+    </section>
+</div>

@@ -1,0 +1,50 @@
+.example-large-box {
+    height: 420px;
+    width: 700px;
+}
+
+.header-table {
+    height: 250px;
+    overflow: auto;
+    mat-cell {
+        width: auto;
+        height: 30px;
+    }
+}
+
+.example-container {
+    height: 420px;
+    width: 600px;
+    overflow: auto;
+}
+
+.mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+
+.mobile-label {
+    display: none;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 80px;
+        display: inline-block;
+        font-weight: bold;
+        margin-right: 10px
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .example-large-box {
+        height: 420px;
+        width: 700px;
+    }
+}
+

@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Analogic-Product-Project"
+    }
+  },
+  "defaultProject": "Analogic-Product-Project",
+  "cli": {
+    "analytics": "b2c59a0f-60a6-4f4c-a422-efc0bb21c5ea"
+  }
 }

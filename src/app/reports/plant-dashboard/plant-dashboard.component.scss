@@ -1,0 +1,103 @@
+    .selection {
+        margin-bottom: 20px;
+        .custom-card {
+          padding: 18px 24px 5px;
+          mat-form-field {
+            width: 23%;
+          }
+        }
+      }
+      .example-container {
+        display: flex;
+        flex-direction: column;
+        max-height: 500px;
+        min-width: 300px;
+      }
+      
+      .mat-table {
+        overflow: auto;
+        max-height: 500px;
+      }
+      
+      .mobile-label {
+        display: none;
+      }
+      
+      @media(max-width: 600px) {
+        .mobile-label {
+          width: 80px;
+          display: inline-block;
+              font-weight: bold;
+        }
+      
+        .mat-header-row {
+          display: none;
+        }
+      
+        .mat-row { 
+          flex-direction: column;
+          align-items: start;
+          padding: 8px 24px;
+        }
+      }
+
+      mat-header-cell {
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+// @mixin card($color, $darkerColor) {
+//     background-color: $color;
+//     .card-footer {
+//         background: $darkerColor;
+//         padding: 10px;
+//         margin-top: 25px;
+//         font-size: 15px;
+//         margin-left: auto;
+//         margin-right: auto;
+//         text-align: center;
+//     }
+//     .space {
+//         margin-right: 15px;
+//     }
+// }
+
+// .summary {
+//     margin-bottom: 40px;
+//     .c1,
+//     .c2,
+//     .c3,
+//     .c4,
+//     .c5 {
+//         padding: 0;
+//         color: #fff;
+//         cursor: pointer;
+//         user-select: none;
+//         height: 100px;
+//         .custom-title {
+//             margin-bottom: 0;
+//             padding: 16px 16px 0;
+//             .text {
+//                 font-size: 20px;
+//             }
+//         }
+//         &:hover {
+//             box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+//         }
+//     }
+//     .c1 {
+//         @include card(#3e6ceb, darken(#3e6ceb, 10));
+//     }
+//     .c2 {
+//         @include card(#3e6ceb, darken(#3e6ceb, 10));
+//     }
+//     .c3 {
+//         @include card(#ffca28, #ffa000);
+//     }
+//     .c4 {
+//         @include card(#ffca28, #ffa000);
+//     }
+//     .c5 {
+//         @include card(#2196F3, #3e6ceb);
+//     }
+// }

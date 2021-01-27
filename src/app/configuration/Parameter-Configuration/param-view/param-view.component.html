@@ -1,0 +1,80 @@
+<div class="machine">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Parameters Configuration</h2>
+    </div>
+    <div class="action">
+        <button matTooltip="Add Parameter" mat-button (click)="addParameter()" color="accent">Add</button>
+    </div>
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+        <div [hidden]="hiddenData">
+            <div class="table-container">
+                <mat-table #table [dataSource]="dataSource">
+                    <ng-container matColumnDef="paramName">
+                        <mat-header-cell *matHeaderCellDef> Parameter Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Parameter Name</span> {{element.paramName}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paramDataType">
+                        <mat-header-cell *matHeaderCellDef> Parameter Type </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Parameter Type</span> {{element.paramDataType}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="defaultValue">
+                        <mat-header-cell *matHeaderCellDef> Default Value </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Default Value</span>
+                            {{element.paramDataType == 'datetime' ? (element.defaultValue | date:'short') : element.defaultValue}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="length">
+                        <mat-header-cell *matHeaderCellDef> Size </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Size</span> {{element?.length || 0}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="criticality">
+                        <mat-header-cell *matHeaderCellDef> Criticality </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Criticality</span> {{element.criticality}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="countedParam">
+                        <mat-header-cell *matHeaderCellDef> Counted Parameter </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Counted Parameter</span> {{element.countedParam}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="realParam">
+                        <mat-header-cell *matHeaderCellDef> Real Parameter </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Real Parameter</span> {{element.realParam}} </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label"> Actions </span>
+                            <button mat-icon-button matTooltip="Update Parameter" (click)="update(element,'edit')">
+                                <mat-icon aria-label="Edit">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Delete Paremeter" (click)="update(element,'delete')">
+                                <mat-icon aria-label="Edit">delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <mat-paginator showFirstLastButtons
+                    [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" [length]="datasetLength"
+                    (page)="updateDataset($event)" [pageSize]="10" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+            </div>
+        </div>
+    </section>
+</div>

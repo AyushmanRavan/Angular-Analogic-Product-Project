@@ -1,0 +1,26 @@
+<div class="energy">
+        <div *ngIf="loadedSpinner" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+                <mat-progress-bar color="primary" mode="buffer" bufferValue="0"></mat-progress-bar>
+        </div>
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    
+        <section [hidden]="loaded">
+            <div fxLayout fxLayoutAlign="center"><h2 class="mat-h2">Availability</h2></div>
+            <div *ngIf="empty">
+                <div class="pieChart" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                    <mat-card fxFlex="100%" fxFlex.gt-sm="100%">
+                        <mat-card-content>
+                            <canvas baseChart [datasets]=TimePieChartData [options]="chartOptions" [chartType]="'pie'" [labels]="pieChartLabels" [colors]="piechartColor"
+                                [data]=[onTime,OffTime,IdleTime] (chartHover)="chartHovered($event)"></canvas>
+                        </mat-card-content>
+                    </mat-card>
+                    <!-- <mat-card fxFlex="50%" fxFlex.gt-sm="50%">
+                        <mat-card-content>
+                            <canvas baseChart [datasets]=PlanUnplanChartData [options]="chartOptions1" [chartType]="'pie'" [labels]="pieChartLabels1"
+                                [colors]="piechartColor1" [data]=[plan,unplan] (chartHover)="chartHovered($event)"></canvas>
+                        </mat-card-content>
+                    </mat-card> -->
+                </div>
+            </div>
+        </section>
+    </div>

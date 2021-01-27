@@ -1,0 +1,28 @@
+.login {
+  background-color: #f7f5f5;
+  height: 100%;
+  .custom-card {
+    background-color: #fff;
+    max-width: 400px;
+    margin: 10px auto;
+    .card-header{
+     color:#fff;
+     background-color:#5038C5;  
+    }
+    .card-footer{
+      padding: 10px 10px 10px;
+    }
+    mat-form-field {
+      width: 300px;
+      padding: 10px 10px 10px;
+    }
+    .loader {
+      margin-left: 10px;
+    }
+    .custom-error {
+      color: #f44336;
+      margin-bottom: 10px;
+      padding: 10px 10px 10px;
+    }
+  }
+}

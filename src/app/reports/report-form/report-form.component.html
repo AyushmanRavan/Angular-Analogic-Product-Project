@@ -1,0 +1,112 @@
+<div class="selection">
+    <form [formGroup]="report">
+        <mat-card class="custom-card"> 
+            <mat-card-content [style.marginBottom.px]="10">
+
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="25px">
+                    <div fxFlex="100%">
+                        <mat-form-field *ngIf="showReportView">
+                            <mat-select placeholder="ReportName" formControlName="reportName"
+                                (change)="onReport($event.value)">
+                                <mat-option *ngFor="let option of reportOptions" [value]="option">
+                                    {{ option.report_name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Plant" formControlName="plant" [(ngModel)]="insight.plant"
+                                (change)="onChange($event.value)">
+                                <mat-option *ngFor="let option of plantOptions" [value]="option.id">
+                                    {{ option.plantName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Department" formControlName="department"
+                                [(ngModel)]="insight.department" (change)="onChangeDepartment($event.value)">
+                                <mat-option *ngFor="let option of deptOptions" [value]="option.id">
+                                    {{ option.deptName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Assembly" formControlName="assembly" [(ngModel)]="insight.assembly"
+                                (change)="onChangeAssembly($event.value)">
+                                <mat-option *ngFor="let option of assemblyOptions" [value]="option.id">
+                                    {{ option.assemblyName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Machine" formControlName="machine" [(ngModel)]="insight.machine"
+                                (change)="onSelect($event.value)">
+                                <mat-option *ngFor="let option of machineOptions" [value]="option.id">
+                                    {{ option.machineName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> 
+
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportFrom" matSuffix>date_range</mat-icon>
+                            <input [max]="max" readonly matInput placeholder="From" formControlName="from"
+                                [owlDateTime]="reportFrom" [owlDateTimeTrigger]="reportFrom">
+                            <owl-date-time (afterPickerClosed)="setMinToDate()" [pickerType]="showTime"
+                                [startAt]="fromStartAt" #reportFrom></owl-date-time>
+                            <mat-error *ngIf="report.get('from').hasError('required')">
+                                From is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field> 
+                            <mat-icon [owlDateTimeTrigger]="reportTo" matSuffix>date_range</mat-icon>
+                            <input [max]="max" [min]="min" readonly matInput placeholder="To" formControlName="to"
+                                [owlDateTime]="reportTo" [owlDateTimeTrigger]="reportTo">
+                            <owl-date-time [pickerType]="showTime" [startAt]="toStartAt" #reportTo></owl-date-time>
+                            <mat-error *ngIf="report.get('to').hasError('required')">
+                                To is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="intervalField">
+                            <mat-select placeholder="Interval (minutes)" (click)="ondatechange()"
+                                formControlName="interval">
+                                <mat-option value="1" [disabled]="showInterval">1</mat-option>
+                                <mat-option value="5" [disabled]="showInterval">5</mat-option>
+                                <mat-option value="10" [disabled]="showInterval">10</mat-option>
+                                <mat-option value="15" [disabled]="showInterval">15</mat-option>
+                                <mat-option value="30" [disabled]="showInterval">30</mat-option>
+                                <mat-option value="60" [disabled]="showInterval">60</mat-option>
+                                <mat-option value="1440" [disabled]="show">1 day</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="intervalForDynamic">
+                            <input matInput [readonly]="true" formControlName="interval" placeholder="Interval">
+                        </mat-form-field>
+
+
+                        <mat-form-field *ngIf="showOeeInterval">
+                            <mat-select placeholder="Interval" formControlName="interval" (click)="ondatechange()">
+                                <mat-option value="Hour">hour</mat-option>
+                                <mat-option value="Day" [disabled]="show" (click)="ShowShift()">day</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="showShift">
+                            <mat-select placeholder="Shift" formControlName="shift" multiple>
+                                <mat-option *ngFor="let option of shifts" [value]="option.shiftName">
+                                     {{option.shiftName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>  
+            </mat-card-content>
+            <button (click)="onGenerate(downloadPdfBtn)" [disabled]="!report.valid" mat-raised-button
+                color="accent">GENERATE</button>
+            <!-- Test-Dinesh -->
+            <button #downloadPdfBtn [disabled]="true" mat-raised-button color="accent">DownloadPDF</button>
+            <!-- End-test-dinesh -->
+        </mat-card>
+    </form>
+</div>

@@ -1,0 +1,32 @@
+@import "../../shared/styles/shared";
+.machinecomparision {
+    mat-form-field {
+        width: 30%;
+    }
+    .containe {
+        margin-top: 40px;
+    }
+}
+.mobile-label {
+    display: none;
+  }
+  @media(max-width: 600px) {
+    .mobile-label {
+      width: 80px;
+      display: inline-block;
+          font-weight: bold;
+    }
+    .mat-header-row {
+      display: none;
+    }
+  }
+mat-header-cell {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+mat-cell {
+    text-transform: capitalize;
+    text-align: center;
+}

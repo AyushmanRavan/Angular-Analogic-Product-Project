@@ -1,0 +1,87 @@
+<div class="machine">
+  <div fxLayout fxLayoutAlign="center"><h2 class="mat-h2">Utility Status</h2></div>
+
+  <selection dashboardtype="ums_machine_status" (select)="onSelect($event)"></selection>
+  
+  <div fxLayout fxLayoutAlign="center" *ngIf="!loaded">
+    <app-spinner></app-spinner>
+  </div>
+
+  
+  <section [hidden]="!loaded">
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    
+    <div *ngIf="!empty">
+
+        <summary-highlight color="#00897b" [machineID]="machineID" type="strip" entity="machine"></summary-highlight>
+        
+        <!-- <div class="row" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="15px">
+          <div fxFlex="50%" fxFlex.gt-sm="100%">
+            <h2 class="mat-h2">Timeline Chart</h2>
+            <mat-card class="timeline">
+              <mat-card-content>
+                <mat-card-title class="custom-title">
+                  <mat-icon mat-list-icon>insert_chart</mat-icon>
+                  <span class="text">{{machineName}}</span>
+                </mat-card-title>
+                <mat-grid-list cols="3" rowHeight="1:1">
+                  <mat-grid-tile>
+                    <div class="block">
+                      <h1 class="mat-display-1 count">{{machineSummary.machineProductionTime | humanize:'hh:mm'}}</h1>
+                      <div class="row">
+                        <div class="col-xs-9 col-md-9">(HH:MM)</div>
+                        <div class="col-xs-9 col-md-9">Running</div>
+                      </div>
+                    </div>
+                  </mat-grid-tile>
+    
+                  <mat-grid-tile>
+                    <div class="block">
+                      <h1 class="mat-display-1 count">{{machineSummary.machineIdleTime | humanize:'hh:mm'}}</h1>
+                      <div class="row">
+                        <div class="col-xs-9 col-md-9">(HH:MM)</div>
+                        <div class="col-xs-9 col-md-9">Idle</div>
+                      </div>
+                    </div>
+                  </mat-grid-tile>
+                  <mat-grid-tile>
+                    <div class="block">
+                      <h1 class="mat-display-1 count">{{machineSummary.machineDownTime | humanize:'hh:mm'}}</h1>
+                      <div class="row">
+                        <div class="col-xs-9 col-md-9">(HH:MM)</div>
+                        <div class="col-xs-9 col-md-9">Stopped</div>
+                      </div>
+                    </div>
+                  </mat-grid-tile>
+                </mat-grid-list>
+              </mat-card-content>
+            </mat-card>
+          </div> 
+        </div> -->
+        <div class="row" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="15px">
+          <div fxFlex="100%">
+            <mat-card class="chart">
+              <mat-card-content>
+               <!-- <h1 class="mat-h2">Timeline Chart</h1> -->
+               <h3 class="mat-h3">Machine's 24 hours data</h3>
+                <div class="legend">
+                  <span class="on">Running</span>
+                  <span class="stop">Stopped</span>
+                  <span class="idle">Idle</span>
+                </div>
+             
+                <div barContainer (resize)="onResize($event)" class="chart-content">
+                  <svg-bar [x]="xAxis.first" [data]="barData.first" title="00:00 to 08:00"></svg-bar>
+                  <svg-bar [x]="xAxis.second" [data]="barData.second" title="08:00 to 16:00"></svg-bar>
+                  <svg-bar [x]="xAxis.third" [data]="barData.third" title="16:00 to 00:00"></svg-bar>
+                </div>
+                
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+        
+    </div>
+ 
+  </section>
+</div>

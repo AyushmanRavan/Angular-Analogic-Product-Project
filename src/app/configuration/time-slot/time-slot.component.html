@@ -1,0 +1,53 @@
+<div class="timeslot">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Assign Reason</h2>
+    </div>
+    <report-form type="production_report" (select)="onSelect($event)"></report-form>
+    <div class="loadedStyle" *ngIf="loadedspinner">
+        <app-spinner></app-spinner>
+    </div>
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+    <section [ngStyle]="{'margin-top':'50px'}" [hidden]="hiddenData">
+        <div class="table-container">
+            <mat-table #table [dataSource]="dataSource">
+                <ng-container matColumnDef="start_time">
+                    <mat-header-cell *matHeaderCellDef>Start Time</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Start Time</span>{{element.start_time}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="end_time">
+                    <mat-header-cell *matHeaderCellDef>End Time</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">End Time</span>{{element.end_time}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Status</span>{{element.status}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="reason">
+                    <mat-header-cell *matHeaderCellDef>Reason</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Reason</span>{{element.reason}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label"> Actions </span>
+                        <button mat-icon-button matTooltip="Update Reason" (click)="update(element,'edit')">
+                            <mat-icon aria-label="Edit">edit</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator showFirstLastButtons [length]="datasetLength" (page)="updateDataset($event)" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+        </div>
+    </section>
+</div>

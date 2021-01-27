@@ -1,0 +1,24 @@
+.print-content {
+  .header {
+    text-align: center;
+    .custom-head {
+      margin-bottom: 0;
+    }
+  }
+  .selection-print {
+    margin-top: 10px;
+    padding: 10px;
+    border-top: thin solid rgb(71, 66, 184);
+    .grid {
+      display: grid;
+      width: 100%;
+      grid-template-columns: auto auto;
+      .grid-item {        
+        text-align: left;
+        &:first-child {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

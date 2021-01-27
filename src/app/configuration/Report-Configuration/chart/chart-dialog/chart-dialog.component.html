@@ -1,0 +1,470 @@
+<h2 mat-dialog-title>{{dialog.title}}</h2>
+
+<ng-template [ngIf]="showChart">
+    <form [formGroup]="chart">
+        <mat-dialog-content>
+            <mat-tab-group>
+                <mat-tab label="Chart Information">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                        <div fxFlex="100%" fxLayoutGap="30px">
+                            <mat-form-field>
+                                <input matInput formControlName="chartName" placeholder="Chart Name">
+                                <mat-error *ngIf="chart.get('chartName').hasError('required')">
+                                    Chart Name is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="Chart Type" formControlName="chartType"
+                                    (change)="setChartDataType($event.value)">
+                                    <mat-option *ngFor="let type of chartTypes" [value]="type">{{type}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="chart.get('chartType').hasError('required')">
+                                    Chart Type is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                        <div fxFlex="100%" fxLayoutGap="30px">
+                            <mat-form-field>
+                                <mat-select placeholder="Chart Data Type" formControlName="chartDataType">
+                                    <mat-option *ngFor="let type of chartDataTypes" [value]="type">{{type}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="chart.get('chartDataType').hasError('required')">
+                                    Chart Data Type is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="Sequence No." formControlName="sequenceNumber">
+                                    <mat-option *ngFor="let number of sequnceNumber" [value]="number">{{number}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="chart.get('sequenceNumber').hasError('required')">
+                                    Sequence Number is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Properties" *ngIf="showOption" [ngStyle]="{'padding-top':'10px'}">
+                    <form [formGroup]="propertiesForm">
+                        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                            <div fxFlex="100%" fxLayoutGap="30px">
+                                <mat-form-field>
+                                    <mat-select placeholder="Option" (change)="onOptionChange($event.value)">
+                                        <mat-option *ngFor="let option of Options; let i = index" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select placeholder="Property" (change)="onPropertyChange($event.value)">
+                                        <mat-option *ngFor="let property of Property; let i = index" [value]="property">
+                                            {{property.propertyName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                            <div fxFlex="100%" fxLayoutGap="30px">
+                                <mat-form-field>
+                                    <!-- (change)="onPropertyKeyChange($event.value)" -->
+                                    <mat-select placeholder="Property Key" formControlName="key">
+                                        <mat-option *ngFor="let keys of PropertyKeys; let i = index" [value]="keys">
+                                            {{keys.key}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput formControlName="value" placeholder="Property value">
+                                    <mat-error *ngIf="propertiesForm.get('value').hasError('incorrect')">
+                                        <strong>Invalid value, value should be {{invalidData}}</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                                <button mat-button color="accent" [disabled]="!propertiesForm.valid"
+                                    (click)="addJSON(propertiesForm.value,PropertyKeys)">ADD</button>
+                            </div>
+                        </div>
+                    </form>
+                    <button (click)="showJSON()" matTooltip="JSON DATA" matTooltipPosition="below" mat-icon-button>
+                        <mat-icon aria-label="json data">assignment</mat-icon>
+                    </button>
+                    <mat-card *ngIf="!showTable" class="JSONFormate">
+                        <mat-card-header>
+                            <button (click)="closeJSON()" matTooltip="SHOW TABLE" matTooltipPosition="below"
+                                mat-icon-button>
+                                <mat-icon aria-label="Table data">close</mat-icon>
+                            </button>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <h2 mat-dialog-title> {{JsonProperties | json}}</h2>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card *ngIf="showTable">
+                        <mat-card-content>
+                            <mat-table [dataSource]="propertiesData" class="header-table">
+                                <ng-container matColumnDef="select">
+                                    <mat-header-cell *matHeaderCellDef>
+                                        <mat-checkbox (change)="$event ? masterToggle('property') : null"
+                                            [checked]="selection.hasValue() && isAllSelected('property')"
+                                            [indeterminate]="selection.hasValue() && !isAllSelected('property')">
+                                        </mat-checkbox>
+                                        <button mat-icon-button (click)="removeProperty(properties)">
+                                            <mat-icon aria-label="delete">delete</mat-icon>
+                                        </button>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(row) : null"
+                                            [checked]="selection.isSelected(row)">
+                                        </mat-checkbox>
+
+                                        <span class="mobile-label">
+                                            <mat-checkbox (change)="$event ? masterToggle('property') : null"
+                                                [checked]="selection.hasValue() && isAllSelected('property')"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected('property')">
+                                            </mat-checkbox>
+                                            <button mat-icon-button (click)="removeProperty(properties)">
+                                                <mat-icon aria-label="delete">delete</mat-icon>
+                                            </button>
+                                        </span>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="propertyName">
+                                    <mat-header-cell *matHeaderCellDef> Property </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.propertyName}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="key">
+                                    <mat-header-cell *matHeaderCellDef> KEY </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.key}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="value">
+                                    <mat-header-cell *matHeaderCellDef>VALUE</mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.value}}</mat-cell>
+                                </ng-container>
+
+                                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: columnsToDisplay;"
+                                    (click)="selection.toggle(row)">
+                                </mat-row>
+                            </mat-table>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Show Example" *ngIf="showOption">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                        <div class="JSONExampleData" fxFlex="100%">
+                            <ul>
+                                <li *ngFor="let entry of JSONExampleData | keyValueFilter">
+                                    {{entry.key}}: {{entry.value | json}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-dialog-content>
+        <mat-dialog-actions [ngStyle]="{'padding-top':'80px'}">
+            <button mat-raised-button color="primary" (click)="onSubmit(chart.value)"
+                [disabled]="!chart.valid || loading">{{dialog.btnCaptions.ok}}</button>
+            <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+
+<!-- For line and bar chart -->
+<ng-template [ngIf]="showLabel">
+    <form [formGroup]="label">
+        <mat-dialog-content>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="30px">
+                    <mat-form-field>
+                        <input matInput formControlName="labelName" placeholder="Label Name">
+                        <mat-error *ngIf="label.get('labelName').hasError('required')">
+                            Label Name is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelName').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="showTypeOfLable">
+                        <mat-select placeholder="Label Type" formControlName="labelType"
+                            (change)="onlabelTypeChange($event.value)">
+                            <mat-option *ngFor="let type of labelType" [value]="type">{{type}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="label.get('labelType').hasError('required')">
+                            Label Type is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelType').hasError('incorrect')">
+                            <strong>limit of Y-Axise is 4</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Label Parameter" formControlName="labelParameter"
+                            (change)="onlabelParameterChange($event.value)">
+                            <mat-option *ngFor="let param of paramList" [value]="param">{{param.param_name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="label.get('labelParameter').hasError('required')">
+                            Label Parameter is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelParameter').hasError('incorrect')">
+                            Only One Label Parameter is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="showCalculation">
+                        <mat-select placeholder="Calculation" formControlName="calculation">
+                            <mat-option *ngFor="let cal of calculationList" [value]="cal">{{cal}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="label.get('calculation').hasError('required')">
+                            Calculation is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('calculation').hasError('incorrect')">
+                            No More
+                            <strong>Calculation</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="10px" *ngIf="hideColorBox">
+                    <mat-form-field *ngIf="!showColorBox">
+                        <mat-icon mat-icon-button matTooltip="colors" matTooltipPosition="below"
+                            [ngStyle]="{'cursor':'pointer','color':colorlabel}" matSuffix (click)="openColorBox(true)">
+                            play_circle_filled_white</mat-icon>
+                        <input matInput formControlName="labelColor" placeholder="Label Color" [readonly]="true"
+                            #labelColor>
+                        <mat-error *ngIf="label.get('labelColor').hasError('required')">
+                            Label Color is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelColor').hasError('incorrect')">
+                            <strong>Already used</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="color-container" *ngIf="showColorBox">
+                        <mat-grid-list [cols]="breakpoint" rowHeight="2:2" (window:resize)="onResize($event)">
+                            <mat-grid-tile *ngFor="let color of chartColor">
+                                <button mat-mini-fab [ngStyle]="{'background-color':color}"
+                                    (click)="setColorValue(color,false)"></button>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </div>
+                </div>
+                <button mat-raised-button color="accent" [disabled]="!label.valid || loading"
+                    (click)="addLabelToTable(paramList)">{{dialog.btnCaptions.ok}}</button>
+            </div>
+
+
+            <mat-table [dataSource]="dataSource" class="header-table mat-elevation-z3">
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef>
+                        <button mat-icon-button (click)="removeLabel()">
+                            <mat-icon aria-label="delete">delete</mat-icon>
+                        </button>
+                        <mat-checkbox (change)="$event ? masterToggle('') : null"
+                            [checked]="selection.hasValue() && isAllSelected('')"
+                            [indeterminate]="selection.hasValue() && !isAllSelected('')">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span class="mobile-label">
+                            <button mat-icon-button (click)="removeLabel()">
+                                <mat-icon aria-label="delete">delete</mat-icon>
+                            </button>
+                            <mat-checkbox (change)="$event ? masterToggle('') : null"
+                                [checked]="selection.hasValue() && isAllSelected('')"
+                                [indeterminate]="selection.hasValue() && !isAllSelected('')">
+                            </mat-checkbox>
+                        </span>
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="labelName">
+                    <mat-header-cell *matHeaderCellDef> Label Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Label name</span> {{element.labelName}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="labelParameter">
+                    <mat-header-cell *matHeaderCellDef>Label Parameter</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Label Parameter</span> {{element.labelParameter.param_name}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="labelType">
+                    <mat-header-cell *matHeaderCellDef>Label Type</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Label Type</span>{{element.labelType}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="calculation">
+                    <mat-header-cell *matHeaderCellDef> Label Calculation </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Label Calculation</span>{{element.calculation}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="labelColor">
+                    <mat-header-cell *matHeaderCellDef>Label Color</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Label Color</span><canvas id="myCanvas" width="20" height="20"
+                            [ngStyle]="{ backgroundColor:element.labelColor }"></canvas></mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                </mat-row>
+            </mat-table>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" [disabled]="!validLabel"
+                (click)="onSubmit(dataSource.data)">{{dialog.btnCaptions.ok}}</button>
+            <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+
+
+<ng-template [ngIf]="showUpdateLabel">
+    <form [formGroup]="label">
+        <mat-dialog-content>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="30px">
+                    <mat-form-field>
+                        <input matInput formControlName="labelName" placeholder="Label Name">
+                        <mat-error *ngIf="label.get('labelName').hasError('required')">
+                            Label Name is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelName').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="showTypeOfLable">
+                        <mat-select placeholder="Label Type" formControlName="labelType"
+                            (change)="onlabelTypeChange($event.value)">
+                            <mat-option *ngFor="let type of labelType" [value]="type">{{type}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="label.get('labelType').hasError('required')">
+                            Label Type is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelType').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Label Parameter" formControlName="labelParameter"
+                            [compareWith]="compareParam" [ngModel]="editParam"
+                            (change)="onlabelParameterChange($event.value)">
+                            <mat-option *ngFor="let param of paramList" [value]="param">{{param.param_name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="label.get('labelParameter').hasError('required')">
+                            Label Parameter is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('labelParameter').hasError('incorrect')">
+                            Only One Label Parameter is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="30px">
+                    <mat-form-field *ngIf="showCalculation">
+                        <mat-select placeholder="Calculation" formControlName="calculation">
+                            <mat-option *ngFor="let cal of calculationList" [value]="cal">{{cal}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="label.get('calculation').hasError('required')">
+                            Calculation is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="label.get('calculation').hasError('incorrect')">
+                            No More
+                            <strong>Calculation</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="hideColorBox">
+                        <mat-icon mat-icon-button matTooltip="colors" matTooltipPosition="below"
+                            [ngStyle]="{'cursor':'pointer','color':colorlabel}" matSuffix (click)="openColorBox(true)">
+                            play_circle_filled_white</mat-icon>
+                        <input matInput formControlName="labelColor" placeholder="Label Color" [readonly]="true"
+                            #labelColor>
+                        <mat-error *ngIf="label.get('labelColor').hasError('incorrect')">
+                            <strong> Already used</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="color-container" *ngIf="showColorBox">
+                        <mat-icon mat-icon-button matTooltip="close" matTooltipPosition="below"
+                            [ngStyle]="{'cursor':'pointer'}" (click)="openColorBox(false)">close</mat-icon>
+                        <mat-grid-list [cols]="breakpoint" rowHeight="2:2" (window:resize)="onResize($event)">
+                            <mat-grid-tile *ngFor="let color of chartColor">
+                                <button mat-mini-fab [ngStyle]="{'background-color':color}"
+                                    (click)="setColorValue(color)"></button>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </div>
+
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions [ngStyle]="{'padding-top':'80px'}">
+            <button mat-raised-button color="primary" [disabled]="!label.valid"
+                (click)="updateLabel(label.value)">{{dialog.btnCaptions.ok}}</button>
+            <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+<!-- End line and bar chart -->
+
+<ng-template [ngIf]="showDelete">
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{title}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading"
+            (click)="update(dialog.details,dialog.mode,dialog.model,dialog.label)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template [ngIf]="showColorBoxModel">
+    <mat-dialog-content>
+        <div class="color-container">
+            <mat-grid-list [cols]="breakpoint" rowHeight="2:2" (window:resize)="onResize($event)">
+                <mat-grid-tile *ngFor="let color of chartColor">
+                    <button mat-mini-fab [ngStyle]="{'background-color':color}" (click)="colorSelected(color)"></button>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+        <br>
+        <input matInput [(ngModel)]="selectedColor" placeholder="Label Color" [readonly]="true">
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="updateColor()"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">OK</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

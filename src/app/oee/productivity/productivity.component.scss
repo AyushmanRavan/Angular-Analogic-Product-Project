@@ -1,0 +1,38 @@
+@import "../../shared/styles/shared";
+.productivity {
+    margin-top: 10px;
+    @include tbl();
+}
+
+@mixin chart-container {
+    .chart {
+      margin-bottom: 20px;
+        .loading-shade {
+            border-radius: 2px;
+            position: absolute;
+            top: 0px;
+            left: 0;
+            bottom: 55px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chart-content {
+            position: relative;
+            margin: auto;
+           
+            display: block;
+   
+            canvas {
+                background-color: #fafafa;
+                border-radius: 2px;
+                height: 90vh;
+                width: 100%;
+                font-size: 10px;
+            }
+        }
+    }
+}

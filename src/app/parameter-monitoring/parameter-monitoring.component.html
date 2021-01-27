@@ -1,0 +1,116 @@
+<div class="energy">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Parameter Monitoring</h2>
+    </div>
+
+    <selection dashboardtype="energy_dashboard" (select)="onSelect($event)"></selection>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedSpinner">
+        <app-spinner></app-spinner>
+    </div>
+
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    <section [hidden]="loaded">
+
+        <summary-highlight *ngIf="summary.totalConsumed != 0" color="#E74C3C" [data]="summary" type="strip" entity="energy"></summary-highlight>
+
+        <mat-card class="chart">
+            <mat-card-content>
+                <div class="loading-shade" *ngIf="isParamloading">
+                    <app-spinner></app-spinner>
+                </div>
+                <mat-form-field>
+                    <mat-select placeholder="Parameters" [formControl]="param" (change)="onChange($event.value)" [compareWith]="compareParameter" [ngModel]="selectedParameter" multiple>
+                        <mat-option *ngFor="let paramObj of paramList" [value]="paramObj">{{paramObj.param_name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="chart-content">
+                    <canvas baseChart #baseChart="base-chart" [datasets]="chartData" [colors]="chartColors" [labels]="chartLabels" [options]="chartOptions" chartType="line" legend="true" *ngIf="chartData"></canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+
+        <div class="example-container mat-elevation-z8">
+
+
+            <div *ngIf="isPaginatorLoading">
+                <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+            </div>
+
+            <mat-table [dataSource]="data">
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                    <mat-header-cell *matHeaderCellDef> {{column}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element"><span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+            </mat-table>
+
+            <mat-paginator [ngStyle]="{'color': '#E74C3C','font-size':'15px','font-weigth':'bold'}" showFirstLastButtons [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+        </div>
+
+    </section>
+</div>
+<!-- <div class="energy">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">Energy</h2>
+    </div>
+
+    <selection dashboardtype="energy_dashboard" (select)="onSelect($event)"></selection>
+    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" *ngIf="loadedSpinner">
+        <app-spinner></app-spinner>
+    </div>
+
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+    <section [hidden]="loaded">
+
+        <summary-highlight *ngIf="summary.totalConsumed != 0" color="#ffa000" [data]="summary" type="strip" entity="energy"></summary-highlight>
+
+        <mat-card class="chart">
+            <mat-card-content>
+                <div class="loading-shade" *ngIf="isParamloading">
+                    <app-spinner></app-spinner>
+                </div>
+                <mat-form-field>
+                    <mat-select placeholder="Parameters" [(ngModel)]="defaultValue" [formControl]="param" multiple (change)="onChange($event.value)">
+                        <mat-select-trigger>
+                            {{param.value ? param.value[0] : ''}}
+                            <span *ngIf="param.value?.length > 1" class="example-additional-selection">
+                                (+{{param.value.length - 1}} {{param.value?.length === 2 ? 'other' : 'others'}})
+                                </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let paramlist of paramList" [value]="paramlist.param_name">{{paramlist.param_name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="chart-content">
+                    <canvas baseChart #baseChart="base-chart" [datasets]="chartData" [colors]="chartColors" [labels]="chartLabels" [options]="chartOptions" chartType="line" legend="true" *ngIf="chartData"></canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+
+        <div class="example-container mat-elevation-z8">
+
+
+            <div *ngIf="isPaginatorLoading">
+                <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+            </div>
+
+            <mat-table [dataSource]="data">
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                    <mat-header-cell *matHeaderCellDef> {{column}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element"><span class="mobile-label">{{column}}</span>{{element[column]}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+            </mat-table>
+
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#ffa000','font-size':'15px','font-weigth':'bold'}" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+        </div>
+
+    </section>
+</div> -->

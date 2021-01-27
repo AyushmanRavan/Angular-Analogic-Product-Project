@@ -1,0 +1,47 @@
+  /* Start : Production Report section */
+  .productionReport {
+    width: 100%;
+    
+  }
+  .productionReportDetails {
+    width: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    font-size: 12px;
+  }
+  .productionReportFirstHalf {
+    box-flex: 1;
+    width: 45%;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+  }
+  .productionReportSecondHalf {
+    box-flex: 1;
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    width: 55%;
+  }
+  .productionReportKeysFirstHalf {
+    width: 40%;
+    box-flex: 1;
+  }
+  .productionReportValuesFirstHalf {
+    width: 55%;
+    box-flex: 1;
+  }
+  .productionReportKeysSecondHalf {
+    width: 30%;
+    box-flex: 1;
+  }
+  .productionReportValuesSecondHalf {
+    width: 65%;
+    box-flex: 1;
+  }
+  .colon {
+    box-flex: 1;
+    width: 5%;
+  }
+  /* End : Production Report section */

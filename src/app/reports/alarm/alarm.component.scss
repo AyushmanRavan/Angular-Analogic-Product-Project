@@ -1,0 +1,11 @@
+@import "../report-form/report-form.component";
+mat-header-cell {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+mat-cell {
+    text-transform: capitalize;
+    text-align: center;
+}

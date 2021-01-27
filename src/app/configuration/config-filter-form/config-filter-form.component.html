@@ -1,0 +1,64 @@
+<div class="selection">
+    <mat-card class="custom-card">
+        <mat-card-content [style.marginBottom.px]="10">
+            <form [formGroup]="report" (ngSubmit)="onGenerate()">
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="25px">
+                    <div fxFlex="100%">
+                        <mat-form-field>
+                            <mat-select placeholder="Plant" formControlName="plant" [(ngModel)]="insight.plant" (change)="onChange($event.value)">
+                                <mat-option *ngFor="let option of plantOptions" [value]="option.id">
+                                    {{ option.plantName }}
+                                  </mat-option> 
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Department" formControlName="department" [(ngModel)]="insight.department" (change)="onChangeDepartment($event.value)">
+                                <mat-option *ngFor="let option of deptOptions" [value]="option.id">
+                                    {{ option.deptName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Assembly" formControlName="assembly" [(ngModel)]="insight.assembly" (change)="onChangeAssembly($event.value)">
+                                <mat-option *ngFor="let option of assemblyOptions" [value]="option.id">
+                                    {{ option.assemblyName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Machine" formControlName="machineId" [(ngModel)]="insight.machine">
+                                <mat-option *ngFor="let option of machineOptions" [value]="option.id">
+                                    {{ option.machineName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportFrom" matSuffix>date_range</mat-icon>
+                            <input [max]="max" readonly matInput placeholder="From" formControlName="from" [owlDateTime]="reportFrom" [owlDateTimeTrigger]="reportFrom">
+                            <owl-date-time (afterPickerClosed)="setMinToDate()" [pickerType]="showTime" [startAt]="fromStartAt" #reportFrom></owl-date-time>
+                            <mat-error *ngIf="report.get('from').hasError('required')">
+                                From is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>   
+                        <mat-form-field>
+                            <mat-icon [owlDateTimeTrigger]="reportTo" matSuffix>date_range</mat-icon>
+                            <input [max]="max" [min]="min" readonly matInput placeholder="To" formControlName="to" [owlDateTime]="reportTo" [owlDateTimeTrigger]="reportTo">
+                            <owl-date-time [pickerType]="showTime" [startAt]="toStartAt" #reportTo></owl-date-time>
+                            <mat-error *ngIf="report.get('to').hasError('required')">
+                                To is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                    <div fxFlex="33%" fxFlex.gt-sm="100%">
+                        <button [disabled]="!report.valid" mat-raised-button color="accent">GENERATE</button>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

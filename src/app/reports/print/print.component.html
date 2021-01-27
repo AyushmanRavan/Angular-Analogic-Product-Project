@@ -1,0 +1,47 @@
+<section class="print-content">
+  <div class="header">
+    <img [src]="imgUri" />
+    <h2 class="mat-h2 custom-head">S.NARENDRAKUMAR &amp; CO,</h2>
+    <h2 class="mat-h2">EVEREST MASALA, VIKHROLI</h2>
+  </div>
+  <div class="selection-print">
+    <mat-grid-list cols="3" rowHeight="30px">
+      <mat-grid-tile>
+        <div class="grid">
+          <div class="grid-item">Plant</div>
+          <div class="grid-item">{{report.plant}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="grid">
+          <div class="grid-item">Department</div>
+          <div class="grid-item">{{report.department}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="grid">
+          <div class="grid-item">Machine</div>
+          <div class="grid-item">{{report.machine}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="grid">
+          <div class="grid-item">From</div>
+          <div class="grid-item">{{report.from | date:'yyyy-MM-dd HH:mm a'}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="grid">
+          <div class="grid-item">To</div>
+          <div class="grid-item">{{report.to | date:'yyyy-MM-dd HH:mm a'}}</div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="grid">
+          <div class="grid-item">Intreval</div>
+          <div class="grid-item">{{report.interval}}</div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</section>

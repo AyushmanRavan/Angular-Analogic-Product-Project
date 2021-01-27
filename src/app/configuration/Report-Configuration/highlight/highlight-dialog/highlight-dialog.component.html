@@ -1,0 +1,230 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<!-- Highlight Add and Update template-->
+<ng-template [ngIf]="showHighlight">
+    <form [formGroup]="highlight" (ngSubmit)="onSubmit(highlight.value)">
+        <div [ngStyle]="{'padding':'10px'}">
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                <div fxFlex="100%" fxLayoutGap="30px">
+                    <mat-form-field>
+                        <input matInput #box placeholder="HighLight Name" formControlName="highlight_name">
+                        <mat-error *ngIf="highlight.get('highlight_name').hasError('required')">
+                            HighLight Name is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-dialog-actions>
+                        <button mat-raised-button color="primary" [disabled]="!highlight.valid">{{dialog.btnCaptions.ok}}</button>
+                        <button [disabled]="loadingForm" mat-button mat-dialog-close>Cancel</button>
+                    </mat-dialog-actions>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<!-- Start Paramter add -->
+
+<ng-template [ngIf]="showParameter">
+    <form [formGroup]="parameter">
+        <mat-dialog-content>
+            <div class="report" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <input matInput placeholder="Header Name" formControlName="heading">
+                        <mat-error *ngIf="parameter.get('heading').hasError('required')">
+                            Header Name is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="parameter.get('heading').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Unit" formControlName="unit">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Parameter" formControlName="param_type" (change)="onParamChange($event.value)">
+                            <mat-option *ngFor="let param of parameters" [value]="param">
+                                {{param.param_name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="parameter.get('param_type').hasError('required')">
+                            Parameter is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div> 
+            </div>
+            <div class="report" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <mat-select formControlName="sequence_no" placeholder="Sequence No">
+                            <mat-option *ngFor="let sno of sequenceNumbers" [value]="sno">
+                                {{sno}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="parameter.get('sequence_no').hasError('required')">
+                            Sequence No. is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select formControlName="calculation" placeholder="Calculation">
+                            <mat-option *ngFor="let calculation of calculationList" [value]="calculation">
+                                {{calculation}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="parameter.get('calculation').hasError('required')">
+                            Calculation is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <button mat-raised-button [disabled]="!parameter.valid" (click)="addParameter()" color="accent">Add Header</button>
+                </div>
+            </div>
+
+            <mat-table [dataSource]="dataSource" class="header-table mat-elevation-z3">
+
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef>
+                        <button mat-icon-button (click)="removeParameter()">
+                            <mat-icon aria-label="delete">delete</mat-icon>
+                        </button>
+                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span class="mobile-label">
+                            <button mat-icon-button (click)="removeParameter()">
+                                <mat-icon aria-label="delete">delete</mat-icon>
+                            </button>
+                            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                        </span>
+                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"></mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="heading">
+                    <mat-header-cell *matHeaderCellDef> Header Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">header name</span> {{element.heading}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="unit">
+                    <mat-header-cell *matHeaderCellDef>Unit</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Unit</span> {{element.unit}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="param_type">
+                    <mat-header-cell *matHeaderCellDef> Parameter Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Parameter name</span>{{element.param_type.param_name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="sequence_no">
+                    <mat-header-cell *matHeaderCellDef> Sequence Number</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Sequence no.</span> {{element.sequence_no}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="calculation">
+                    <mat-header-cell *matHeaderCellDef>Calculation</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Calculation</span> {{element.calculation}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                </mat-row>
+            </mat-table>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" [disabled]="!validHeader" (click)="update(dataSource.data,'add','parameter',dialog.highlight_id,dialog.tableId)">Submit</button>
+            <button mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+
+<!-- Paramter Update  -->
+<ng-template [ngIf]="showParameterView">
+    <form [formGroup]="parameter" (ngSubmit)="ParameterOpearation(parameter.value)">
+        <mat-dialog-content>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <input matInput placeholder="Header Name" formControlName="heading">
+                        <mat-error *ngIf="parameter.get('heading').hasError('required')">
+                            Header Name is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="parameter.get('heading').hasError('incorrect')">
+                            <strong> Already existing</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <input matInput placeholder="Unit" formControlName="unit">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <mat-select placeholder="Parameter" formControlName="param_type" [ngModel]="setParam" [compareWith]="compareParam" (change)="setCalculationList($event.value)">
+                            <mat-option *ngFor="let param of parameters" [value]="param">
+                                {{param.param_name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="parameter.get('param_type').hasError('required')">
+                            Parameter is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="20px">
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <mat-select formControlName="sequence_no" placeholder="Sequence no.">
+                            <mat-option *ngFor="let sno of [1,2,3,4,5,6]" [value]="sno">
+                                {{sno}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="parameter.get('sequence_no').hasError('required')">
+                            Sequence No. is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-form-field>
+                        <mat-select formControlName="calculation" placeholder="Calculation">
+                            <mat-option *ngFor="let calculation of calculationList" [value]="calculation">
+                                {{calculation}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="parameter.get('calculation').hasError('required')">
+                            Calculation is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.gt-sm="100%"></div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" [disabled]="!parameter.valid">Update</button>
+            <button mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>
+<!-- End Paramter Update -->
+
+
+<!-- Delete Parameter -->
+<ng-template [ngIf]="showHighlightDelete">
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{title}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="delete()" [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</ng-template>
+<!-- =====================================================================================================-->

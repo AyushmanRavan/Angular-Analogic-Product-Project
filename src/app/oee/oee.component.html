@@ -1,0 +1,157 @@
+<div class="oee">
+        <div fxLayout fxLayoutAlign="center">
+            <h2 class="mat-h2">Overall Equipment Effectiveness (OEE)</h2>
+        </div>
+    
+        <selection dashboardtype="oee_dashboard" (select)="onSelect($event)"></selection>
+    
+        <div *ngIf="spinnerloaded" fxLayout fxLayoutAlign="center">
+            <app-spinner></app-spinner>
+        </div>
+    
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+        <section [hidden]="loaded">
+    
+            <div fxLayout class="summary" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                <mat-card class="c1" fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-card-content>
+                        <mat-card-title class="custom-title">
+                            <mat-icon mat-list-icon>thumb_up</mat-icon>
+                        </mat-card-title>
+                        <mat-grid-list cols="1" rowHeight="50px">
+                            <mat-grid-tile>
+                                <div class="block">
+                                    <h1>Good Part</h1>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                    <div class="card-footer">
+                        {{oeesummary?.good_part}}
+                    </div>
+                </mat-card>
+    
+                <mat-card class="c2" fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-card-content>
+                        <mat-card-title class="custom-title">
+                            <mat-icon mat-list-icon>insert_chart</mat-icon>
+                        </mat-card-title>
+                        <mat-grid-list cols="1" rowHeight="50px">
+                            <mat-grid-tile>
+                                <div class="block">
+                                    <h1>Total Production</h1>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                    <div class="card-footer">
+                        {{oeesummary?.total_production}}
+                    </div>
+                </mat-card>
+                <mat-card class="c3" fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-card-content>
+                        <mat-card-title class="custom-title">
+                            <mat-icon mat-list-icon>equalizer</mat-icon>
+                        </mat-card-title>
+                        <mat-grid-list cols="1" rowHeight="50px">
+                            <mat-grid-tile>
+                                <div class="block">
+                                    <h1>PPM</h1>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                    <div class="card-footer">
+                        {{oeesummary?.ppm}}
+                    </div>
+                </mat-card>
+            </div>
+            <div fxLayout class="summary" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="25px">
+                <mat-card class="c1" fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-card-content>
+                        <mat-card-title class="custom-title">
+                            <mat-icon mat-list-icon>thumb_down</mat-icon>
+                        </mat-card-title>
+                        <mat-grid-list cols="1" rowHeight="50px">
+                            <mat-grid-tile>
+                                <div class="block">
+                                    <h1>Bad Part</h1>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                    <div class="card-footer">
+                        {{oeesummary?.bad_part}}
+                    </div>
+                </mat-card>
+                <mat-card class="c2" fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-card-content>
+                        <mat-card-title class="custom-title">
+                            <mat-icon mat-list-icon>insert_chart</mat-icon>
+                        </mat-card-title>
+                        <mat-grid-list cols="1" rowHeight="50px">
+                            <mat-grid-tile>
+                                <div class="block">
+                                    <h1>Expected Production</h1>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                    <div class="card-footer">
+                        {{oeesummary?.expectedProduction}}
+                    </div>
+                </mat-card>
+                <mat-card class="c3" fxFlex="50%" fxFlex.gt-sm="100%">
+                    <mat-card-content>
+                        <mat-card-title class="custom-title">
+                            <mat-icon mat-list-icon>equalizer</mat-icon>
+                        </mat-card-title>
+                        <mat-grid-list cols="1" rowHeight="50px">
+                            <mat-grid-tile>
+                                <div class="block">
+                                    <h1>Actual PPM</h1>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                    <div class="card-footer">
+                        {{oeesummary?.actual_ppm}}
+                    </div>
+                </mat-card>
+            </div>
+    
+            <mat-card [ngStyle]="{'margin-top':'20px'}" fxLayoutAlign="center" *ngIf="!loaded">
+                <mat-card-content>
+                    <a style="cursor:pointer;" (click)="scroll(target)">
+                        <ngx-gauge (click)="onNavigate('/dashboard/oee/overall')" [type]="gaugeType" value="{{oeegauge.overallPercentage}}"
+                            label="OEE" [append]="gaugeAppendText" [thresholds]="thresholdConfig"
+                            [cap]="gaugecap" [thick]="gaugethick"></ngx-gauge>
+                    </a>
+    
+                    <a style="cursor:pointer;" (click)="scroll(target)">
+                        <ngx-gauge (click)="onNavigate('/dashboard/oee/productivity')" [type]="gaugeType" value="{{oeegauge.productionPercentage}}"
+                            label="Productivity" [append]="gaugeAppendText" [thresholds]="thresholdConfig"
+                            [cap]="gaugecap" [thick]="gaugethick"></ngx-gauge>
+                    </a>
+
+                    <a style="cursor:pointer;" (click)="scroll(target)">
+                        <ngx-gauge (click)="onNavigate('/dashboard/oee/availability')" [type]="gaugeType" value="{{oeegauge.availablityPercentage}}"
+                            label="Availablity" [append]="gaugeAppendText" [thresholds]="thresholdConfig"
+                            [cap]="gaugecap" [thick]="gaugethick"></ngx-gauge>
+                    </a>
+    
+                    <a style="cursor:pointer;">
+                        <ngx-gauge (click)="onNavigate('/dashboard/oee/quality')" [type]="gaugeType" value="{{oeegauge.qualityPercentage}}"
+                            label="Quality" [append]="gaugeAppendText" [thresholds]="thresholdConfig"
+                            [cap]="gaugecap" [thick]="gaugethick"></ngx-gauge>
+                    </a>
+                </mat-card-content>
+            </mat-card>
+        </section>
+    
+    
+        <div #target>
+            <router-outlet></router-outlet>
+        </div>
+    
+    </div>

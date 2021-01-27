@@ -1,0 +1,101 @@
+<div class="pdf">
+
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">PDF Configuration</h2>
+    </div>
+
+    <div class="action">
+        <button [disabled]="validToAdd" matTooltip="Add PDF" mat-button (click)="addPdf()" color="accent">Add</button>
+    </div>
+
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+
+
+        <div [hidden]="hiddenData">
+            <mat-accordion *ngIf="!hiddenData">
+                <mat-expansion-panel class="panel" *ngFor="let item of dataSource">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Company Name : {{item.companyName}}</strong>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="inner-actions">
+                        <button mat-icon-button matTooltip="Update User" matTooltipPosition="below" (click)="update(item,'edit')">
+                                <mat-icon aria-label="Update">edit</mat-icon>
+                            </button>
+                        <button mat-icon-button matTooltip="Remove User" matTooltipPosition="below" (click)="update(item,'delete')">
+                                <mat-icon aria-label="Remove">delete</mat-icon>
+                            </button>
+                    </div>
+                    <div fxLayout [ngStyle]="{'margin-top':'10px'}">
+                        <strong>Company Details</strong>
+                    </div>
+                    <div fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="40px" class="contain">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <div>Company Address : {{item.companyAddress}}</div>
+                            <div>                               
+                            <img height="100" width="100" src="{{item.logo}}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-paginator showFirstLastButtons [length]="datasetLength" [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent = updateDataset($event)" [pageSize]="10" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+        </div>
+
+        
+        <!-- <div [hidden]="hiddenData">
+            <div class="table-container">
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="companyName">
+                        <mat-header-cell *matHeaderCellDef> Company Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Company Name</span>{{element.companyName}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="companyAddress">
+                        <mat-header-cell *matHeaderCellDef> Company Address </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">Company Address</span>{{element.companyAddress}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="logo">
+                        <mat-header-cell *matHeaderCellDef> Logo </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <span class="mobile-label">logo</span> <img height="60" width="60" src="{{element.logo}}" alt=""></mat-cell>
+                    </ng-container>
+
+                   
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <button mat-icon-button matTooltip="Update PDF" (click)="update(element,'edit')">
+                                <mat-icon aria-label="Edit">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Delete PDF" (click)="update(element,'delete')">
+                                <mat-icon aria-label="Edit">delete</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View PDF" (click)="showPDF(element)">
+                                    <mat-icon aria-label="View">picture_as_pdf</mat-icon>
+                                </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" (page)="pageEvent  = updateDataset($event)" [length]="datasetLength" [pageSize]="10" [pageSizeOptions]="[5,10,15,25,30]"></mat-paginator>
+            </div>
+        </div> -->
+    </section>
+</div>

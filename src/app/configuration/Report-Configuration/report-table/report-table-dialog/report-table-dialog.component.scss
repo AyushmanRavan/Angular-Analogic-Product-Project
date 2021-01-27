@@ -1,0 +1,47 @@
+.color-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 100px;
+    min-width: 300px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color:#fff;
+    overflow-y: auto;
+  }
+  
+  .header-table {
+      height: 200px;
+      overflow: auto;
+      mat-cell {
+        width: auto;
+        height: 30px;
+    }
+    }
+    .mat-table {
+      overflow: auto;
+      max-height: 500px;
+    }
+    
+    .mobile-label {
+      display: none;
+    }
+    
+    @media(max-width: 600px) {
+      .mobile-label {
+        width: 80px;
+        display: inline-block;
+        font-weight: bold;
+        margin-right: 10px
+        
+      }
+    
+      .mat-header-row {
+        display: none;
+      }
+    
+      .mat-row { 
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+      }
+    }
+  

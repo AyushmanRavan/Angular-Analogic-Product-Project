@@ -1,0 +1,167 @@
+<h2 mat-dialog-title>{{dialog.title}} Assembly</h2>
+<form *ngIf="dialog.mode !== 'delete'; else deleteForm" [formGroup]="assembly" (ngSubmit)="onAssemblySubmit()">
+    <mat-dialog-content>
+        <mat-tab-group>
+            <mat-tab label="Assembly Details">
+                <div [ngStyle]="{'padding-top':'10px'}">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center">
+                        <div fxFlex="100%" fxLayoutGap="30px">
+                            <mat-form-field>
+                                <input matInput placeholder="Assembly Name" formControlName="name">
+                                <mat-error *ngIf="assembly.get('name').hasError('required')">
+                                    Assembly name is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-select placeholder="Plant" formControlName="plantId"
+                                    (change)="onPlantChange($event.value)">
+                                    <mat-option *ngFor="let plant of plantOption" [value]="plant.id">{{plant.plantName}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="assembly.get('plantId').hasError('required')">
+                                    Plant is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-select placeholder="Department" formControlName="departmentId">
+                                    <mat-option *ngFor="let department of deptOption" [value]="department.id">
+                                        {{department.deptName}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="assembly.get('departmentId').hasError('required')">
+                                    Department is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+
+                            <span [hidden]="hide">
+                                <mat-form-field>
+                                    <mat-select placeholder="Associated Assembly" formControlName="assosiativeName">
+                                        <mat-option *ngFor="let m of associtiveAssembly" [value]="m.associated_name">
+                                            {{m.associated_name}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="assembly.get('assosiativeName').hasError('required')">
+                                        Associated Assembly is
+                                        <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </span>
+
+                            <span>
+                                <mat-form-field>
+                                    <mat-select  placeholder="Type" formControlName="type"
+                                        (change)="onTypeChange($event)" [disabled]="isTypeDisabled">
+                                        <mat-option *ngFor="let option of AssosiateTypes" [value]="option.machine_type">
+                                            {{ option.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="assembly.get('type').hasError('required')">
+                                        Machine type is
+                                        <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </span>
+
+
+
+                            <mat-form-field>
+                                <input matInput placeholder="Sequence Number" formControlName="sequenceNumber">
+                                <mat-error *ngIf="assembly.get('sequenceNumber').hasError('required')">
+                                    Sequence no. is
+                                    <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="assembly.get('sequenceNumber').hasError('pattern')">
+                                    Enter valid
+                                    <strong>sequence number</strong>
+                                </mat-error>
+                                <mat-error *ngIf="assembly.get('sequenceNumber').hasError('min')">
+                                    Enter
+                                    <strong>greater than 0</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-checkbox [disabled]="disabledDataAvailable" (change)="onChange($event,'dataAvailable')"
+                                formControlName="dataAvailable">Data Available</mat-checkbox>
+                            <mat-checkbox *ngIf="isDataAvailable" [disabled]="disabledAlarm"
+                                (change)="onChange($event,'alarm')" formControlName="alarm">Alarm Table</mat-checkbox>
+
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="isDataAvailable" label="CBM parameters" [ngStyle]="{'padding-top':'10px'}">
+                <div *ngIf="hiddencol" [ngStyle]="{'padding':'10px'}">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="25px">
+                        <div fxFlex="100%">
+                            <mat-form-field>
+                                <input matInput placeholder="PPM" formControlName="ppm">
+                                <mat-error *ngIf="assembly.get('ppm').hasError('pattern')">
+                                    Enter valid
+                                    <strong>PPM number</strong>
+                                </mat-error>
+                                <mat-error *ngIf="assembly.get('ppm').hasError('min')">
+                                    PPM
+                                    <strong>must be greater than 0</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput type="number" min="1" max="60" placeholder="Maintenance (hrs)"
+                                    formControlName="maintenance">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="isDataAvailable" #tab [disabled]="invalid" label="Assig  Group"
+                [ngStyle]="{'padding-top':'10px'}">
+                <div [ngStyle]="{'padding':'10px'}">
+                    <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            Parameter Groups
+                            <div class="textArea">
+                                <div class="space"></div>
+                                <div class="checkbox" *ngFor="let list of groups">
+                                    <label class="container">
+                                        <input type="checkbox" formControlName="pgIds" [checked]="list.selected"
+                                            [value]="list.id"
+                                            (change)="onCheckboxChange(list.id,$event)">{{list.pg_name}}
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="assembly.get('pgIds').hasError('incorrect')">
+                                Please Check Import Parameters
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="primary"
+            [disabled]="!assembly.valid || loading">{{dialog.btnCaptions.ok}}</button>
+        <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</form>
+
+
+<ng-template #deleteForm>
+    <mat-dialog-content>
+        Do you want to delete
+        <strong>{{dialog.details.assemblyName}}</strong>?
+    </mat-dialog-content>
+    <mat-dialog-actions [style.marginTop.px]="10">
+        <button mat-raised-button [disabled]="loading" (click)="update(dialog.details,dialog.mode)"
+            [ngStyle]="{backgroundColor:'#FE3F5F',color:'#FFF'}">{{dialog.btnCaptions.ok}}</button>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <app-spinner *ngIf="loading"></app-spinner>
+    </mat-dialog-actions>
+</ng-template>

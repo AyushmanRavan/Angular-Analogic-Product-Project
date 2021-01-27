@@ -1,0 +1,77 @@
+<div class="sms">
+    <div fxLayout fxLayoutAlign="center">
+        <h2 class="mat-h2">SMS Configuration</h2>
+    </div>
+
+    <div class="action">
+        <button mat-button (click)="addSms()" color="accent">Add</button>
+    </div>
+
+    <ng-template #loader>
+        <div class="loadedStyle">
+            <app-spinner></app-spinner>
+        </div>
+    </ng-template>
+ 
+    <section [ngStyle]="{'margin-top':'50px'}" *ngIf="loaded; else loader">
+        <error *ngIf="errMessage" [message]="errMessage" [hidden]="errhidden"></error>
+ 
+        <div [hidden]="hiddenData">
+            <mat-accordion *ngIf="!hiddenData">
+                <mat-expansion-panel class="panel" [expanded]="item.open" *ngFor="let item of dataSource">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Plant: {{item.plants.plantName}} | SMS Type: {{item.smsType || uppercase }} </strong>
+                        </mat-panel-title>
+                        <mat-panel-description>
+
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="inner-actions">
+                        <button mat-icon-button matTooltip="Update SMS" matTooltipPosition="below" (click)="update(item,'edit')">
+                            <mat-icon aria-label="Update">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Remove SMS" matTooltipPosition="below" (click)="update(item,'delete')">
+                            <mat-icon aria-label="Remove">delete</mat-icon>
+                        </button>
+                    </div>
+
+                    <div fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="40px" class="contain">
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <div *ngIf="item.smsType=='productionStatus'">Frequency: {{item.frequency || noValue}}</div>
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <div *ngIf="item.smsType=='productionStatus'">StartTime: {{item.startTime}}</div>
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <button matTooltip="Machines" mat-mini-fab [matMenuTriggerFor]="menu">
+                                <mat-icon>dvr</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let item of item.machines">{{item.machineName}}</mat-list-item>
+                                </mat-list>
+                            </mat-menu>
+                        </div>
+                        <div fxFlex="50%" fxFlex.gt-sm="100%">
+                            <button matTooltip="Users" mat-mini-fab [matMenuTriggerFor]="user">
+                                <mat-icon>supervisor_account</mat-icon>
+                            </button>
+                            <mat-menu #user="matMenu">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let item of item.users">{{item.userName}}</mat-list-item>
+                                </mat-list>
+                            </mat-menu>
+                        </div>
+
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+
+            <mat-paginator showFirstLastButtons [ngStyle]="{'color': '#3e6ceb','font-size':'15px','font-weigth':'bold'}" [length]="datasetLength" (page)="updateDataset($event)" [pageSize]="10" [pageSizeOptions]="[5,10,15, 25,30]"></mat-paginator>
+
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,102 @@
+<h1 mat-dialog-title>{{dialog.title}} Parameter</h1>
+
+<form [formGroup]="parameter" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-tab-group>
+
+      <mat-tab label="Parameter">
+        <div [style.padding.px]="15">
+          <div class="user" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="20px">
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+              <mat-form-field class="custom-form-field">
+                <mat-select placeholder="Criticality" formControlName="criticality">
+                  <mat-option value="Critical">Critical</mat-option>
+                  <mat-option value="Severe">Severe</mat-option>
+                  <mat-option value="Mild">Mild</mat-option>
+                </mat-select>
+                <mat-error *ngIf="parameter.get('criticality').hasError('required')">
+                  Criticality is
+                  <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+              <mat-form-field class="custom-form-field">
+                <input matInput type="number" placeholder="Minimum Value" formControlName="min_count">
+                <mat-error *ngIf="parameter.get('min_count').hasError('required')">
+                  Minimum Value is
+                  <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+              <mat-form-field class="custom-form-field">
+                <input matInput type="number" placeholder="Maximun Value" formControlName="max_count">
+                <mat-error *ngIf="parameter.get('max_count').hasError('required')">
+                  Maximum value is
+                  <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="50%" fxFlex.gt-sm="100%">
+              <mat-form-field class="custom-form-field">
+                <input matInput type="number" placeholder="Reset Count" formControlName="reset_count">
+                <mat-error *ngIf="parameter.get('reset_count').hasError('required')">
+                  Reset Value is
+                  <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Parameter Type">
+
+        <div fxFlex="50%" fxFlex.gt-sm="100%">
+          <mat-form-field>
+            <input matInput formControlName="unit" placeholder="Enter Unit">
+            <mat-error *ngIf="parameter.get('unit').hasError('required')">
+              Unit is
+              <strong>required</strong>
+            </mat-error>
+            <!-- <mat-error *ngIf="parameter.get('unit').hasError('pattern')">
+              Enter
+              <strong>valid unit</strong>
+            </mat-error> -->
+          </mat-form-field>
+        </div>
+
+        <div [style.padding.px]="15">
+          <div fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="25px">
+            <mat-radio-group formControlName="paramType">
+              <mat-radio-button value="countedParameter">Counted Parameter</mat-radio-button>
+              <mat-radio-button value="realParameter">Real Parameter</mat-radio-button>
+              <mat-radio-button value="rawParameter">Raw Parameter</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+      </mat-tab>
+
+    </mat-tab-group>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary"
+      [disabled]="!parameter.valid || loading">{{dialog.btnCaptions.ok}}</button>
+    <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+    <app-spinner *ngIf="loading"></app-spinner>
+  </mat-dialog-actions>
+
+</form>

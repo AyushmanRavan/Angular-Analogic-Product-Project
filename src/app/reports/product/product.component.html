@@ -1,0 +1,58 @@
+<div fxLayout fxLayoutAlign="center">
+    <h2 class="mat-h2">Production Report</h2>
+</div> 
+<div class="production">
+    <report-form type="production_report" flag="false" (select)="onSelect($event)"></report-form>
+    <div fxLayout fxLayoutAlign="center" *ngIf="loadedspinner">
+        <app-spinner></app-spinner>
+    </div>
+    
+    <error *ngIf="errMessage" [message]="errMessage" [hidden]="Errormsg"></error>
+
+    <section [hidden]="loaded">
+        <div [ngStyle]="{'background-color': '#3e6ceb','color':'#fff','margin-bottom': '10px'}" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+            <h2 class="mat-h2 highlight">{{highlightForTable}}</h2>
+        </div>
+        <div class="table-container">
+            <div *ngIf="!pdfReady">
+                <mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>
+            </div>
+            <report-pdf [ready]="pdfReady" [report]="reportVal" [data]="pdfData" [highlight]="highlightForTable"></report-pdf>
+            <mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="startDate">
+                    <mat-header-cell *matHeaderCellDef> Start Date-Time</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Start Date-Time</span>{{element.startDate}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="endDate">
+                    <mat-header-cell *matHeaderCellDef> End Date-Time</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">End Date-Time</span>{{element.endDate}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="perHrsTotalProduction">
+                    <mat-header-cell *matHeaderCellDef> Total Products(pkts) </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">Total Products(pkts)</span>{{element.perHrsTotalProduction}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="perHrsGoodProduction">
+                    <mat-header-cell *matHeaderCellDef> Good Products(pkts) </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label"> Good Products(pkts)</span>{{element.perHrsGoodProduction}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="perHrsRejectProduction">
+                    <mat-header-cell *matHeaderCellDef> Rejected Products(pkts) </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label"> Rejected Products(pkts)</span>{{element.perHrsRejectProduction}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+    </section>
+</div>

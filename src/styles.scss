@@ -1,1 +1,97 @@
 /* You can add global styles to this file, and also import other style files */
+// @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "~@angular/material/theming";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@include mat-core();
+// Define the theme.
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink, 600);
+$warn: mat-palette($mat-red, 600);
+$theme: mat-light-theme($primary, $accent);
+@include angular-material-theme($theme);
+
+
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    // src: url(MaterialIcons-Regular.eot);
+    /* For IE6-8 */
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2')
+}
+
+
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+body {
+    font-family: Roboto, sans-serif;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+print-content {
+    display: none;
+}
+
+mat-sidenav a.active .mat-list-item-content {
+    color: mat-color($accent);
+}
+
+@media print {
+    body,
+    html {
+        width: 100%;
+    }
+    .report-table {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    print-content {
+        display: block;
+    }
+    header,
+    button,
+    .mat-sidenav,
+    .mat-drawer,
+    .selection {
+        display: none !important;
+    }
+    .mat-sidenav-content {
+        margin-left: 0 !important;
+    }
+}
+
+
+

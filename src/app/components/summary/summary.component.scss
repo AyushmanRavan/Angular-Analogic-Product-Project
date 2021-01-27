@@ -1,0 +1,116 @@
+@mixin card($color, $darkerColor) {
+    background-color: $color;
+    .card-footer {
+        background: $darkerColor;
+        padding: 15px;
+        color: #fff;
+    }
+}
+
+.summary {
+    margin-bottom: 20px;
+    flex-flow: column;
+    .c1,
+    .c2,
+    .c3,
+    .c4,
+    .c5 {
+        padding: 0;
+        color: #fff;
+        cursor: pointer;
+        user-select: none;
+        //   height: 200px;
+        .custom-title {
+            margin-bottom: 0;
+            padding: 16px 16px 0;
+            .text {
+                font-size: 20px;
+            }
+        }
+        .a {
+            background: red;
+        }
+        .block {
+            // max-width: 500px;
+            width: auto;
+            margin: auto;
+            font-size: 15px;
+            padding: auto;
+            .count {
+                margin-bottom: 5px;
+                font-size: 15px;
+            }
+            overflow-wrap: break-word;
+        }
+        &:hover {
+            box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
+    }
+    .c1 {
+        @include card(#3e6ceb, darken(#3e6ceb, 10));
+    }
+    .c2 {
+        @include card(#ff6e40, #f4511e);
+    }
+    .c3 {
+        @include card(#00bfa5, #00897b);
+    }
+    .c4 {
+        @include card(#ffca28, #ffa000);
+    }
+    .c5 {
+        @include card(#FC438C, #E90F65);
+    }
+    .space {
+        width: 20%;
+    }
+}
+
+.strip {
+    padding: 10px;
+    margin-bottom: 20px;
+    .block {
+        color: #fff;
+        font-size: 22px;
+        h1,
+        h2 {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .summary {
+        margin-bottom: 5px;
+        flex-flow: column;
+        .c1,
+        .c2,
+        .c3,
+        .c4,
+        .c5 {
+            width: auto;
+            height: auto;
+            .custom-title {
+                .text {
+                    font-size: 14px;
+                }
+            }
+            .block {
+                width: auto;
+                margin: auto;
+                font-size: 10px;
+                .count {
+                    margin-bottom: 5px;
+                    font-size: 10px;
+                }
+                overflow-wrap: break-word;
+            }
+        }
+        .card-footer {
+            font-size: 14px;
+        }
+        .space {
+            width: 10%;
+        }
+    }
+}
