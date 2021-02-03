@@ -3,14 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MachineStatusComponent } from "./machine-status.component";
 
-const routes: Routes = [ {
-  path: '',
-  component: MachineStatusComponent
-},
-{
-  path: ':machineName',
-  component: MachineStatusComponent
-}];
+const routes: Routes = [ 
+  {  path: '',  component: MachineStatusComponent},
+{  path: ':machineName',  component: MachineStatusComponent}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

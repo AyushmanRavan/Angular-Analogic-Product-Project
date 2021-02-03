@@ -4,11 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigurationService } from './../../configuration/configuration.service';
 import { ReportsService } from "../reports.service";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
-import { AutoLogoutService } from "../../auto-logout.service";
-import { EventManager } from "@angular/platform-browser";
-import * as moment from "moment";
 import { DATA } from "src/app/core/data.enum";
 import { StorageServiceService } from "src/app/core/services/auth/storage-service.service";
+
 @Component({
   selector: "report-form",
   templateUrl: "./report-form.component.html",
@@ -62,7 +60,6 @@ export class ReportFormComponent implements OnInit {
     private error: GlobalErrorHandler,
     private fb: FormBuilder,
     private selection: ReportsService,
-    private logout: AutoLogoutService,
     private snack: MatSnackBar,
     private config: ConfigurationService,
     private storageServiceService: StorageServiceService
@@ -89,7 +86,7 @@ export class ReportFormComponent implements OnInit {
 
   ngOnInit() {
     this.showTime = "both";
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
     this.reportName = this.type;
     this.setIntervalField(this.type);
     this.selection

@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef, ComponentFa
 
 import { CoolingTowerReportsService } from "./cooling-tower-reports.service";
 
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl, MatButton } from "@angular/material";
-
+import {  MatButton } from "@angular/material/button";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 
 import { NewPdfComponent } from '../../../new-pdf/new-pdf.component';
@@ -67,9 +68,12 @@ export class CoolingTowerReportsComponent implements OnInit {
   constructor(private reportService: CoolingTowerReportsService, private router: Router, private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
   }
-
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
   goTo(route: string) {
     this.router.navigate([`machinedetail/${route}`]);
   }

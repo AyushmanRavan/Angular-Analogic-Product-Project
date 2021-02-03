@@ -3,10 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {CoolingTowerReportsComponent} from "./cooling-tower-reports.component"
 
-const routes: Routes = [{
-  path: "",
-  component: CoolingTowerReportsComponent
-}];
+const routes: Routes = [
+  {  path: "",  component: CoolingTowerReportsComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

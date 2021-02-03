@@ -6,14 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from "../../shared/modules/shared.module";
 
 const qualityRoutes: Routes = [
-  {
-    path: '',
-    component: QualityComponent
-  },
-  {
-    path: ':machineID',
-    component: QualityComponent
-  }
+  {    path: '',    component: QualityComponent  },
+  {    path: ':machineID',    component: QualityComponent  }
 ];
 @NgModule({
   imports: [

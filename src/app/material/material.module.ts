@@ -26,7 +26,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
@@ -41,10 +40,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 const materialModule:any[] =  [
   A11yModule,
@@ -59,7 +57,7 @@ const materialModule:any[] =  [
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
-  MatCheckboxModule,
+  MatCheckboxModule, 
   MatChipsModule,
   MatStepperModule,
   MatDatepickerModule,
@@ -72,7 +70,6 @@ const materialModule:any[] =  [
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatRadioModule,
@@ -91,7 +88,8 @@ const materialModule:any[] =  [
   OverlayModule,
   PortalModule,
   ScrollingModule,
-  FlexLayoutModule
+  FlexLayoutModule,
+  MatPaginatorModule
 ];
 
 @NgModule({

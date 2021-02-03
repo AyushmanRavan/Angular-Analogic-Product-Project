@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from '@angular/material/table';
 
 import { Router } from "@angular/router";
 
@@ -63,9 +64,15 @@ export class AirCompressorComponent implements OnInit {
 
   ngOnInit() {
     // this.dataSource.paginator = this.paginator;
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
 
   }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
   getZeroString(n) {
     return n > 9 ? "" + n : "0" + n;
   }

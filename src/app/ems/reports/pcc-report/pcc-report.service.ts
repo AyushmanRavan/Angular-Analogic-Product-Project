@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RestApi } from '../../../core/services/rest.service';
+import { RestService } from '../../../core/services/rest.service';
 import { GlobalErrorHandler } from '../../../core/services/error-handler';
 import * as moment from 'moment';
 import { DATA } from 'src/app/core/data.enum';
@@ -7,7 +7,7 @@ import { StorageServiceService } from 'src/app/core/services/auth/storage-servic
 
 @Injectable()
 export class PccReportService {
-  constructor(private rest: RestApi, private storageServiceService: StorageServiceService) { }
+  constructor(private rest: RestService, private storageServiceService: StorageServiceService) { }
 
   formatDate = dt => moment(dt).format('YYYY-MM-DD HH:mm:ss.SSS');
   formatDateOee = dt => moment(dt).format('YYYY-MM-DD 00:00:00.000');
@@ -27,16 +27,16 @@ export class PccReportService {
         'start_time': from,
         'end_time': to,
         'interval': interval,
-        'actionTakenBy' : this.storageServiceService.getStorage(DATA.USERNAME),
-        'actedUserId' : this.storageServiceService.getStorage(DATA.USERID),
+        'actionTakenBy' : this.storageServiceService.getStorageItem(DATA.USERNAME),
+        'actedUserId' : this.storageServiceService.getStorageItem(DATA.USERID),
         'reportType' : 'pcc'
       }
     );
   }
   pdfDownloadService() {
     return this.rest.post(`generic/pdfDownloadService`,{
-      'actionTakenBy' : this.storageServiceService.getStorage(DATA.USERNAME),
-      'actedUserId' : this.storageServiceService.getStorage(DATA.USERID),
+      'actionTakenBy' : this.storageServiceService.getStorageItem(DATA.USERNAME),
+      'actedUserId' : this.storageServiceService.getStorageItem(DATA.USERID),
       'reportType' : 'pcc'
     });
   }

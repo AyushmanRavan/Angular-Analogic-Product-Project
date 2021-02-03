@@ -3,9 +3,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from "ng-pick-datetime";
 import { ConfigurationRoutingModule } from "./configuration-routing.module";
-import { ErrorModule } from "../components/error";
+import { ErrorModule } from "../components/error/error.module";
 import { MaterialModule } from "../material/material.module";
-import { SpinnerModule } from "../components/spinner";
+import { SpinnerModule } from "../components/spinner/spinner.module";
 import { AlarmComponent } from "./alarm/alarm.component";
 import { DialogComponent } from "./alarm/dialog/dialog.component";
 import { ConfigurationService } from "./configuration.service";
@@ -45,7 +45,7 @@ import { OperatorMonitoringDialogComponent } from './operator-monitoring/operato
 import { TimeSlotComponent } from './time-slot/time-slot.component';
 import { TimeSlotDialogComponent } from './time-slot/time-slot-dialog/time-slot-dialog.component';
 import { ConfigFilterFormComponent } from './config-filter-form/config-filter-form.component';
-import { MatPaginatorModule } from '@angular/material';
+
 import { PdfConfigComponent } from './pdf-config/pdf-config.component';
 import { PdfDialogComponent } from './pdf-config/pdf-dialog/pdf-dialog.component';
 import { PipesModule } from "../shared/pipes/pipe.module";
@@ -53,6 +53,7 @@ import { PasswordPolicyComponent } from './password-policy/password-policy.compo
 import { PasswordPolicyDialogComponent } from './password-policy/password-policy-dialog/password-policy-dialog.component';
 import { MachineParameterConfigComponent } from './machine-parameter-config/machine-parameter-config.component';
 import { MachineParameterConfigDialogComponent } from './machine-parameter-config/machine-parameter-config-dialog/machine-parameter-config-dialog.component';
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 
 @NgModule({

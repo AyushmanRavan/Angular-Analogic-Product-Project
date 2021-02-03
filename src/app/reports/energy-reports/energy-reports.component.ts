@@ -1,13 +1,10 @@
-import { Component, AfterViewInit, ViewChild, OnInit } from "@angular/core";
+import { Component,  ViewChild, OnInit } from "@angular/core";
 
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
 import { Subscription } from "rxjs";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
 import { ReportsService } from "../reports.service";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
-import { sumBy } from 'lodash';
+import { MatTableDataSource } from "@angular/material/table";
 @Component({
   selector: "app-energy-reports",
   templateUrl: "./energy-reports.component.html",
@@ -42,9 +39,12 @@ export class EnergyReportsComponent implements OnInit {
   constructor(private _intl: MatPaginatorIntl, private error: GlobalErrorHandler, private rs: ReportsService) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
   }
-
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
   onSelect(event: any) {
     this.reportVal = { ...event.values, type: "machineEnergyReport" };
     this.loadedspinner = true;

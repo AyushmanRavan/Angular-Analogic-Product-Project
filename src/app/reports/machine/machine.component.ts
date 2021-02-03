@@ -1,11 +1,9 @@
 
-import { MatPaginator, MatTableDataSource,MatPaginatorIntl } from "@angular/material";
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import {  Component, OnInit, ViewChild } from "@angular/core";
 import { ReportsService } from "./../../reports/reports.service";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-machine",
@@ -48,7 +46,13 @@ export class MachineComponent implements  OnInit {
     ,private _intl:MatPaginatorIntl
   ) {}
 
-  ngOnInit() {this.paginator._intl.itemsPerPageLabel="Records Per Page";}
+  ngOnInit() {
+    // this.paginator._intl.itemsPerPageLabel="Records Per Page";
+  }
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
 
   onSelect(e) {
     this.reportVal = { ...e.values, type: "machine" };

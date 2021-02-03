@@ -1,6 +1,8 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -44,29 +46,27 @@ export class AssociatedMachineComponent {
   paginator: MatPaginator;
 
   constructor(private _intl: MatPaginatorIntl, public dialog: MatDialog, private config: ConfigurationService) {
-    this.getDefaultSet(0,0);
+    this.getDefaultSet(0, 0);
   }
 
-  getDefaultSet(limit,offset){
-     this.subscriber = this.config.getAssociatedMachineDetails(limit,offset).subscribe(
-      data => { 
-        if(data == null)
-        {
+  getDefaultSet(limit, offset) {
+    this.subscriber = this.config.getAssociatedMachineDetails(limit, offset).subscribe(
+      data => {
+        if (data == null) {
           this.handleErrorOFNoMoreData();
           this.hiddenData = true;
-       }
-        else
-        {
+        }
+        else {
           this.setTableData(data);
           this.loaded = true;
           this.hiddenData = false;
           this.errhidden = true;
-       }
+        }
       },
       err => this.handleError(err)
     );
   }
- 
+
 
   ngAfterViewInit() {
     this._intl.itemsPerPageLabel = "Record per Page";
@@ -105,14 +105,14 @@ export class AssociatedMachineComponent {
 
     this.dialogRef.afterClosed().subscribe((data: any) => {
       if (typeof data != 'string') {
-        this.subscriber = this.config.getAssociatedMachineDetails(0,0).subscribe(
+        this.subscriber = this.config.getAssociatedMachineDetails(0, 0).subscribe(
           data => {
             if (data == null) {
               this.paginator.pageIndex = 0;
-              this.getDefaultSet(0,0);
+              this.getDefaultSet(0, 0);
             }
             else {
-               this.setTableData(data); 
+              this.setTableData(data);
               this.loaded = true;
               this.hiddenData = false;
               this.errhidden = true;

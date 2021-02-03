@@ -1,4 +1,3 @@
-import { AutoLogoutService } from './../auto-logout.service';
 import { GlobalErrorHandler } from '../core/services/error-handler';
 import { Component, OnInit } from '@angular/core';
 import { OeeService } from './oee.service';
@@ -44,7 +43,6 @@ export class OeeComponent implements OnInit {
 
   constructor(
     private error: GlobalErrorHandler,
-    private logout: AutoLogoutService,
     private route: ActivatedRoute,
     private oee: OeeService,
     private router: Router,
@@ -53,7 +51,7 @@ export class OeeComponent implements OnInit {
 
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
     this.route.params.forEach(
       (params: Params) => (this.machineID = params['machineID'])
     );

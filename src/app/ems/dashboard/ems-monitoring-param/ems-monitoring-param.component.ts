@@ -1,17 +1,13 @@
-import { omit } from 'lodash';
-import { Component, AfterViewInit, ViewChild, OnInit } from "@angular/core";
+import { Component,  ViewChild, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { AutoLogoutService } from './../../../auto-logout.service';
-// import { merge } from "rxjs/observable/merge";
-// import { of as observableOf } from "rxjs/observable/of";
-// import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
 import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 import { GlobalErrorHandler } from '../../../core/services/error-handler';
 import { EmsMonitoringParamService } from './ems-monitoring-param.service';
-import { Router, ActivatedRoute } from "@angular/router";
+import {  ActivatedRoute } from "@angular/router";
 import { DATA } from 'src/app/core/data.enum';
 import { StorageServiceService } from 'src/app/core/services/auth/storage-service.service';
+import { MatTableDataSource } from "@angular/material/table";
 
 export interface PeriodicElement {
   position: number;
@@ -63,8 +59,7 @@ export class EmsMonitoringParamComponent implements OnInit {
   headerWithColumns = []; //{headers : "Position",value:"position"},{headers : "Name",value:"name"},{headers : "Weight",value:"weight"},{headers : "Symbol",value:"symbol"}
   displayedColumns: string[] = [];//= this.headerWithColumns.map(row => row.value); //['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource<PeriodicElement>();
-  @ViewChild("baseChart")
-  chart: BaseChartDirective;
+  @ViewChild("baseChart")  chart: BaseChartDirective;
 
   selectedParameter: any[] = [];
   selected: any;
@@ -75,14 +70,14 @@ export class EmsMonitoringParamComponent implements OnInit {
   constructor(
     private error: GlobalErrorHandler,
     private energy: EmsMonitoringParamService, private _intl: MatPaginatorIntl,
-    private logout: AutoLogoutService, private storageServiceService: StorageServiceService,
+     private storageServiceService: StorageServiceService,
     private route: ActivatedRoute
   ) {
     this.setupChart();
   }
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
     const routerParams = this.route.snapshot.queryParamMap.keys;
     routerParams.map((param) => {
       if (this.route.snapshot.queryParamMap.has(param)) {
@@ -90,6 +85,11 @@ export class EmsMonitoringParamComponent implements OnInit {
       }
     });
     //this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+  }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
   }
 
   onSelect(e) {
@@ -147,7 +147,7 @@ export class EmsMonitoringParamComponent implements OnInit {
         // this.chart.ngOnDestroy();
         // this.chart.chart = this.chart.getChartBuilder(this.chart.ctx);
         this.chart.chart.destroy();
-        this.chart.chart = 0;
+        this.chart.chart.clear();
 
         this.chart.datasets = newChartData;
         // this.chart.labels = this.labels;
@@ -171,7 +171,7 @@ export class EmsMonitoringParamComponent implements OnInit {
       if (this.chart !== undefined) {
 
         this.chart.chart.destroy();
-        this.chart.chart = 0;
+        this.chart.chart.clear();
         this.chart.datasets = dummyData;
         // this.chart.labels = this.labels;
         this.chart.ngOnInit();
@@ -296,7 +296,7 @@ export class EmsMonitoringParamComponent implements OnInit {
         // this.chart.ngOnDestroy();
         // this.chart.chart = this.chart.getChartBuilder(this.chart.ctx);
         this.chart.chart.destroy();
-        this.chart.chart = 0;
+        this.chart.chart.clear();
         this.chart.datasets = this.chartData ;
         // this.chart.labels = this.labels;
         this.chart.ngOnInit();

@@ -1,10 +1,11 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { log } from "util";
 
 @Pipe({
   name: "humanize"
 })
 export class HumanizePipe implements PipeTransform {
+
+
   transform(value: any, args?: any): any {
     return value ? this._getHumanize(value, args) : 0;
   }

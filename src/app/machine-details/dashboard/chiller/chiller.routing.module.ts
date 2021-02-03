@@ -6,11 +6,7 @@ import { ChillerComponent } from "./chiller.component"
 
 
 const chillerRoutes: Routes = [
-  {
-    path: "",
-    component: ChillerComponent
-    
-  }
+  {    path: "",    component: ChillerComponent  }
   
  
 ];

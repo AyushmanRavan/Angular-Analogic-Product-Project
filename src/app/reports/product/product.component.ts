@@ -1,9 +1,10 @@
 
-import { MatPaginator, MatTableDataSource, MatSnackBar, MatPaginatorIntl } from '@angular/material';
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import {  Component, OnInit, ViewChild } from "@angular/core";
 import { ReportsService } from "./../../reports/reports.service";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
 import * as moment from 'moment';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: "app-product",
@@ -53,7 +54,12 @@ export class ProductComponent implements OnInit {
 
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+  }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
   }
 
   onSelect(e) {

@@ -9,12 +9,14 @@ import {MachineReportService} from "./machine-report.service";
 import {MachineReportComponent} from "./machine-report.component";
 
 import {SharedComponentModule} from "../../../shared-component/shared-component.module"
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MachineReportRoutingModule,
     SharedModule,
+    MaterialModule,
     SharedComponentModule
   ],
   declarations: [MachineReportComponent],

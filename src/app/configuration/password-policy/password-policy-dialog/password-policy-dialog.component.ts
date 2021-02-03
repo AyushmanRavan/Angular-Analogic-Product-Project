@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormGroup, FormBuilder, Validator, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, Inject, OnInit} from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {  FormBuilder,  Validators } from '@angular/forms';
 import { ConfigurationService } from '../../configuration.service';
 import { MODE } from '../../shared/config';
 import { DATA } from 'src/app/core/data.enum';
@@ -44,7 +44,7 @@ export class PasswordPolicyDialogComponent implements OnInit {
     this.loading = true;
     let tempData = Object.assign({}, policyForm);
     tempData['update_flag'] = true;
-    tempData['set_by'] = this.storageServiceService.getStorage(DATA.USERNAME);
+    tempData['set_by'] = this.storageServiceService.getStorageItem(DATA.USERNAME);
     switch (mode) {
       case MODE.ADD:
         this._user.addPasswordPolicy(tempData).subscribe((res) => {

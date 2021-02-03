@@ -1,10 +1,8 @@
-import { Component, AfterViewInit, ViewChild, OnInit } from "@angular/core";
+import { Component,  ViewChild, OnInit } from "@angular/core";
 
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { Subscription } from "rxjs/Subscription";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator ,MatPaginatorIntl} from "@angular/material/paginator";
+import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from "rxjs";
 
 import { ReportsService } from "../reports.service";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
@@ -44,7 +42,11 @@ export class UtilityReportsComponent implements OnInit {
   constructor(private error: GlobalErrorHandler, private rs: ReportsService, private _intl: MatPaginatorIntl) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+  }
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
   }
 
   onSelect(event) {

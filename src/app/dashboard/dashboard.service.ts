@@ -6,19 +6,19 @@ import {
   PMS_REPORT_MENU_ITEM,
   ROLES
 } from "../data";
-import { RestApi } from "../core/services/rest.service";
+import { RestService } from "../core/services/rest.service";
 import { DATA } from "../core/data.enum";
 import { StorageServiceService } from "../core/services/auth/storage-service.service";
 // import { Observable } from "rxjs/Observable";
  
 @Injectable()
 export class DashboardService {
-  constructor(private _rest: RestApi, private storageServiceService: StorageServiceService) {}
+  constructor(private _rest: RestService, private storageServiceService: StorageServiceService) {}
 
   getMenu() {
     let menu: Menu[] = [];
 
-    const role: string = atob(this.storageServiceService.getStorage(DATA.ROLE));
+    const role: string = atob(this.storageServiceService.getStorageItem(DATA.ROLE));
 
     switch (role) {
       case ROLES.USER:

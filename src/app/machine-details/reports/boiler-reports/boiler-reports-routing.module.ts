@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {BoilerReportsComponent} from "./boiler-reports.component";
 
-const routes: Routes = [{
-  path: "",
-  component: BoilerReportsComponent
-  
+const routes: Routes = [
+  {  path: "",  component: BoilerReportsComponent 
 }];
 
 

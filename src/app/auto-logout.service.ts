@@ -1,30 +1,27 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { environment as env } from '../environments/environment';
 import { DATA } from './core/data.enum';
 import { StorageServiceService } from './core/services/auth/storage-service.service';
+import { AuthService } from './core/services/auth/auth.service';
 
-const MINUTES_UNITL_AUTO_LOGOUT = 15;// in mins
+const MINUTES_UNITL_AUTO_LOGOUT = 2;// in mins
 const CHECK_INTERVAL = 150000; // in ms
 
 @Injectable()
 export class AutoLogoutService {
 
-
-
-  constructor(private router: Router, private http: HttpClient, private storageServiceService: StorageServiceService) {
+  constructor(private authService: AuthService, private router: Router, private storageServiceService: StorageServiceService) {
     this.check();
     this.initListener();
     this.initInterval;
   }
 
   public getLastAction() {
-    return parseInt(this.storageServiceService.getStorage(DATA.LAST_ACTION));
+    return parseInt(this.storageServiceService.getStorageItem(DATA.LAST_ACTION));
   }
 
   public setLastAction(lastAction: number) {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, lastAction.toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, lastAction.toString());
   }
 
   initListener() {
@@ -51,24 +48,13 @@ export class AutoLogoutService {
 
     const isTimeout = diff < 0;
     if (isTimeout) {
-      console.log("$$AutoLogoutService started$$");
-      this.storageServiceService.clearStorage();
-      console.log("$$AutoLogoutService finished$$");
+
+      console.log("**************************************")
+      this.authService.logout();
+
       if (this.initInterval) {
         clearInterval(this.initInterval);
       }
-
-      const headers = new HttpHeaders().set(DATA.CONTENT_TYPE, 'application/x-www-form-urlencoded')
-        .set(DATA.APP_SUBJECT, this.storageServiceService.getStorage(DATA.APP_SUBJECT)).set(DATA.AUTHORIZATION, DATA.BEARER + this.storageServiceService.getStorage(DATA.TOKEN));
-
-      this.http.post(env.logout, { headers }).subscribe((res) => {
-        if (res && res['status'] === true) {
-          console.log("&&AutoLogoutService API started&&");
-          this.storageServiceService.clearStorage();
-          this.router.navigate(["/login"]);
-          console.log("&&AutoLogoutService API finished&&");
-        }
-      });
 
     }
   }

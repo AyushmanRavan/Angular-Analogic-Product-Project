@@ -6,11 +6,7 @@ import { AirCompressorComponent } from "./air-compressor.component";
 
 
 const aircompressorRoutes: Routes = [
-  {
-    path: "",
-    component: AirCompressorComponent
-    
-  }
+  {    path: "",    component: AirCompressorComponent  }
   
  
 ];

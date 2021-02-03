@@ -4,11 +4,7 @@ import {AirCompressorReportsComponent} from "./air-compressor-reports.component"
 
 const routes: Routes = [
 
-  {
-    path: "",
-    component: AirCompressorReportsComponent
-    
-  }
+  {    path: "",    component: AirCompressorReportsComponent  }
   
 ];
 

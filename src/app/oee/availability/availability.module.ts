@@ -5,14 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AvailabilityComponent } from './availability.component';
 import { SharedModule } from './../../shared/modules/shared.module';
 const availabilityRoutes: Routes = [
-  {
-    path: '',
-    component: AvailabilityComponent
-  },
-  {
-    path: ':id',
-    component: AvailabilityComponent
-  }
+  {    path: '',    component: AvailabilityComponent  },
+  {    path: ':id',    component: AvailabilityComponent  }
 ];
 @NgModule({
   imports: [

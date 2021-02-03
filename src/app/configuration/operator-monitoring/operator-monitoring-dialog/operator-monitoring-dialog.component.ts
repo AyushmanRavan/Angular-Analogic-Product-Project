@@ -1,10 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl, FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
-import * as moment from "moment";
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {  FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConfigurationService } from '../../configuration.service';
 import { MODE } from '../../shared/config';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-operator-monitoring-dialog',

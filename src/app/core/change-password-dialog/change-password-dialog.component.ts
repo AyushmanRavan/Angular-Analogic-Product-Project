@@ -1,15 +1,15 @@
-import { Component, Inject, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, Validators ,FormGroup} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validator, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { ConfigurationService } from '../../configuration/configuration.service';
-//import { ConfigurationService } from '../../configuration.service';
-// import { MODE } from '../../shared/config';
+import { ConfigurationService } from 'src/app/configuration/configuration.service';
+
 @Component({
   selector: 'app-change-password-dialog',
   templateUrl: './change-password-dialog.component.html',
   styleUrls: ['./change-password-dialog.component.scss']
 })
 export class ChangePasswordDialogComponent implements OnInit {
+
   passwordPolicyString;
   loading = false;
   changePasswordForm;
@@ -27,7 +27,7 @@ export class ChangePasswordDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._user.getPasswordPolicyString().subscribe((res) => {
       if (res && res['policy']) {
         this.passwordPolicyString = res['policy'];
@@ -67,4 +67,8 @@ export class ChangePasswordDialogComponent implements OnInit {
 
     }
   }
+
+
+
+
 }

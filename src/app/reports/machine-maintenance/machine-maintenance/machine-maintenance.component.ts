@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -13,6 +13,8 @@ import { ReportsService } from "../../reports.service";
 import { MachineMaintenanceDialogComponent } from './machine-maintenance-dialog/machine-maintenance-dialog.component';
 import { GlobalErrorHandler } from "../../../core/services/error-handler";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({

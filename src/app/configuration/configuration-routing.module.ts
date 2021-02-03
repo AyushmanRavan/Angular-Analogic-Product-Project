@@ -22,90 +22,27 @@ import { PdfConfigComponent } from './pdf-config/pdf-config.component';
 import { PasswordPolicyComponent } from './password-policy/password-policy.component'
 import { MachineParameterConfigComponent } from "./machine-parameter-config/machine-parameter-config.component";
 const configRoutes: Routes = [
-  {
-    path: "alarms",
-    component: AlarmComponent
-  },
-  {
-    path: "user",
-    component: UserComponent
-  },
-  {
-    path: "password-policy",
-    component: PasswordPolicyComponent
-  },
-  {
-    path: "paramView",
-    component: ParamViewComponent
-  },
-  {
-    path: "paramGroupView",
-    component: ParamGroupViewComponent
-  },
-  {
-    path: "department",
-    component: DepartmentComponent
-  },
-  {
-    path: "plant",
-    component: PlantComponent
-  },
-  {
-    path: "assembly",
-    component: AssemblyComponent
-  },
-  {
-    path: "machine",
-    component: MachineComponent
-  },
-  {
-    path: "shifts",
-    component: ShiftsComponent
-  },
-  {
-    path: "email",
-    component: EmailComponent
-  },
-  {
-    path: "sms",
-    component: SmsComponent
-  },
-  {
-    path: "associated-machine",
-    component: AssociatedMachineComponent
-  },
-  {
-    path: "report",
-    component: ReportComponent
-  },
-  { 
-    path: "chart",
-    component: ChartComponent
-  },
-  {
-    path: "report-table",
-    component: ReportTableComponent
-  },
-  {
-    path: "report-highlight",
-    component: HighlightComponent
-  },
-  {
-    path: "operator-monitoring",
-    component: OperatorMonitoringComponent
-  },
-  {
-    path: "timeSlot",
-    component: TimeSlotComponent
-  },
-  {
-    path: "pdf",
-    component: PdfConfigComponent
-  },
-  {
-    path: "machine-parameter-config",
-    component: MachineParameterConfigComponent
-  }
+  { path: "alarms", component: AlarmComponent },
+  { path: "user", component: UserComponent },
+  { path: "password-policy", component: PasswordPolicyComponent },
+  { path: "paramView", component: ParamViewComponent },
+  { path: "paramGroupView", component: ParamGroupViewComponent },
+  { path: "department", component: DepartmentComponent },
+  { path: "plant", component: PlantComponent },
+  { path: "assembly", component: AssemblyComponent },
+  { path: "machine", component: MachineComponent },
+  { path: "shifts", component: ShiftsComponent },
+  { path: "email", component: EmailComponent },
+  { path: "sms", component: SmsComponent },
+  { path: "associated-machine", component: AssociatedMachineComponent },
+  { path: "report", component: ReportComponent },
+  { path: "chart", component: ChartComponent },
+  { path: "report-table", component: ReportTableComponent },
+  { path: "report-highlight", component: HighlightComponent },
+  { path: "operator-monitoring", component: OperatorMonitoringComponent },
+  { path: "timeSlot", component: TimeSlotComponent },
+  { path: "pdf", component: PdfConfigComponent },
+  { path: "machine-parameter-config", component: MachineParameterConfigComponent }
 ];
 
 @NgModule({

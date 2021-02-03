@@ -4,11 +4,13 @@ import { SharedModule } from '../../../shared/modules/shared.module';
 import { PccRoutingModule } from './pcc-routing.module';
 import {PccComponent } from './pcc.component';
 import {PccService} from './pcc.service'
+import { MaterialModule } from 'src/app/material/material.module';
 @NgModule({
   imports: [
     CommonModule,
     PccRoutingModule,
-    SharedModule
+    SharedModule,
+    MaterialModule
   ],
   declarations: [PccComponent],
   providers : [PccService]

@@ -7,12 +7,14 @@ import { PccReportRoutingModule } from './pcc-report-routing.module';
 import { SharedModule } from '../../../shared/modules/shared.module';
 import {SharedComponentModule} from '../../../shared-component/shared-component.module' ;
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     PccReportRoutingModule,
     SharedModule,
+    MaterialModule,
     SharedComponentModule,
     PDFExportModule
   ],

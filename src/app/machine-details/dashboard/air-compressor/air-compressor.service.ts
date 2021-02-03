@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { RestApi } from '../../../core/services/rest.service';
+import { RestService } from '../../../core/services/rest.service';
 
-import { map, orderBy } from "lodash";
+import { map } from "lodash";
 
 @Injectable()
 
@@ -10,7 +10,7 @@ import { map, orderBy } from "lodash";
 export class AirCompressorService {
   barLabel = [];
   lineLabel = [];
-  constructor(private rest : RestApi) { }
+  constructor(private rest : RestService) { }
 
   
   getMonitor(machineId:string) {

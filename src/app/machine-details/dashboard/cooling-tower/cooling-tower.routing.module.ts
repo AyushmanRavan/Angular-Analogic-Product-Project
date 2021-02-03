@@ -6,11 +6,7 @@ import { CoolingTowerComponent } from "./cooling-tower.component"
 
 
 const coolingRoutes: Routes = [
-  {
-    path: "",
-    component: CoolingTowerComponent
-    
-  }
+  {    path: "",    component: CoolingTowerComponent  }
   
  
 ];

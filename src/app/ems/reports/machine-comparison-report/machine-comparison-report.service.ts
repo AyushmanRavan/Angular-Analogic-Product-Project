@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RestApi } from '../../../core/services/rest.service';
+import { RestService } from '../../../core/services/rest.service';
 import { omit } from 'lodash';
 import { GlobalErrorHandler } from '../../../core/services/error-handler';
 import { sumBy, groupBy } from 'lodash';
@@ -12,7 +12,7 @@ import { StorageServiceService } from 'src/app/core/services/auth/storage-servic
 @Injectable()
 export class MachineComparisonReportService {
 
-  constructor( private storageServiceService: StorageServiceService,private http: HttpClient, private rest: RestApi, private error: GlobalErrorHandler) { }
+  constructor( private storageServiceService: StorageServiceService,private http: HttpClient, private rest: RestService, private error: GlobalErrorHandler) { }
 
   getMachineCompareData = data => {
 
@@ -38,8 +38,8 @@ export class MachineComparisonReportService {
     }
 
     tempData['machine_names'] = machine_names;
-    tempData['actionTakenBy'] = this.storageServiceService.getStorage(DATA.USERNAME);
-    tempData['actedUserId'] = this.storageServiceService.getStorage(DATA.USERID);
+    tempData['actionTakenBy'] = this.storageServiceService.getStorageItem(DATA.USERNAME);
+    tempData['actedUserId'] = this.storageServiceService.getStorageItem(DATA.USERID);
     tempData['reportType'] = 'machine comparison';
 
     return this.rest.post(`generic/machineComparison`, tempData);
@@ -77,9 +77,6 @@ export class MachineComparisonReportService {
         shift,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   getDynamicReportForSummary = (
@@ -108,9 +105,6 @@ export class MachineComparisonReportService {
         oeeType, shift,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
 
@@ -142,9 +136,6 @@ export class MachineComparisonReportService {
         oeeType, shift,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
 
@@ -178,9 +169,6 @@ export class MachineComparisonReportService {
         assembly,
         reportType,
         flag
-      })
-      .map(res => {
-        return res;
       });
 
   getParameters(machineId: number) {
@@ -196,17 +184,15 @@ export class MachineComparisonReportService {
   }
   pdfDownloadService() {
     return this.rest.post(`generic/pdfDownloadService`, {
-      'actionTakenBy': this.storageServiceService.getStorage(DATA.USERNAME),
-      'actedUserId': this.storageServiceService.getStorage(DATA.USERID),
+      'actionTakenBy': this.storageServiceService.getStorageItem(DATA.USERNAME),
+      'actedUserId': this.storageServiceService.getStorageItem(DATA.USERID),
       'reportType': 'machine comparison'
     });
   }
   getPlantDashboardSummary = (id: number) => this.rest.get(`plantComparision/${id}`);
 
   getPlantDashboardReport = (plants, from, to, limit, offset) =>
-    this.rest.post("plantDashboard/report", { plants, from, to, limit, offset }).map(res => {
-      return res;
-    });
+    this.rest.post("plantDashboard/report", { plants, from, to, limit, offset });
 
 
 
@@ -239,9 +225,6 @@ export class MachineComparisonReportService {
         input_array,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   getUtilityReport = (
@@ -266,9 +249,6 @@ export class MachineComparisonReportService {
         interval,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   getProductionReport = (
@@ -293,9 +273,6 @@ export class MachineComparisonReportService {
         interval,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   getAlarmReport = (
@@ -320,9 +297,6 @@ export class MachineComparisonReportService {
         interval,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   getOeeReport = (
@@ -345,9 +319,6 @@ export class MachineComparisonReportService {
         to,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   getOeeTableReport = (
@@ -374,9 +345,6 @@ export class MachineComparisonReportService {
         shift,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
 
@@ -402,9 +370,6 @@ export class MachineComparisonReportService {
         interval,
         limit,
         offset
-      })
-      .map(res => {
-        return res;
       });
 
   generateReport = data => {
@@ -580,7 +545,7 @@ export class MachineComparisonReportService {
     return this.sortBy(alarmSummary, 'duration');
   }
   sortBy = (collection: any, fields, by = ['desc']) =>
-    orderBy(collection, [...fields], by);
+    orderBy(collection, [...fields], ['desc']);
 
   getHighLightForTable = (reportId, plantId,
     departmentId,
@@ -602,9 +567,7 @@ export class MachineComparisonReportService {
         to,
         interval,
         input_parameter, oeeType, shift
-      }).map(val => {
-        return val;
-      })
+      });
   }
   getChartDetails = (reportId, machineId) => this.rest.get(`config/reportChartAndLabels/${reportId}/${machineId}`);
 
@@ -614,14 +577,10 @@ export class MachineComparisonReportService {
 
 
   addMaintenance = req =>
-    this.rest.post("config/maintenance", req).map(resp => {
-      return req;
-    });
+    this.rest.post("config/maintenance", req);
 
   updateMaintenance = req =>
-    this.rest.put("config/maintenance", req).map(resp => {
-      return req;
-    });
+    this.rest.put("config/maintenance", req);
 
   getMaintenanceDetails = (plantId) => this.rest.get(`config/plantById/${plantId}`);
 

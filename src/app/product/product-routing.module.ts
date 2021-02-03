@@ -16,14 +16,8 @@ import { ProductComponent } from "./product.component";
 // }
 
 const productRoutes: Routes = [
-  {
-    path: "",
-    component: ProductComponent
-  },
-  {
-    path: ":machineName",
-    component: ProductComponent
-  }
+  {    path: "",    component: ProductComponent  },
+  {    path: ":machineName",    component: ProductComponent  }
   // {
   //   ...routeOptions("", ProductComponent, "Products")
   // },

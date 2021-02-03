@@ -1,6 +1,6 @@
-import { Component, OnDestroy,ViewChild,OnInit } from '@angular/core';
-import { MatPaginator,MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, OnDestroy,ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
   DELETE_DIALOG_OPTIONS,
@@ -11,6 +11,8 @@ import {
 } from '../shared/config';
 import { ConfigurationService } from '../configuration.service';
 import { EmailDialogComponent } from './email-dialog/email-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-email',
   templateUrl: './email.component.html',

@@ -5,14 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from './.././../shared/modules/shared.module';
 import { OeeService} from './../oee.service';
 const overallRoutes: Routes = [
-  {
-    path: '',
-    component: OverallOeeComponent
-  },
-  {
-    path: ':machineID',
-    component: OverallOeeComponent
-  }
+  {    path: '',    component: OverallOeeComponent  },
+  {    path: ':machineID',    component: OverallOeeComponent  }
 ];
 @NgModule({
   imports: [

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { compact, find, map } from 'lodash';
 
-import { RestApi } from '../../core/services/rest.service';
+import { RestService } from '../../core/services/rest.service';
 import { GlobalErrorHandler } from '../../core/services/error-handler';
 
 const ENERGY = 'energy';
@@ -13,13 +13,14 @@ interface Machine {
 interface Plant {
   plant: string;
 }
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SelectionService {
-  constructor(private rest: RestApi, private error: GlobalErrorHandler) { }
+  constructor(private restService: RestService, private error: GlobalErrorHandler) { }
 
   getSummary(machineId: number) {
-    return this.rest.get(`dashboardInformation/${machineId}`);
+    return this.restService.get(`dashboardInformation/${machineId}`);
   }
 
   isSpecialMachine = (name: string, machines: Machine[]) => {
@@ -33,18 +34,18 @@ export class SelectionService {
   //     return { machineInfo: machines, machines: this.exclude(machines, page) };
   //   });
 
-  getPageType = (t) => this.rest.get('generic/getParameterPages/ums,product,ums')
+  getPageType = (t) => this.restService.get('generic/getParameterPages/ums,product,ums')
 
-  getdafaultfilter = (type) => this.rest.get(`filter/defaultMachine/${type}`);
+  getdafaultfilter = (type) => this.restService.get(`filter/defaultMachine/${type}`);
 
-  getPlant = () => this.rest.get('config/plants');
+  getPlant = () => this.restService.get('config/plants');
 
-  getDept = (id) => this.rest.get(`config/department/filter/${id}`);
+  getDept = (id) => this.restService.get(`config/department/filter/${id}`);
 
-  getAssembly = (id) => this.rest.get(`config/assembly/filter/${id}`);
+  getAssembly = (id) => this.restService.get(`config/assembly/filter/${id}`);
 
   getMachineNames(plant, department, assembly, reportType) {
-    return this.rest.post('config/machine/filter', { plant, department, assembly, reportType })
+    return this.restService.post('config/machine/filter', { plant, department, assembly, reportType })
   }
   getErrorMessage = errorId => this.error.getErrorMessage(errorId);
 

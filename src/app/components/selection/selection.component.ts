@@ -1,30 +1,22 @@
-import { CommonModule } from "@angular/common";
-import {
-  Component,
-  EventEmitter,
-  Input,
-  NgModule,
-  OnInit,
-  OnDestroy,
-  Output
-} from "@angular/core";
-import { Router } from "@angular/router";
-import { FormsModule, ReactiveFormsModule, FormControl } from "@angular/forms";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { GlobalErrorHandler } from "../../core/services/error-handler";
-import { MaterialModule } from "../../material/material.module";
-import { SelectionService } from "./selection.service";
-import { MachineService } from '../../machine/machine.service';
+import { GlobalErrorHandler } from 'src/app/core/services/error-handler';
+import { SelectionService } from './selection.service';
 
+class Insight {
+  plant: number;
+  department: number;
+  assembly: number;
+  machine: number;
+  pagetype: string;
+}
 
 @Component({
-  selector: "selection",
-  templateUrl: "./selection.component.html",
-  styleUrls: ["./selection.component.scss"],
-  providers: [SelectionService]
+  selector: 'selection',
+  templateUrl: './selection.component.html',
+  styleUrls: ['./selection.component.scss']
 })
 export class SelectionComponent implements OnInit {
-
   //@Output & EventEmitter is used when you want to pass data from the child to the parent 
   //@Output emits the data using the EventEmitter method to the parent component
   @Output() select = new EventEmitter();
@@ -35,7 +27,7 @@ export class SelectionComponent implements OnInit {
   @Input() dashboardtype: string;
   @Input() routerParamsObj: any;
   @Input() isPageType: String;
-  
+
   errorMsg: string;
   insight: Insight = new Insight();
   plantOptions = [];
@@ -44,24 +36,24 @@ export class SelectionComponent implements OnInit {
   machineOptions = [];
   pageType = [];
   dbType = "";
-   
+
   constructor(
-    private error: GlobalErrorHandler, private selection: SelectionService,
-    private snack: MatSnackBar) {
+    private globalErrorHandler: GlobalErrorHandler, private selectionService: SelectionService,
+    private matSnackBar: MatSnackBar) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     if (this.isPageType) {
       this.dbType = "";
-      this.selection.getPageType("abc").subscribe(data => {
+      this.selectionService.getPageType("abc").subscribe(data => {
         this.pageType.length = 0;
         data && data[0] && data.map(row => {
           this.pageType.push(row)
         })
         this.insight.pagetype = data[0].page_type;
         this.dbType = data[0].page_type;
-        this.selection.getdafaultfilter(this.insight.pagetype).subscribe(
+        this.selectionService.getdafaultfilter(this.insight.pagetype).subscribe(
           data => {
             if (data) {
               this.insight.plant = data['plantId'];
@@ -80,13 +72,13 @@ export class SelectionComponent implements OnInit {
       );
     } else {
       this.dbType = this.dashboardtype;
-      this.selection.getdafaultfilter(this.dbType).subscribe(
+      this.selectionService.getdafaultfilter(this.dbType).subscribe(
         data => {
           if (data) {
             this.insight.plant = (this.routerParamsObj && this.routerParamsObj.plantID) !== undefined ? this.routerParamsObj.plantID : data['plantId'];
             this.insight.department = (this.routerParamsObj && this.routerParamsObj.departmentID) !== undefined ? this.routerParamsObj.departmentID : data['departmentId'];
-            this.insight.assembly = (this.routerParamsObj && this.routerParamsObj.assemblyID)!== undefined ? this.routerParamsObj.assemblyID : data['assemblyId'];
-            this.insight.machine = (this.routerParamsObj && this.routerParamsObj.machineID )!== undefined ? this.routerParamsObj.machineID : data['machineId'];
+            this.insight.assembly = (this.routerParamsObj && this.routerParamsObj.assemblyID) !== undefined ? this.routerParamsObj.assemblyID : data['assemblyId'];
+            this.insight.machine = (this.routerParamsObj && this.routerParamsObj.machineID) !== undefined ? this.routerParamsObj.machineID : data['machineId'];
 
             // this.insight.plant = data['plantId'];
             // this.insight.department = data['deptId'];
@@ -103,10 +95,10 @@ export class SelectionComponent implements OnInit {
       );
     }
   }
-  
+
   onChangePageType(value) {
     this.dbType = value;
-    this.selection.getdafaultfilter(this.dbType).subscribe(
+    this.selectionService.getdafaultfilter(this.dbType).subscribe(
       data => {
         if (data) {
           this.insight.plant = data['plantId'];
@@ -119,22 +111,22 @@ export class SelectionComponent implements OnInit {
       err => this.handleError(err)
     );
   }
-  
+
   onDefaultValue(plant, department, assembly, machine) {
-    this.selection.getPlant().subscribe(data => {
+    this.selectionService.getPlant().subscribe(data => {
       if (data != null) {
         this.plantOptions = data;
         this.insight.plant = plant;
       } else {
         this.plantOptions = null;
-        this.snack.open('No plants', 'ok', {
+        this.matSnackBar.open('No plants', 'ok', {
           duration: 5000
         });
       }
     }, err => this.handleError(err));
 
 
-    this.selection.getDept(plant).subscribe((data: any[]) => {
+    this.selectionService.getDept(plant).subscribe((data: any[]) => {
       if (data != null) {
         this.deptOptions = data;
         this.insight.department = department;
@@ -143,14 +135,14 @@ export class SelectionComponent implements OnInit {
         this.deptOptions = null;
         this.assemblyOptions = null;
         this.machineOptions = null;
-        this.snack.open('This Plant does not have Departments', 'ok', {
+        this.matSnackBar.open('This Plant does not have Departments', 'ok', {
           duration: 5000
         });
       }
     }, err => this.handleError(err));
 
 
-    this.selection.getAssembly(department).subscribe((data: any[]) => {
+    this.selectionService.getAssembly(department).subscribe((data: any[]) => {
       if (data != null) {
         this.assemblyOptions = data;
         this.insight.assembly = assembly;
@@ -158,13 +150,13 @@ export class SelectionComponent implements OnInit {
       else {
         this.assemblyOptions = null;
         this.machineOptions = null;
-        this.snack.open('This Department does not have Assemblyes', 'ok', {
+        this.matSnackBar.open('This Department does not have Assemblyes', 'ok', {
           duration: 5000
         });
       }
     }, err => this.handleError(err));
 
-    this.selection.getMachineNames(plant, department, assembly, this.dbType)
+    this.selectionService.getMachineNames(plant, department, assembly, this.dbType)
       .subscribe(data => {
         if (data != null) {
           this.machineOptions = data;
@@ -173,7 +165,7 @@ export class SelectionComponent implements OnInit {
         }
         else {
           this.machineOptions = null;
-          this.snack.open('This Assembly does not have Machines', 'ok', {
+          this.matSnackBar.open('This Assembly does not have Machines', 'ok', {
             duration: 5000
           });
         }
@@ -189,7 +181,7 @@ export class SelectionComponent implements OnInit {
     this.insight.assembly = -0;
     this.insight.machine = -0;
     this.insight.plant = plantID;
-    this.selection.getDept(plantID).subscribe((data: any[]) => {
+    this.selectionService.getDept(plantID).subscribe((data: any[]) => {
       if (data != null) {
         this.deptOptions = data;
       }
@@ -197,7 +189,7 @@ export class SelectionComponent implements OnInit {
         this.deptOptions = null;
         this.assemblyOptions = null;
         this.machineOptions = null;
-        this.snack.open('This Plant does not have Departments', 'ok', {
+        this.matSnackBar.open('This Plant does not have Departments', 'ok', {
           duration: 5000
         });
       }
@@ -208,14 +200,14 @@ export class SelectionComponent implements OnInit {
     this.insight.assembly = -0;
     this.insight.machine = -0;
     this.insight.department = departmentID;
-    this.selection.getAssembly(departmentID).subscribe((data: any[]) => {
+    this.selectionService.getAssembly(departmentID).subscribe((data: any[]) => {
       if (data != null) {
         this.assemblyOptions = data;
       }
       else {
         this.assemblyOptions = null;
         this.machineOptions = null;
-        this.snack.open('This Department does not have Assemblyes', 'ok', {
+        this.matSnackBar.open('This Department does not have Assemblyes', 'ok', {
           duration: 5000
         });
       }
@@ -225,14 +217,14 @@ export class SelectionComponent implements OnInit {
   onChangeAssembly(assemblyID: number) {
     this.insight.machine = -0;
     this.insight.assembly = assemblyID;
-    this.selection.getMachineNames(this.insight.plant, this.insight.department, this.insight.assembly, this.dbType)
+    this.selectionService.getMachineNames(this.insight.plant, this.insight.department, this.insight.assembly, this.dbType)
       .subscribe(data => {
         if (data != null) {
           this.machineOptions = data;
         }
         else {
           this.machineOptions = null;
-          this.snack.open('This Assembly does not have Machines', 'ok', {
+          this.matSnackBar.open('This Assembly does not have Machines', 'ok', {
             duration: 5000
           });
         }
@@ -244,26 +236,11 @@ export class SelectionComponent implements OnInit {
   }
 
   getInsights(machineID: number, dbType: string, plantID, departmentID, assemblyID) {
-    this.select.emit({  machineID, dbType, plantID, departmentID, assemblyID });
+    this.select.emit({ machineID, dbType, plantID, departmentID, assemblyID });
   }
- 
+
   private handleError(err) {
-    this.error.handleError(err);
+    this.globalErrorHandler.handleError(err);
   }
 
 }
-class Insight {
-  plant: number;
-  department: number;
-  assembly: number;
-  machine: number;
-  pagetype: string;
-}
-
-@NgModule({
-  imports: [CommonModule, FormsModule, MaterialModule, ReactiveFormsModule],
-  declarations: [SelectionComponent],
-  exports: [SelectionComponent]
-})
-export class SelectionModule { }
-

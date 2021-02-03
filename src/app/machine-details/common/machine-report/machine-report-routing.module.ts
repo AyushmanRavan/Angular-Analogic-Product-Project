@@ -3,11 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {MachineReportComponent} from "./machine-report.component"
 
-const routes: Routes = [{
-  path: "",
-  component: MachineReportComponent
-  
-}];
+const routes: Routes = [
+  {  path: "",  component: MachineReportComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

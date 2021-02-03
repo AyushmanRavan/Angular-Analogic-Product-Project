@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { MatPaginator, MatTableDataSource } from "@angular/material";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
-import { AutoLogoutService } from './../auto-logout.service';
-
+import {  MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from '@angular/material/paginator';
 import { UtilityService } from "./utility.service";
 import { GlobalErrorHandler } from "../core/services/error-handler";
 import { DATA } from "../core/data.enum";
@@ -30,18 +26,16 @@ export class UtilityComponent implements OnInit {
   errMessage: string;
   isPaginatorLoading: boolean;
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  @ViewChild(MatPaginator)  paginator: MatPaginator;
 
   constructor(
-    private logout: AutoLogoutService,
     private error: GlobalErrorHandler,
     private utilityservice: UtilityService,
     private storageServiceService: StorageServiceService
   ) { }
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
   }
 
 

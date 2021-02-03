@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { OeeService } from './../oee.service';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { Subscription } from "rxjs/Subscription";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
+import { Subscription } from "rxjs";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Productivity } from './productivity';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-productivity',
@@ -40,7 +38,7 @@ export class ProductivityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
 
     this.route.params.forEach(
       (params: Params) => (this.machineID = params['machineID'])
@@ -49,7 +47,10 @@ export class ProductivityComponent implements OnInit {
     this.empty = false;
   }
 
+ 
   ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+   
     this.getProductivityDetails(this.machineID);
   }
 

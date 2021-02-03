@@ -1,11 +1,11 @@
 import * as moment from "moment";
-import { Component, OnInit, Inject, Injectable, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
-import { FormGroup, FormBuilder, FormArray, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Component, Inject} from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormGroup, FormBuilder,  Validators,  } from '@angular/forms';
 import { ConfigurationService } from "../../../configuration.service";
 import { SelectionModel } from '@angular/cdk/collections';
 import { MODE } from '../../../shared/config';
-import { omit } from 'lodash';
+import { MatTableDataSource } from "@angular/material/table";
 export interface HeaderElement {
   param_id: string,
   heading: string,

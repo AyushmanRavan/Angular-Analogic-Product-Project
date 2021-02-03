@@ -1,7 +1,7 @@
-import { Component, OnDestroy, ViewChild, OnInit ,AfterViewInit} from '@angular/core';
+import { Component,  ViewChild,AfterViewInit} from '@angular/core';
 import { MatPaginator ,MatPaginatorIntl} from '@angular/material/paginator';
-import {  MatDialog, MatTableDataSource } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import {  MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -13,6 +13,7 @@ import {
 } from '../shared/config';
 import { ConfigurationService } from '../configuration.service';
 import { OperatorMonitoringDialogComponent } from './operator-monitoring-dialog/operator-monitoring-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({

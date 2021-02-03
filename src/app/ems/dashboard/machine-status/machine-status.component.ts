@@ -4,9 +4,6 @@ import { Bar, Xaxis } from "./../../../machine/shared/svg";
 import { xAxis as x } from "./../../../machine/shared/svg/data";
 
 import { BarService } from "./../../../machine/shared/svg/bar.service";
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from "rxjs/Subscription";
-import { AutoLogoutService } from './../../../auto-logout.service';
 
 import { MachineStatusService } from "./machine-status.service";
 import { DATA } from "src/app/core/data.enum";
@@ -34,8 +31,7 @@ export class MachineStatusComponent implements OnInit {
   constructor(
     private _machine: MachineStatusService,
     private _route: ActivatedRoute, private storageServiceService: StorageServiceService,
-    private _bar: BarService,
-    private logout: AutoLogoutService) {
+    private _bar: BarService) {
   }
   onSelect(e) {
     this.loaded = false;
@@ -147,7 +143,7 @@ export class MachineStatusComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
     this.machineSummary = this._machine.defaultMachineSummary();
   }
 

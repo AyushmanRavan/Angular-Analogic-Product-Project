@@ -1,15 +1,15 @@
-import { Component } from "@angular/core";
-import { FormGroup, FormBuilder, Validator, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { GlobalErrorHandler } from "../../core/services/error-handler";
-import { AuthService } from "../../core/services/auth/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { GlobalErrorHandler } from 'src/app/core/services/error-handler';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   login: FormGroup;
   loading: boolean;
@@ -35,10 +35,9 @@ export class LoginComponent {
       this.user
         .login(id, password)
         // .login(id, btoa(password))
-        .subscribe(
-          status => {
-            this.router.navigate(["/homepage"])
-          },
+        .subscribe(status => {
+          this.router.navigate(["/homepage"])
+        },
           err => this.handleError(err)
         );
     }
@@ -46,10 +45,11 @@ export class LoginComponent {
 
   private handleError(err) {
     this.reset(true);
+    console.log("%%%%%%%%%%%%%%%%%",err)
     if (err.error.message) {
       this.errMessage = err.error.message;
     } else {
-      this.errMessage = this.error.getErrorMessage(12);
+      this.errMessage = this.error.getErrorMessage(100);
     }
   }
 
@@ -59,5 +59,7 @@ export class LoginComponent {
     status ? this.login.enable() : this.login.disable();
   }
 
+  ngOnInit(): void {
+  }
 
 }

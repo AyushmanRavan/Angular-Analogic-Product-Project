@@ -1,20 +1,13 @@
 import {
-  AfterViewInit,
   Component,
   OnInit,
-  OnDestroy,
-  ViewChild
 } from '@angular/core';
 import { omit } from 'lodash';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
-import { Key } from 'protractor';
 import { ReportsService } from "../reports.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
 
 @Component({
   selector: 'app-machine-comparison',

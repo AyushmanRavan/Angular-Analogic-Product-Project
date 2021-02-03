@@ -6,7 +6,7 @@ import { MachineComparisonReportComponent } from './machine-comparison-report.co
 import { MaterialModule } from '../../../material/material.module';
 import { CoreModule } from '../../../core/core.module';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { SpinnerModule } from '../../../components/spinner';
+import { SpinnerModule } from '../../../components/spinner/spinner.module';
 import { SharedModule } from '../../../shared/modules/shared.module' ;
 import {MachineComparisonReportService} from './machine-comparison-report.service';
 // import {NewPdfComponent} from '../../../new-pdf/new-pdf.component'

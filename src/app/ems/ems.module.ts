@@ -8,6 +8,7 @@ import { PipesModule } from '../shared/pipes/pipe.module';
 import {MachineService} from '../machine/machine.service';
 import {SharedComponentModule} from '../shared-component/shared-component.module';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { MaterialModule } from '../material/material.module';
 //import {NewPdfComponent} from '../new-pdf/new-pdf.component';
 //import {MonitoringDetailsComponent} from '../new-pdf/monitoring-details/monitoring-details.component';
 //import {PlantDetailsComponent} from '../new-pdf/plant-details/plant-details.component';
@@ -16,10 +17,12 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule,
+    
     EmsRoutingModule,
+    CoreModule,
     SharedModule, 
     PipesModule,
+    MaterialModule,
     SharedComponentModule,
     PDFExportModule
   ],

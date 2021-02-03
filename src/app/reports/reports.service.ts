@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { RestApi } from "../core/services/rest.service";
+import { RestService } from "../core/services/rest.service";
 import { omit } from "lodash";
 import { GlobalErrorHandler } from '../core/services/error-handler';
 import { sumBy, groupBy } from 'lodash';
@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 @Injectable()
 export class ReportsService {
-  constructor(private http: HttpClient, private rest: RestApi, private error: GlobalErrorHandler) { }
+  constructor(private http: HttpClient, private rest: RestService, private error: GlobalErrorHandler) { }
 
   getMachineCompareData = data => {
     let tempData = Object.assign({}, data);

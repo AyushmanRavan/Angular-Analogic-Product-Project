@@ -5,73 +5,24 @@ import { DefaultMachineDbComponent } from "./common/default-machine-db/default-m
 
 const machinedetailRoutes: Routes = [
   {
-    path: "",
-    component: MachineDetailsComponent,
+    path: "", component: MachineDetailsComponent,
     children: [
-      {
-        path: "",
-        component: DefaultMachineDbComponent
-      },
-      {
-        path: "aircompressor",
-        loadChildren: "./dashboard/air-compressor/air-compressor.module#AirCompressorModule"
-      },
-      {
-        path: "boiler",
-        loadChildren: "./dashboard/boiler/boiler.module#BoilerModule"
-      },
-      {
-        path: "chiller",
-        loadChildren: "./dashboard/chiller/chiller.module#ChillerModule"
-      },
-      {
-        path: "coolingtower",
-        loadChildren: "./dashboard/cooling-tower/cooling-tower.module#CoolingTowerModule"
-      },
-      {
-        path: "aircompressorreport",
-        loadChildren: "./reports/air-compressor-reports/air-compressor-reports.module#AirCompressorReportsModule"
-      },
-      {
-        path: "boilerreport",
-        loadChildren: "./reports/boiler-reports/boiler-reports.module#BoilerReportsModule"
-      },
-      {
-        path: "chillerreport",
-        loadChildren: "./reports/chiller-reports/chiller-reports.module#ChillerReportsModule"
-      },
-      {
-        path: "coolingtowerreport",
-        loadChildren: "./reports/cooling-tower-reports/cooling-tower-reports.module#CoolingTowerReportsModule"
-      },
-      {
-        path: "machinealaram",
-        loadChildren: "./common/alaram-common/alaram-common.module#AlaramCommonModule"
-      },
-      {
-        path: "machinestatustemp",
-        loadChildren: "../machine/machine.module#MachineModule"
-      },
-      {
-        path: "machinestatus",
-        loadChildren: "./common/machine-status/machine-status.module#MachineStatusModule"
-      },
-      {
-        path: "machinereportalaram",
-        loadChildren: "./common/alarm-report/alarm-report.module#AlarmReportModule"
-      },
-      {
-        path: "machinereportstatus",
-        loadChildren: "./common/machine-report/machine-report.module#MachineReportModule"
-      },
-      {
-        path: "monitoringparams",
-        loadChildren: "./dashboard/monitoring-param/monitoring-param.module#MonitoringParamModule"
-      },
-      {
-        path: "config",
-        loadChildren: "./../configuration/configuration.module#ConfigurationModule"
-      }
+      { path: "", component: DefaultMachineDbComponent },
+      { path: "aircompressor", loadChildren: () => import('./dashboard/air-compressor/air-compressor.module').then(aircompressor => aircompressor.AirCompressorModule) },
+      { path: "boiler", loadChildren: () => import('./dashboard/boiler/boiler.module').then(boiler => boiler.BoilerModule) },
+      { path: "chiller", loadChildren: () => import('./dashboard/chiller/chiller.module').then(chiller => chiller.ChillerModule) },
+      { path: "coolingtower", loadChildren: () => import('./dashboard/cooling-tower/cooling-tower.module').then(coolingtower => coolingtower.CoolingTowerModule) },
+      { path: "aircompressorreport", loadChildren: () => import('./reports/air-compressor-reports/air-compressor-reports.module').then(aircompressorreport => aircompressorreport.AirCompressorReportsModule) },
+      { path: "boilerreport", loadChildren: () => import('./reports/boiler-reports/boiler-reports.module').then(boilerreport => boilerreport.BoilerReportsModule) },
+      { path: "chillerreport", loadChildren: () => import('./reports/chiller-reports/chiller-reports.module').then(chillerreport => chillerreport.ChillerReportsModule) },
+      { path: "coolingtowerreport", loadChildren: () => import('./reports/cooling-tower-reports/cooling-tower-reports.module').then(coolingtowerreport => coolingtowerreport.CoolingTowerReportsModule) },
+      { path: "machinealaram", loadChildren: () => import('./common/alaram-common/alaram-common.module').then(machinealaram => machinealaram.AlaramCommonModule) },
+      { path: "machinestatustemp", loadChildren: () => import('../machine/machine.module').then(machinestatustemp => machinestatustemp.MachineModule) },
+      { path: "machinestatus", loadChildren: () => import('./common/machine-status/machine-status.module').then(machinestatus => machinestatus.MachineStatusModule) },
+      { path: "machinereportalaram", loadChildren: () => import('./common/alarm-report/alarm-report.module').then(machinereportalaram => machinereportalaram.AlarmReportModule) },
+      { path: "machinereportstatus", loadChildren: () => import('./common/machine-report/machine-report.module').then(machinereportstatus => machinereportstatus.MachineReportModule) },
+      { path: "monitoringparams", loadChildren: () => import('./dashboard/monitoring-param/monitoring-param.module').then(monitoringparams => monitoringparams.MonitoringParamModule) },
+      { path: "config", loadChildren: () => import('./../configuration/configuration.module').then(config => config.ConfigurationModule) }
       // {
       //   path : "coolingtowerreport",
       //   loadChildren : "./reports/cooling-tower/cooling-tower.module#CoolingTowerModule"

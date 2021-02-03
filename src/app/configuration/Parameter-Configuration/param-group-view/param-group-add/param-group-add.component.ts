@@ -1,9 +1,9 @@
 
 import { Component, Inject, OnInit } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { ConfigurationService } from "../../../configuration.service";
 import { MODE } from "../../../shared/config";
 

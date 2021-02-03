@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import { MatPaginator, MatTableDataSource ,MatPaginatorIntl} from "@angular/material";
-import { Subscription } from "rxjs/Subscription";
-import { AutoLogoutService} from './../../../auto-logout.service';
+import { MatPaginatorIntl} from "@angular/material/paginator";
+import { Subscription } from "rxjs";
 import * as moment from "moment";
 
 import {AlaramCommonService} from "./alaram-common.service"
@@ -29,12 +28,12 @@ export class AlaramCommonComponent implements OnInit {
   machineID:number;
   totalSecond: string;
 
-  constructor( private storageServiceService: StorageServiceService,private alarm: AlaramCommonService,private _intl:MatPaginatorIntl,private logout:AutoLogoutService) {
+  constructor( private storageServiceService: StorageServiceService,private alarm: AlaramCommonService,private _intl:MatPaginatorIntl) {
     this.setupChart();
     this.displayedColumns = this.alarm.getTableColumns();
   }
 
-  ngOnInit() { this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());}
+  ngOnInit() { this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());}
 
   ngOnDestroy() {
     if (this.subscriber) this.subscriber.unsubscribe();

@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnDestroy } from "@angular/core";
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { Subscription } from "rxjs/Subscription";
+import { Component, ViewChild } from "@angular/core";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { Subscription } from "rxjs";
 
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -14,6 +14,10 @@ import { ConfigurationService } from "../../configuration.service";
 import { Shift } from "./../../shared/shift";
 import { MachineDialogComponent } from "./machine-dialog/machine-dialog.component";
 import { AuthService } from "../../../core/services/auth/auth.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDialog } from "@angular/material/dialog";
+import { StorageServiceService } from "src/app/core/services/auth/storage-service.service";
+import { DATA } from "src/app/core/data.enum";
 
 @Component({
   selector: 'app-machine',
@@ -44,7 +48,7 @@ export class MachineComponent {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
-  constructor(private _intl: MatPaginatorIntl, public dialog: MatDialog, private config: ConfigurationService, private user: AuthService) {
+  constructor(private storageServiceService: StorageServiceService, private _intl: MatPaginatorIntl, public dialog: MatDialog, private config: ConfigurationService, private user: AuthService) {
     this.getDefaultSet(0, 0);
   }
 
@@ -64,7 +68,7 @@ export class MachineComponent {
       err => this.handleError(err)
     );
     this.hideAddMachine = true;
-    this.role = this.user.getRole();
+    this.role = this.storageServiceService.getStorageItem(DATA.ROLE);
     if (atob(this.role) == 'SUPERADMIN') {
       this.hideAddMachine = false;
     }

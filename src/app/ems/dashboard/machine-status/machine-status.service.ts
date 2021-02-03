@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { RestApi } from "../../../core/services/rest.service";
+import { RestService } from "../../../core/services/rest.service";
 import { GlobalErrorHandler } from "../../../core/services/error-handler";
 
 @Injectable()
 export class MachineStatusService {
 
-  constructor(private _rest: RestApi,private error: GlobalErrorHandler) {}
+  constructor(private _rest: RestService,private error: GlobalErrorHandler) {}
    plantName: string;
 
   getPlantDetail= (plant: string) => { this.plantName = plant; }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfigurationService } from '../configuration.service';
 import { Subscription } from 'rxjs';
-import { MatPaginator, MatPaginatorIntl, MatDialog, MatTableDataSource, MatSort } from '@angular/material';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
   DELETE_DIALOG_OPTIONS,
@@ -11,6 +11,9 @@ import {
   MODE
 } from '../shared/config';
 import { MachineParameterConfigDialogComponent } from './machine-parameter-config-dialog/machine-parameter-config-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-machine-parameter-config',
   templateUrl: './machine-parameter-config.component.html',

@@ -1,6 +1,6 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatPaginator,  MatPaginatorIntl } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -12,6 +12,8 @@ import {
 } from '../shared/config';
 import { ConfigurationService } from '../configuration.service';
 import { UserDialogComponent } from './dialog/dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -48,9 +50,12 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._intl.itemsPerPageLabel = "Records Per Page";
+    // this._intl.itemsPerPageLabel = "Records Per Page";
   }
-  
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
   private getArray(limit, offset) {
     this.subscriber = this.config.getUserDetails(0, 0).subscribe(
       data => {

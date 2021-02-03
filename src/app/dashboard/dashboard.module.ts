@@ -9,6 +9,7 @@ import { DashboardService } from "./dashboard.service";
 import { DashboardComponent } from "./dashboard.component";
 import { DefaultComponent } from "./default/default.component";
 import {MachineService} from "../machine/machine.service";
+import { MaterialModule } from "../material/material.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {MachineService} from "../machine/machine.service";
     CoreModule,
     DashboardRoutingModule,
     PipesModule,
-    SharedModule 
+    SharedModule ,
+    MaterialModule,
   ],
   declarations: [DashboardComponent, DefaultComponent],
   providers: [DashboardService, MachineService]

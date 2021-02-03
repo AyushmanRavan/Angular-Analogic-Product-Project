@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild,  ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { omit } from 'lodash';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator, MatTableDataSource, MatButton } from '@angular/material';
+import {  MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { MachineComparisonReportService } from './machine-comparison-report.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewPdfComponent } from '../../../new-pdf/new-pdf.component';
+import { MatButton } from '@angular/material/button';
 @Component({
   selector: 'app-machine-comparison-report',
   templateUrl: './machine-comparison-report.component.html',

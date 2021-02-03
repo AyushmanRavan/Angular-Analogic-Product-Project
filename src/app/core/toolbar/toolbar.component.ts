@@ -1,9 +1,8 @@
-import { Component, Output, EventEmitter, Input, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { AuthService } from "../services/auth/auth.service";
-import { Router } from "@angular/router";
-import { UserDialogComponent } from '../../configuration/user/dialog/dialog.component';
-import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
-import { MatMenuTrigger } from "@angular/material/menu"
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { truncate } from 'lodash';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
   DELETE_DIALOG_OPTIONS,
@@ -11,27 +10,29 @@ import {
   DIALOG_BUTTONS,
   DIALOG_HEADER,
   MODE
-} from '../../configuration/shared/config';
-import { MatDialog } from '@angular/material/dialog';
-import { DATA } from "../data.enum";
-import { StorageServiceService } from "../services/auth/storage-service.service";
+} from 'src/app/configuration/shared/config';
+import { UserDialogComponent } from 'src/app/configuration/user/dialog/dialog.component';
+import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { DATA } from '../data.enum';
+import { AuthService } from '../services/auth/auth.service';
+import { StorageServiceService } from '../services/auth/storage-service.service';
 
 @Component({
-  selector: "app-toolbar",
-  templateUrl: "./toolbar.component.html",
-  styleUrls: ["./toolbar.component.scss"]
+  selector: 'app-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit, AfterViewInit {
+export class ToolbarComponent implements OnInit {
 
   @Output() toggle = new EventEmitter<boolean>();
-  @Input() menudisplay: boolean;
+  // @Input() menudisplay: boolean;
 
   isFirstTimeUser: string;
   isAccountExpired: string;
   timeToExpire;
   passwordAboutToExpire;
   convertedTimeToExpired;
-  menuBarDisplay: boolean;
+  menuBarDisplay: boolean = false;
   datatoggle = true;
   username;
   toggleUser;
@@ -42,10 +43,10 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   loggedInUserData;
   userFullName;
   errMessage;
-  loggedInUserId = this.storageServiceService.getStorage(DATA.USERID);
+  loggedInUserId = this.storageServiceService.getStorageItem(DATA.USERID);
   @ViewChild('passwordMenu') notificationBtn: MatMenuTrigger;
-  constructor(private auth: AuthService, private router: Router,  private storageServiceService: StorageServiceService,public dialog: MatDialog) {
-    this.username = this.storageServiceService.getStorage(DATA.USERNAME);
+  constructor(private auth: AuthService, private router: Router, private storageServiceService: StorageServiceService, public dialog: MatDialog) {
+    this.username = this.storageServiceService.getStorageItem(DATA.USERNAME);
   }
 
   open() {
@@ -56,9 +57,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     this.notificationBtn.openMenu();
   }
 
-  ngOnInit() {
-    this.isFirstTimeUser = this.storageServiceService.getStorage(DATA.FIRST);
-    this.isAccountExpired = this.storageServiceService.getStorage(DATA.IS_ACCOUNT_EXPIRED);
+  ngOnInit(): void {
+    this.isFirstTimeUser = this.storageServiceService.getStorageItem(DATA.FIRST);
+    this.isAccountExpired = this.storageServiceService.getStorageItem(DATA.IS_ACCOUNT_EXPIRED);
     this.auth.getUserDetails(this.loggedInUserId).subscribe((res) => {
       this.loggedInUserData = res;
       this.userFullName = res['name'];
@@ -69,9 +70,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.passwordAboutToExpire = this.storageServiceService.getStorage(DATA.PASSWORD_ABOUT_TO_EXPIRE);
-    this.timeToExpire = this.storageServiceService.getStorage(DATA.TIME_TO_EXPIRE);
-    this.menuBarDisplay = this.menudisplay ? false : true;
+    this.passwordAboutToExpire = this.storageServiceService.getStorageItem(DATA.PASSWORD_ABOUT_TO_EXPIRE);
+    this.timeToExpire = this.storageServiceService.getStorageItem(DATA.TIME_TO_EXPIRE);
+    // this.menuBarDisplay = this.menudisplay ? false : true;
     if (this.timeToExpire > 0) {
       this.timeToExpire = Number(this.timeToExpire);
       let seconds = parseInt(this.timeToExpire, 10);
@@ -93,6 +94,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   }
 
   onLogout() {
+    console.log("log out fired.")
     this.auth.logout();
   }
 
@@ -136,11 +138,11 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     this.changePasswordDialogRef.afterClosed().subscribe((data: any) => {
       if (data && data.updatedPassword) {
         this.isFirstTimeUser = 'false';
-        this.storageServiceService.saveStorage(DATA.FIRST, 'false');
+        this.storageServiceService.setStorageItem(DATA.FIRST, 'false');
         this.isAccountExpired = 'false';
-        this.storageServiceService.saveStorage(DATA.IS_ACCOUNT_EXPIRED, 'false');
+        this.storageServiceService.setStorageItem(DATA.IS_ACCOUNT_EXPIRED, 'false');
         this.passwordAboutToExpire = 'false';
-        this.storageServiceService.saveStorage(DATA.PASSWORD_ABOUT_TO_EXPIRE, 'false');
+        this.storageServiceService.setStorageItem(DATA.PASSWORD_ABOUT_TO_EXPIRE, 'false');
       }
     });
   }
@@ -183,10 +185,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   }
 
 
-  // private handleError(err) {
-  // this.reset();
-  // this.errMessage = this.config.getErrorMessage(0);
-  // this.config.throwError(err);
-  // }
+
+
 
 }

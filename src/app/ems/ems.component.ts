@@ -22,11 +22,11 @@ export class EmsComponent implements OnInit {
 
   HIDE_ACCESS_DETAILS = HIDE_ACCESS_DETAILS;
   menus = [...EMS_DASHBOARD_MENU_ITEMS, ...EMS_REPORT_MENU_ITEM, ...EMS_CONFIGURATION_MENU_ITEMS]
-  
+
   constructor(private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit() {
- 
+
   }
 
   get extraSmallScreen() {
@@ -34,9 +34,7 @@ export class EmsComponent implements OnInit {
   }
 
   get menuGap() {
-    return this.extraSmallScreen
-      ? OPERATOR_MENU_GAP_SMALL
-      : OPERATOR_MENU_GAP_LARGE;
+    return this.extraSmallScreen ? OPERATOR_MENU_GAP_SMALL : OPERATOR_MENU_GAP_LARGE;
   }
 
   get sideNavMode() {

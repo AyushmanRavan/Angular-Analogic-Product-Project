@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { Subscription } from "rxjs/Subscription";
+import {  MatPaginatorIntl } from "@angular/material/paginator";
+import { Subscription } from "rxjs";
 import { DATA } from "../core/data.enum";
 import { StorageServiceService } from "../core/services/auth/storage-service.service";
-import { AutoLogoutService } from './../auto-logout.service';
 import { AlarmService } from "./alarm.service";
 
 @Component({
@@ -24,12 +23,12 @@ export class AlarmComponent implements OnInit, OnDestroy {
   tableData;
   machineID: number;
 
-  constructor(private storageServiceService: StorageServiceService, private alarm: AlarmService, private _intl: MatPaginatorIntl, private logout: AutoLogoutService) {
+  constructor(private storageServiceService: StorageServiceService, private alarm: AlarmService, private _intl: MatPaginatorIntl) {
     this.setupChart();
     this.displayedColumns = this.alarm.getTableColumns();
   }
 
-  ngOnInit() { this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString()); }
+  ngOnInit() { this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString()); }
 
   ngOnDestroy() {
     if (this.subscriber) this.subscriber.unsubscribe();

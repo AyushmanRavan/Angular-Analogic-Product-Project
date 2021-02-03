@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, ViewChild, OnInit, Input } from "@angular/core";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
+import { Component, AfterViewInit, ViewChild } from "@angular/core";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { Subscription } from "rxjs";
 import { ReportsService } from "../reports.service";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
@@ -33,7 +34,7 @@ export class ReportviewComponent implements AfterViewInit {
   lineBarReportData: any[] = [];
   piechartReportData: any[] = [];
   doughnutchartReportData: any[] = [];
-  guagechartReportData = [] = [];
+  guagechartReportData: GuageChart[] = [];
 
   public ChartOptions: any = {
     scaleShowValues: true,

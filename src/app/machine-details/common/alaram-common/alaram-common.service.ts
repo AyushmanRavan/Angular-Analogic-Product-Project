@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource } from "@angular/material/table";
 import { capitalize, find, groupBy, orderBy } from "lodash";
 
 import { GlobalErrorHandler } from "../../../core/services/error-handler";
 import { Alarm } from "./alarm";
-import { RestApi } from "../../../core/services/rest.service";
-import { constants } from 'os';
+import { RestService } from "../../../core/services/rest.service";
 
 @Injectable()
 export class AlaramCommonService {
 
-  constructor(private error: GlobalErrorHandler, private rest: RestApi) {}
+  constructor(private error: GlobalErrorHandler, private rest: RestService) {}
 
   getProductAlarmCount = machineName =>
     this.rest.get(`generic/getAlarmCount/${machineName}`);
@@ -149,6 +148,6 @@ export class AlaramCommonService {
     collection: Alarm[],
     fields,
     by = ["desc"]
-  ): Alarm[] | any[] => orderBy(collection, [...fields], by);
+  ): Alarm[] | any[] => orderBy(collection, [...fields], ["desc"]);
 
 }

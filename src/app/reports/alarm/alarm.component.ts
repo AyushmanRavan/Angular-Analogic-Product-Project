@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { MatPaginator, MatTableDataSource,MatPaginatorIntl } from "@angular/material";
+import {  Component, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
 import { ReportsService } from "./../../reports/reports.service";
 
@@ -42,7 +43,12 @@ export class AlarmComponent implements OnInit {
     private alarm: ReportsService,private _intl:MatPaginatorIntl
   ) {}
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel="Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel="Records Per Page";
+  }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
   }
  
   onSelect(e) {

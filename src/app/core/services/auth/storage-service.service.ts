@@ -7,16 +7,16 @@ export class StorageServiceService {
 
   constructor() { }
 
-  clearStorage() {
+  clearStorageItems() {
     localStorage.clear();
   }
 
-  saveStorage(key: string, value: string) {
+  setStorageItem(key: string, value: string) {
     localStorage.removeItem(key); //removing allready existing item.
     localStorage.setItem(key, value);
   }
 
-  getStorage(key: string) {
+  getStorageItem(key: string) {
     return localStorage.getItem(key);
   }
   
@@ -24,12 +24,12 @@ export class StorageServiceService {
   // localStorage.setItem('items', JSON.stringify(itemsArray))
   // const data = JSON.parse(localStorage.getItem('items'))
 
-  saveComplexStorage(key: string, value: string) {
-    localStorage.removeItem(key);
+  setComplexStorageItem(key: string, value: string) {
+    localStorage.removeItem(key);//removing allready existing item.
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getComplexStorage(key: string) {
+  getComplexStorageItem(key: string) {
     return JSON.parse(localStorage.get(key));
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RestApi } from '../../../core/services/rest.service';
+import { RestService } from '../../../core/services/rest.service';
 import { map, orderBy } from 'lodash';
 import { GlobalErrorHandler } from '../../../core/services/error-handler';
 
@@ -7,7 +7,7 @@ import { GlobalErrorHandler } from '../../../core/services/error-handler';
 export class PccService {
   barLabel = [];
   lineLabel = [];
-  constructor(private rest: RestApi) { }
+  constructor(private rest: RestService) { }
   getMonitor(machineId: string) {
     return  this.rest.get(`generic/MonitoringDashboard/${machineId}`);
   }

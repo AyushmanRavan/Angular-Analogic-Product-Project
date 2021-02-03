@@ -15,14 +15,8 @@ import { MachineComponent } from './machine.component';
 // }
 
 const machineRoutes: Routes = [
-  {
-    path: '',
-    component: MachineComponent
-  },
-  {
-    path: ':machineName',
-    component: MachineComponent
-  }
+  {    path: '',    component: MachineComponent  },
+  {    path: ':machineName',    component: MachineComponent  }
   
  
   // { ...routeOptions("", MachineComponent, "Machine") },

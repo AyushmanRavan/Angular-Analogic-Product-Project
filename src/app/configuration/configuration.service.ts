@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
-import { findIndex, groupBy, omit, map } from "lodash";
+import { findIndex, map } from "lodash";
 import * as moment from "moment";
 import { GlobalErrorHandler } from "../core/services/error-handler";
 import { MODE } from "./shared/config/mode";
 import { NotificationService } from "../core/services/notification.service";
-import { RestApi } from "../core/services/rest.service";
+import { RestService } from "../core/services/rest.service";
 import { Shift } from "./shared/shift";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { environment as env } from "../../environments/environment";
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { HttpClient } from "@angular/common/http";
 /**
  * @author Hardik Pithva
  */
@@ -20,7 +18,7 @@ export class ConfigurationService {
     private http: HttpClient,
     private error: GlobalErrorHandler,
     private notification: NotificationService,
-    private rest: RestApi
+    private rest: RestService
   ) { }
 
   // get machine specific Parameter

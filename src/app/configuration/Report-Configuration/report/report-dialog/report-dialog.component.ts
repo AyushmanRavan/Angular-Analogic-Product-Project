@@ -1,10 +1,9 @@
-import { Component, Inject, ViewChildren, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl, FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormGroup, FormBuilder,  Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import { ConfigurationService } from '../../../configuration.service';
 import { MODE } from '../../../shared/config';
-import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-report-dialog',

@@ -457,7 +457,7 @@ const ROLES = {
   SUPERADMIN: "SUPERADMIN"
 };
 
-const INTERVAL_TIME: Number = 100000;
+const INTERVAL_TIME: number = 100000;
 const HIDE_ACCESS_DETAILS = false;
 
 export {

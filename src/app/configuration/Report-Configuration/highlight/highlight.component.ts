@@ -1,6 +1,7 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component,  ViewChild, OnInit } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+
+import { Subscription } from 'rxjs';
 import { HighlightDialogComponent } from './highlight-dialog/highlight-dialog.component';
 import { Router } from '@angular/router';
 import {
@@ -13,6 +14,8 @@ import {
 } from '../../shared/config';
 import { ConfigurationService } from '../../configuration.service';
 import { ActivatedRoute, Params } from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-highlight',

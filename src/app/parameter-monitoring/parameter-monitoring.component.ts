@@ -1,16 +1,12 @@
 import { ParameterMonitoringService } from "./../parameter-monitoring/parameter-monitoring.service";
-import { omit } from 'lodash';
-import { Component, AfterViewInit, ViewChild, OnInit } from "@angular/core";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { AutoLogoutService } from './../auto-logout.service';
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
 import { BaseChartDirective } from "ng2-charts/ng2-charts";
 import { GlobalErrorHandler } from "../core/services/error-handler";
 import { DATA } from "../core/data.enum";
 import { StorageServiceService } from "../core/services/auth/storage-service.service";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: 'app-parameter-monitoring',
@@ -57,17 +53,19 @@ export class ParameterMonitoringComponent implements OnInit {
   constructor(
     private error: GlobalErrorHandler,
     private energy: ParameterMonitoringService, private _intl: MatPaginatorIntl,
-    private logout: AutoLogoutService,
     private storageServiceService: StorageServiceService
   ) {
     this.setupChart();
   }
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
   }
-
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
 
   onSelect(e) {
     this.loaded = true;

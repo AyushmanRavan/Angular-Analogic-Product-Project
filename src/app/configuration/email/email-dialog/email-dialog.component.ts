@@ -1,9 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConfigurationService } from '../../configuration.service';
 import { MODE } from '../../shared/config';
-import { switchMap } from "rxjs/operators";
 import { ViewEncapsulation } from '@angular/core';
 import * as moment from "moment";
 @Component({

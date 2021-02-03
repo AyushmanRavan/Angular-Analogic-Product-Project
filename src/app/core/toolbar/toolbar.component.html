@@ -1,106 +1,106 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
-  <button *ngIf="menuBarDisplay" mat-icon-button (click)="open()" aria-label="menu" value="menu" class="header-logo">
-    <mat-icon>menu</mat-icon>
-  </button>
-
-  <p class="alaram-ele" (click)="loadHomepage()">PlantConnect<span class="sub">Solution by AnalytiIQ Pvt Ltd</span></p>
-  <span class="spacer"></span>
-
-  <button mat-icon-button [matMenuTriggerFor]="passwordMsgMenu" #passwordMenu="matMenuTrigger">
-    <!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> -->
-    <mat-icon>warning</mat-icon>
-  </button>
-
-  <mat-menu #passwordMsgMenu="matMenu" [overlapTrigger]="false" class="mycss">
-    <ng-template matMenuContent>
-      <div class="passwordMesDiv">
-        <span>
-          <p class="passwordMsgTitle">PASSWORD EXPIRATION</p>
-        </span>
-        <span>
-          <p class="passwordMsgMain">Your password will expire in {{convertedTimeToExpired}} </p>
-          <p class="passwordMsgSub">Would you like to change it now?</p>
-        </span> 
-        <span class="btnSpan">
-          <button mat-stroked-button color="primary" (click)="openChangePassword('edit')">Yes</button>
-          <button mat-stroked-button color="primary">No</button>
-        </span>
-      </div>
-
-    </ng-template>
-  </mat-menu>
-
-  <button (click)="togglemenu()" mat-icon-button matTooltip="Menu" matTooltipPosition="left" class="homepage-menu">
-    <i class="fa fa-th" aria-hidden="true"></i>
-    <!-- <mat-icon>menu</mat-icon> -->
-    <div class="sub-meni" [attr.data-tooglemenu]="datatoggle">
-
-      <div class="">
-        <ul class="dropdown-nav">
-          <li>
-            <a href="dashboard">
-              <!-- <mat-icon class="m-icon">insert_chart</mat-icon><span class="menu-label">PMS</span> -->
-              <img src="../../../assets/image/PMS.png" class="menu-icon-image" height="100" width="80" />
-            </a>
-          </li>
-          <li class="second-child">
-            <a href="machinedetail">
-              <!-- <mat-icon class="m-icon"> insert_chart</mat-icon><span class="menu-label">UMS</span> -->
-              <img src="../../../assets/image/UMS.png" class="menu-icon-image" height="100" width="80" />
-            </a>
-          </li>
-        </ul>
-        <ul class="dropdown-nav">
-          <li>
-            <a href="ems">
-              <!-- <mat-icon class="m-icon"> insert_chart</mat-icon><span class="menu-label">EMS</span> -->
-              <img src="../../../assets/image/EMS.png" class="menu-icon-image" height="100" width="80" />
-            </a>
-          </li>
-
-
-        </ul>
-        <ul class="dropdown-nav last-nav">
-          <li class="last-child">
-            More
-          </li>
-        </ul>
-        <!-- <div class="col-md-3"><mat-icon>insert_chart</mat-icon><span>PMS</span></div>
-                  <div class="col-md-3">UMS</div>
-                  <div class="col-md-3">AMS</div> -->
-      </div>
-    </div>
-  </button>
-
-
-  <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-    <ng-template matMenuContent>
-      <div style="width :100%;">
-        <mat-icon class="userProfilePic">account_circle</mat-icon>
-        <p class="userProfileName">{{ userFullName }}</p>
-      </div>
-
-      <hr>
-    </ng-template>
-    <button mat-menu-item (click)="updateUserDetails('edit')">
-      <mat-icon>edit</mat-icon>
-      <span>Update Details</span>
+    <button mat-icon-button (click)="open()" aria-label="menu" value="menu" class="header-logo">
+      <mat-icon>menu</mat-icon>
     </button>
-    <!-- <button mat-menu-item (click)="openChangePassword('edit')">
-      <mat-icon>vpn_key</mat-icon>
-      <span>Change Password</span>
-    </button> -->
-    <button mat-menu-item (click)="onLogout()">
+  
+    <p class="alaram-ele" (click)="loadHomepage()">PlantConnect<span class="sub">Solution by AnalytiIQ Pvt Ltd</span></p>
+    <span class="spacer"></span>
+  
+    <button mat-icon-button [matMenuTriggerFor]="passwordMsgMenu" #passwordMenu="matMenuTrigger">
+      <!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> -->
+      <mat-icon>warning</mat-icon>
+    </button>
+  
+    <mat-menu #passwordMsgMenu="matMenu" [overlapTrigger]="false" class="mycss">
+      <ng-template matMenuContent>
+        <div class="passwordMesDiv">
+          <span>
+            <p class="passwordMsgTitle">PASSWORD EXPIRATION</p>
+          </span>
+          <span>
+            <p class="passwordMsgMain">Your password will expire in {{convertedTimeToExpired}} </p>
+            <p class="passwordMsgSub">Would you like to change it now?</p>
+          </span> 
+          <span class="btnSpan">
+            <button mat-stroked-button color="primary" (click)="openChangePassword('edit')">Yes</button>
+            <button mat-stroked-button color="primary">No</button>
+          </span>
+        </div>
+  
+      </ng-template>
+    </mat-menu>
+  
+    <button (click)="togglemenu()" mat-icon-button matTooltip="Menu" matTooltipPosition="left" class="homepage-menu">
+      <i class="fa fa-th" aria-hidden="true"></i>
+      <!-- <mat-icon>menu</mat-icon> -->
+      <div class="sub-meni" [attr.data-tooglemenu]="datatoggle">
+  
+        <div class="">
+          <ul class="dropdown-nav">
+            <li>
+              <a href="dashboard">
+                <!-- <mat-icon class="m-icon">insert_chart</mat-icon><span class="menu-label">PMS</span> -->
+                <img src="../../../assets/image/PMS.png" class="menu-icon-image" height="100" width="80" />
+              </a>
+            </li>
+            <li class="second-child">
+              <a href="machinedetail">
+                <!-- <mat-icon class="m-icon"> insert_chart</mat-icon><span class="menu-label">UMS</span> -->
+                <img src="../../../assets/image/UMS.png" class="menu-icon-image" height="100" width="80" />
+              </a>
+            </li>
+          </ul>
+          <ul class="dropdown-nav">
+            <li>
+              <a href="ems">
+                <!-- <mat-icon class="m-icon"> insert_chart</mat-icon><span class="menu-label">EMS</span> -->
+                <img src="../../../assets/image/EMS.png" class="menu-icon-image" height="100" width="80" />
+              </a>
+            </li>
+  
+  
+          </ul>
+          <ul class="dropdown-nav last-nav">
+            <li class="last-child">
+              More
+            </li>
+          </ul>
+          <!-- <div class="col-md-3"><mat-icon>insert_chart</mat-icon><span>PMS</span></div>
+                    <div class="col-md-3">UMS</div>
+                    <div class="col-md-3">AMS</div> -->
+        </div>
+      </div>
+    </button>
+  
+  
+    <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+      <ng-template matMenuContent>
+        <div style="width :100%;">
+          <mat-icon class="userProfilePic">account_circle</mat-icon>
+          <p class="userProfileName">{{ userFullName }}</p>
+        </div>
+  
+        <hr>
+      </ng-template>
+      <button mat-menu-item (click)="updateUserDetails('edit')">
+        <mat-icon>edit</mat-icon>
+        <span>Update Details</span>
+      </button>
+      <!-- <button mat-menu-item (click)="openChangePassword('edit')">
+        <mat-icon>vpn_key</mat-icon>
+        <span>Change Password</span>
+      </button> -->
+      <button mat-menu-item (click)="onLogout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Log out</span>
+      </button>
+    </mat-menu>
+    <button (click)="toggleUserDetails()" mat-icon-button matTooltip="User Name" matTooltipPosition="left"
+      class="loggedInUser" [matMenuTriggerFor]="userMenu"><span class="username">{{ username }}</span>
+      <mat-icon>account_circle</mat-icon>
+      <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </button>
+    <!-- <button (click)="onLogout()" mat-icon-button matTooltip="Log out" matTooltipPosition="left">
       <mat-icon>power_settings_new</mat-icon>
-      <span>Log out</span>
-    </button>
-  </mat-menu>
-  <button (click)="toggleUserDetails()" mat-icon-button matTooltip="User Name" matTooltipPosition="left"
-    class="loggedInUser" [matMenuTriggerFor]="userMenu"><span class="username">{{ username }}</span>
-    <mat-icon>account_circle</mat-icon>
-    <i class="fa fa-caret-down" aria-hidden="true"></i>
-  </button>
-  <!-- <button (click)="onLogout()" mat-icon-button matTooltip="Log out" matTooltipPosition="left">
-    <mat-icon>power_settings_new</mat-icon>
-  </button> -->
-</mat-toolbar>  
+    </button> -->
+  </mat-toolbar>  

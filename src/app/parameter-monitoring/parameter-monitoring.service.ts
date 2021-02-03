@@ -1,10 +1,10 @@
 
 import { Injectable } from "@angular/core";
-import { omit, map, sumBy } from "lodash";
-
+import { omit, map as lodashMap, sumBy } from "lodash";
+import { map } from 'rxjs/operators';
 import { GlobalErrorHandler } from "../core/services/error-handler";
-import { RestApi } from "../core/services/rest.service";
-import { Energy } from "./../parameter-monitoring/parameter-monitoring";
+import { RestService } from "../core/services/rest.service";
+
 class chartData {
   data: number[];
   label: string;
@@ -16,8 +16,8 @@ export class ParameterMonitoringService {
   object: chartData[] = []; //object of Line Chart Data
   // object:Array<chartData>=[];
   private nextInterval: any[] = [];
-  constructor(private error: GlobalErrorHandler, private rest: RestApi) {}
-  
+  constructor(private error: GlobalErrorHandler, private rest: RestService) { }
+
   getParameters(machineId: number) {
     return this.rest.get("config/machineParametersById/filter/" + machineId);
   }
@@ -30,28 +30,40 @@ export class ParameterMonitoringService {
       .post(`dynamicReportForDashBoard/report`, {
         machineId,
         input_parameter
-      })
-      .map((data: any[]) => {
-        let tempData = [];
-        if (data)
-          data.forEach(item => {
-            tempData.push({
-              "Start Date-Time": item.StartTime,
-              "End Date-Time": item.EndTime,
-              ...omit(item, ["StartTime","EndTime"])
-            });
-          });
-        return tempData;
-      });
+      }).pipe(
+        map(data => {
+          data.map(element => {
+            return {
+              "Start Date-Time": element.StartTime,
+              "End Date-Time": element.EndTime,
+              ...omit(element, ["StartTime", "EndTime"])
+            }
+          })
+        })
+      )
+
+  // map((data: any[]) => {
+  //   let tempData = [];
+  //   if (data)
+  //     data.forEach(item => {
+  //       tempData.push({
+  //         "Start Date-Time": item.StartTime,
+  //         "End Date-Time": item.EndTime,
+  //         ...omit(item, ["StartTime", "EndTime"])
+  //       });
+  //     });
+  //   return tempData;
+  // });
 
   getChartOptions = () => {
     return {
       labels: this.nextInterval,
       options: {
-        responsive:true,
+        responsive: true,
         scales: {
           xAxes: [
-            { stacked: true,
+            {
+              stacked: true,
               scaleLabel: {
                 display: true,
                 labelString: "Time",
@@ -59,8 +71,9 @@ export class ParameterMonitoringService {
               }
             }
           ],
-           yAxes: [
-            { stacked: true,
+          yAxes: [
+            {
+              stacked: true,
               scaleLabel: {
                 display: true,
                 labelString: "Parameters Count (No.)",
@@ -83,8 +96,8 @@ export class ParameterMonitoringService {
   throwError = (error: any) => this.error.handleError(error);
 
   filterMachineDataForComparisionPdf = (machines, omittedColumns) =>
-  machines.map(item => omit(item, omittedColumns)) ;  
-  
+    machines.map(item => omit(item, omittedColumns));
+
   getTotalConsumed = data => sumBy(data, (item: any) => parseFloat(item.kwh));
 
   getChartData = (collection = [{}]) => {
@@ -101,13 +114,13 @@ export class ParameterMonitoringService {
       }
     } //empty before get param
 
-    map(collection, (item: any) => {
+    lodashMap(collection, (item: any) => {
       this.nextInterval.push(
         new Date(item["End Date-Time"]).getHours() +
-          ":" +
-          new Date(item["End Date-Time"]).getMinutes() +
-          ":" +
-          new Date(item["End Date-Time"]).getSeconds()
+        ":" +
+        new Date(item["End Date-Time"]).getMinutes() +
+        ":" +
+        new Date(item["End Date-Time"]).getSeconds()
       );
     }); //for label
 
@@ -121,8 +134,8 @@ export class ParameterMonitoringService {
         // (key) Select only parameter
         if (key !== "Start Date-Time") {
           for (let properties of collection) {
-              x[h] = properties[key];
-              h++; 
+            x[h] = properties[key];
+            h++;
           }
           this.object.push(new chartData());
           this.object[index].data = Object.assign([], x); //copy to one array to anther
@@ -134,7 +147,7 @@ export class ParameterMonitoringService {
       }
     }
 
-  
+
     return this.object;
   };
 }

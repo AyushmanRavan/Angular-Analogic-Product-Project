@@ -7,6 +7,7 @@ import { MccReportRoutingModule } from './mcc-report-routing.module';
 import { SharedModule } from '../../../shared/modules/shared.module';
 import {SharedComponentModule} from '../../../shared-component/shared-component.module' ;
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { MaterialModule } from 'src/app/material/material.module';
 // import { PlantDetailsComponent} from '../../../new-pdf/plant-details/plant-details.component'
 // import { SummaryTableComponent} from '../../../new-pdf/summary-table/summary-table.component';
 // import {MonitoringDetailsComponent} from '../../../new-pdf/monitoring-details/monitoring-details.component'
@@ -15,6 +16,7 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
     CommonModule,
     MccReportRoutingModule,
     SharedModule,
+    MaterialModule,
     SharedComponentModule,
     PDFExportModule
   ],

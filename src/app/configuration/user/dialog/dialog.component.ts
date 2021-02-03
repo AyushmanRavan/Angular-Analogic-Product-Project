@@ -55,7 +55,7 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (this.dialog.isOpenFromConfig === true && this.HIDE_ACCESS_DETAILS !== true) {
-      this.loggedInUserRole = atob(this.storageServiceService.getStorage(DATA.ROLE));
+      this.loggedInUserRole = atob(this.storageServiceService.getStorageItem(DATA.ROLE));
       if (this.loggedInUserRole !== 'SUPERADMIN') {
         this.enabledCheckbox.nativeElement.style.display = 'none';
       } else {
@@ -166,8 +166,8 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
       'authority': ''
     };
     tempData['user_account_id'] = tempData.id;
-    tempData['actionTakenBy'] = this.storageServiceService.getStorage(DATA.USERNAME);
-    tempData['actedUserId'] = Number(this.storageServiceService.getStorage(DATA.USERID));
+    tempData['actionTakenBy'] = this.storageServiceService.getStorageItem(DATA.USERNAME);
+    tempData['actedUserId'] = Number(this.storageServiceService.getStorageItem(DATA.USERID));
 
     let valueofRole = [];
     valueofRole.push(tempData.uiRole);
@@ -246,8 +246,8 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
 
       case MODE.DELETE:
         const deleteUserObj = {
-          'actionTakenBy': this.storageServiceService.getStorage(DATA.USERNAME),
-          'actedUserId': Number(this.storageServiceService.getStorage(DATA.USERID)),
+          'actionTakenBy': this.storageServiceService.getStorageItem(DATA.USERNAME),
+          'actedUserId': Number(this.storageServiceService.getStorageItem(DATA.USERID)),
           'user_account_id': user.user_account_id
         };
         this._user

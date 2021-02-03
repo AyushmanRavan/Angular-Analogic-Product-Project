@@ -1,9 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ConfigurationService } from '../../../configuration.service';
 import { MODE } from '../../../shared/config';
+import { MatTableDataSource } from '@angular/material/table';
 export interface HeaderElement {
   param_id: string,
   heading: string,

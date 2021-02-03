@@ -1,13 +1,11 @@
 import { OeeService } from "./../oee.service";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
+import { Subscription } from "rxjs";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
 
 import { Quality } from "./quality";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-quality",
@@ -56,8 +54,9 @@ export class QualityComponent implements OnInit {
     this.displayedColumns = this.qualityservice.getTableColumnsQuality();
   }
 
+ 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
 
     this.route.params.forEach(
       (params: Params) => (this.machineID = params["machineID"])
@@ -85,7 +84,7 @@ export class QualityComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
     this.getQualityDetails(this.machineID);
   }
 

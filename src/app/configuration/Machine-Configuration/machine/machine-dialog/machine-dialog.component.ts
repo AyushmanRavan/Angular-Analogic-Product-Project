@@ -1,19 +1,14 @@
 import {
   Component,
-  EventEmitter,
-  Input,
   OnInit,
-  Output,
-  Inject, ViewChild,
+  Inject, 
 } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { switchMap } from "rxjs/operators";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
 import { ConfigurationService } from "../../../configuration.service";
 import { MODE } from "../../../shared/config";
 import { cloneDeep } from "lodash";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-machine-dialog',

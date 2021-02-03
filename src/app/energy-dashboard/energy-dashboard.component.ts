@@ -1,16 +1,10 @@
-import { omit } from 'lodash';
-import { Component, AfterViewInit, ViewChild, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { AutoLogoutService } from './../auto-logout.service';
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
-import { BaseChartDirective } from "ng2-charts/ng2-charts";
+import { Component,  ViewChild, OnInit } from "@angular/core";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
 import { GlobalErrorHandler } from "../core/services/error-handler";
 import { EnergyDashboardService } from "./../energy-dashboard/energy-dashboard.service";
 import { DATA } from '../core/data.enum';
 import { StorageServiceService } from '../core/services/auth/storage-service.service';
+import { MatTableDataSource } from "@angular/material/table";
 @Component({
   selector: 'app-energy-dashboard',
   templateUrl: './energy-dashboard.component.html',
@@ -50,15 +44,20 @@ export class EnergyDashboardComponent implements OnInit {
   constructor(
     private error: GlobalErrorHandler,
     private energy: EnergyDashboardService, private _intl: MatPaginatorIntl,
-    private logout: AutoLogoutService, private storageServiceService: StorageServiceService
+     private storageServiceService: StorageServiceService
   ) { }
 
   ngOnInit() {
     this.setupChart(); 
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
-    this._intl.itemsPerPageLabel = "Records Per Page";
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
+    // this._intl.itemsPerPageLabel = "Records Per Page";
   }
 
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
   onSelect(e) {
     this.loaded = true;
     this.loadedSpinner = true;

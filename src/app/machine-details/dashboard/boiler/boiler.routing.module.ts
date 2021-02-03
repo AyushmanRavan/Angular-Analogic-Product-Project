@@ -6,11 +6,7 @@ import { BoilerComponent } from "./boiler.component"
 
 
 const boilerRoutes: Routes = [
-  {
-    path: "",
-    component: BoilerComponent
-    
-  }
+  {    path: "",    component: BoilerComponent  }
   
  
 ];

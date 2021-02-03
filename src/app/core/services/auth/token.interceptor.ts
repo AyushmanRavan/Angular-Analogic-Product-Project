@@ -26,27 +26,23 @@ export class TokenInterceptor implements HttpInterceptor {
       if (request.url.endsWith("/pdf") && (request.method === 'POST' || request.method === 'PUT')) {
         const auth = this.inject.get(AuthService);
 
-        const headers = new HttpHeaders().set(DATA.CACHE_CONTROL, 'no-cache')
-          .set(DATA.APP_SUBJECT, this.storageServiceService.getStorage(DATA.APP_SUBJECT)).set(DATA.AUTHORIZATION, DATA.BEARER + this.storageServiceService.getStorage(DATA.TOKEN));
+        const customHeaders = new HttpHeaders().set(DATA.CACHE_CONTROL, 'no-cache')
+          .set(DATA.APP_SUBJECT, this.storageServiceService.getStorageItem(DATA.APP_SUBJECT)).set(DATA.AUTHORIZATION, DATA.BEARER + this.storageServiceService.getStorageItem(DATA.TOKEN));
 
 
         request = request.clone({
-          setHeaders: {
-            ...headers
-          }
+          headers: customHeaders
         });
       } else {
         const auth = this.inject.get(AuthService);
 
-        const headers = new HttpHeaders().set(DATA.CACHE_CONTROL, 'no-cache').set(DATA.CONTENT_TYPE, 'application/json').
-          set(DATA.APP_SUBJECT, this.storageServiceService.getStorage(DATA.APP_SUBJECT)).set(DATA.AUTHORIZATION, DATA.BEARER + this.storageServiceService.getStorage(DATA.TOKEN));
-
-
+        const customHeaders = new HttpHeaders().set(DATA.CACHE_CONTROL, 'no-cache').set(DATA.CONTENT_TYPE, 'application/json').
+          set(DATA.APP_SUBJECT, this.storageServiceService.getStorageItem(DATA.APP_SUBJECT)).set(DATA.AUTHORIZATION, DATA.BEARER + this.storageServiceService.getStorageItem(DATA.TOKEN));
+         
         request = request.clone({
-          setHeaders: {
-            ...headers
-          }
+          headers: customHeaders
         });
+
       }
     }
     return next.handle(request);

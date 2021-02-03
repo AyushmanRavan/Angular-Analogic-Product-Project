@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import {PccService} from './pcc.service';
 import { INTERVAL_TIME } from '../../../data';
 import { Router } from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
+import { AutoLogoutService } from 'src/app/auto-logout.service';
 
 export interface PeriodicElement {
   position: number;
@@ -60,16 +62,23 @@ assemblyID: number;
 machineID: number;
 
 @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private pccService: PccService, private router: Router ) { }
+  constructor(private pccService: PccService, private router: Router,
+    private autoLogoutService: AutoLogoutService) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+    // this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
     setInterval(() => {
       if (this.selectedEvent) {
         this.onSelect(this.selectedEvent);
       }
     }, INTERVAL_TIME);
    }
+
+   ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
    getTimeString(seconds) {
     const hrs = Math.floor(seconds / 3600);
     seconds -= hrs * 3600;

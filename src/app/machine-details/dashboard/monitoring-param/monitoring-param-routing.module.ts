@@ -4,10 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MonitoringParamComponent } from "./monitoring-param.component";
 
 const routes: Routes = [
-  {
-    path: '',
-    component: MonitoringParamComponent
-  }
+  {    path: '',    component: MonitoringParamComponent  }
   // {
   //   path: '/:machineName',
   //   component: MonitoringParamComponent

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { RestApi } from '../../../core/services/rest.service';
+import { RestService } from '../../../core/services/rest.service';
 
 import * as moment from "moment";
 
 @Injectable()
 export class MachineReportService {
 
-  constructor(private rest : RestApi) { }
+  constructor(private rest : RestService) { }
 
 
   getMachineInfo(machineName,from,to,interval) {

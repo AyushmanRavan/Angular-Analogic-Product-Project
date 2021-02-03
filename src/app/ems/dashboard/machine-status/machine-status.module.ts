@@ -14,6 +14,7 @@ import { MachineStatusService } from "./machine-status.service";
 import {SharedSvgComponentModule} from "./../../../machine/shared/shared-Svg-Component.module"
 
 import { MachineStatusRoutingModule } from './machine-status-routing.module';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { MachineStatusRoutingModule } from './machine-status-routing.module';
     MachineStatusRoutingModule,
     SharedModule,
     PipesModule,
-    SharedSvgComponentModule
+    SharedSvgComponentModule,
+    MaterialModule
   ],
   declarations: [MachineStatusComponent],
   providers:[MachineStatusService]

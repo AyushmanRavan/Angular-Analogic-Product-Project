@@ -1,18 +1,15 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component,  OnInit } from '@angular/core';
+import {  MatDialog,   } from '@angular/material/dialog';
 
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
-  DELETE_DIALOG_OPTIONS,
   DIALOG_OPTIONS,
   DIALOG_BUTTONS,
-  DIALOG_HEADER,
-  MODE
 } from '../shared/config';
 
 import { ConfigurationService } from '../configuration.service';
 import { PasswordPolicyDialogComponent } from './password-policy-dialog/password-policy-dialog.component'
+import { MatPaginatorIntl } from '@angular/material/paginator';
 @Component({
   selector: 'app-password-policy',
   templateUrl: './password-policy.component.html',

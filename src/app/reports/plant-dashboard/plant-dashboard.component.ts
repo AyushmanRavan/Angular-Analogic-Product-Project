@@ -2,19 +2,16 @@
 import { Subscription } from "rxjs";
 import { GlobalErrorHandler } from "../../core/services/error-handler";
 import * as moment from "moment";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
 import {
-  AfterViewInit,
   Component,
   OnInit,
-  OnDestroy,
   ViewChild
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator, MatTableDataSource, MatSnackBar, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator,  MatPaginatorIntl } from '@angular/material/paginator';
 import { ReportsService } from "../reports.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSnackBar } from "@angular/material/snack-bar";
 @Component({
   selector: "app-plant-dashboard",
   templateUrl: "./plant-dashboard.component.html",
@@ -76,9 +73,12 @@ export class PlantDashboardComponent implements OnInit {
     this.fromStartAt = this._report.getDate();
     this.toStartAt = this._report.getDate(true);
   }
-
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
     this._report.getPlant().subscribe(data => {
       if (data != null) { this.plantOptions = data; }
       else {

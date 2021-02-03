@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import {FeederService} from './feeder.service';
 import { INTERVAL_TIME } from '../../../data';
 import { Router } from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
   position: number;
@@ -57,13 +58,19 @@ export class FeederComponent implements OnInit {
   constructor(private feederService: FeederService, private router: Router) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+    // this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
     setInterval(() => {
       if (this.selectedEvent) {
         this.onSelect(this.selectedEvent);
       }
     }, INTERVAL_TIME);
   }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
   getArrowColor(increasedValue, isForward) {
     if (increasedValue > 0) {
       if (isForward === true) {

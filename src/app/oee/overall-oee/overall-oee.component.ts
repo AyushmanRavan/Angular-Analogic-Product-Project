@@ -1,20 +1,15 @@
-import * as moment from 'moment';
 import { OeeService } from './../oee.service';
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ViewChild,
-  OnDestroy
 } from "@angular/core";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
+import { MatPaginator, MatPaginatorIntl} from "@angular/material/paginator";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { Subscription } from "rxjs";
 
 import { Overall } from './overall';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-overall-oee',
@@ -50,15 +45,17 @@ export class OverallOeeComponent implements OnInit {
 
   ngOnInit() {
     this.Errormsg = true;
-    this.energyPaginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.energyPaginator._intl.itemsPerPageLabel = "Records Per Page";
 
     this.route.params.forEach((params: Params) => (this.machineID = params['machineID']));
     this.loaded = false;
     this.empty = false;
   }
-
+ 
 
   ngAfterViewInit() {
+    this.energyPaginator._intl.itemsPerPageLabel = "Record per Page";
+    
     this.getEnergyDetails(this.machineID);
 
   }

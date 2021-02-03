@@ -1,6 +1,6 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component,  ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
   DELETE_DIALOG_OPTIONS,
@@ -11,7 +11,9 @@ import {
 } from '../shared/config';
 import { ConfigurationService } from '../configuration.service';
 import { TimeSlotDialogComponent } from './time-slot-dialog/time-slot-dialog.component';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-time-slot',
@@ -47,6 +49,7 @@ export class TimeSlotComponent {
   constructor(private _intl:MatPaginatorIntl,public dialog: MatDialog, private config: ConfigurationService, private fb: FormBuilder,) {
  
   }
+  
   ngAfterViewInit() {
     this._intl.itemsPerPageLabel="Records Per Page"; 
 

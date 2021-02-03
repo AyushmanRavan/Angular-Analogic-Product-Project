@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl, MatButton } from '@angular/material';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MccReportService } from './mcc-report.service';
 import { DASHBOARD_BOX_DETAILS } from '../../../data';
 import { NewPdfComponent } from '../../../new-pdf/new-pdf.component';
+import { MatButton } from '@angular/material/button';
+import { MatTableDataSource } from '@angular/material/table';
 export interface PeriodicElement {
   position: number;
   name: string;
@@ -64,8 +66,14 @@ export class MccReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+    // this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
   }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
   onSelect(e) {
     if (this.btnRef === undefined) {
       this.btnRef = e.downloadPdfBtnRef;

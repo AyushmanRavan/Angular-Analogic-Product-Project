@@ -1,6 +1,6 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component,  ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -12,7 +12,8 @@ import {
 } from '../shared/config';
 import { ConfigurationService } from '../configuration.service';
 import { DialogComponent } from './dialog/dialog.component';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-alarm',

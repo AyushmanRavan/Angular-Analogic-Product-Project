@@ -1,6 +1,7 @@
-import { Component, Inject, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator } from '@angular/material';
-import { FormControl, FormGroup, FormBuilder, Validator, Validators, FormArray } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ConfigurationService } from '../../../configuration.service';
 import { MODE } from '../../../shared/config';
@@ -44,7 +45,7 @@ export class ChartDialogComponent {
   propertiesData: MatTableDataSource<any> = new MatTableDataSource<any>(this.dataProperty);
   showTable: boolean = true;
   chartType: string;
- 
+
   JSONExampleData: any;
 
   chart: FormGroup;
@@ -890,7 +891,7 @@ export class ChartDialogComponent {
         if (formValue.value.startsWith('#') && formValue.value.length === 7) {
 
           if ((formValue.value.match(color))) {
-              return true;
+            return true;
           } else {
             this.propertiesForm.controls['value'].setErrors({ 'incorrect': true });
             this.invalidData = "color";

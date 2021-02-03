@@ -5,51 +5,18 @@ import { DashboardComponent } from "./dashboard.component";
 
 const routes: Routes = [
   {
-    path: "",
-    component: DashboardComponent,
+    path: "", component: DashboardComponent,
     children: [
-      {
-        path: "",
-        component: DefaultComponent
-      },
-      {
-        path: "products",
-        loadChildren: "./../product/product.module#ProductModule"
-      },
-
-      {
-        path: "alarms",
-        loadChildren: "./../alarm/alarm.module#AlarmModule"
-      },
-      {
-        path: "machine",
-        loadChildren: "./../machine/machine.module#MachineModule"
-      },
-      {
-        path: "energy",
-        loadChildren: "./../energy-dashboard/energy-dashboard.module#EnergyDashboardModule"
-      },
-
-      {
-        path: "parameter-monitoring",
-        loadChildren: "./../parameter-monitoring/parameter-monitoring.module#ParameterMonitoringModule"
-      },
-      {
-        path: "oee",
-        loadChildren: "./../oee/oee.module#OeeModule"
-      },
-      {
-        path: 'utility',
-        loadChildren: './../utility/utility.module#UtilityModule'
-      },
-      {
-        path: "report",
-        loadChildren: "./../reports/reports.module#ReportsModule"
-      },
-      {
-        path: "config",
-        loadChildren: "./../configuration/configuration.module#ConfigurationModule"
-      }
+      { path: "", component: DefaultComponent },
+      { path: "products", loadChildren: () => import('./../product/product.module').then(products => products.ProductModule) },
+      { path: 'alarms', loadChildren: () => import('./../alarm/alarm.module').then(alarms => alarms.AlarmModule) },
+      { path: "machine", loadChildren: () => import('./../machine/machine.module').then(machine => machine.MachineModule) },
+      { path: "energy", loadChildren: () => import('./../energy-dashboard/energy-dashboard.module').then(energy => energy.EnergyDashboardModule) },
+      { path: "parameter-monitoring", loadChildren: () => import('./../parameter-monitoring/parameter-monitoring.module').then(parameter => parameter.ParameterMonitoringModule) },
+      { path: "oee", loadChildren: () => import('./../oee/oee.module').then(oee => oee.OeeModule) },
+      { path: 'utility', loadChildren: () => import('./../utility/utility.module').then(utility => utility.UtilityModule) },
+      { path: "report", loadChildren: () => import('./../reports/reports.module').then(report => report.ReportsModule) },
+      { path: "config", loadChildren: () => import('./../configuration/configuration.module').then(config => config.ConfigurationModule) }
     ]
   }
 ];

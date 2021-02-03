@@ -22,7 +22,7 @@ export class DashboardComponent {
   constructor(private storageServiceService: StorageServiceService, private breakpointObserver: BreakpointObserver, private dashboard: DashboardService, private user: AuthService) {
 
     this.hideMenu = true;
-    let role = this.storageServiceService.getStorage(DATA.ROLE);
+    let role = this.storageServiceService.getStorageItem(DATA.ROLE);
 
     if (atob(role) == 'SUPERADMIN') {
       this.hideMenu = false;
@@ -34,9 +34,7 @@ export class DashboardComponent {
   }
 
   get menuGap() {
-    return this.extraSmallScreen
-      ? OPERATOR_MENU_GAP_SMALL
-      : OPERATOR_MENU_GAP_LARGE;
+    return this.extraSmallScreen ? OPERATOR_MENU_GAP_SMALL : OPERATOR_MENU_GAP_LARGE;
   }
 
   get sideNavMode() {

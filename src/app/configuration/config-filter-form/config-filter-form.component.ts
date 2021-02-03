@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigurationService } from '../configuration.service';
 import { GlobalErrorHandler } from "../../core/services/error-handler";
-import { AutoLogoutService } from "../../auto-logout.service";
 import * as moment from "moment";
 import { DATA } from "src/app/core/data.enum";
 import { StorageServiceService } from "src/app/core/services/auth/storage-service.service";
@@ -45,7 +44,6 @@ export class ConfigFilterFormComponent {
     private error: GlobalErrorHandler,
     private fb: FormBuilder,
     private selection: ConfigurationService,
-    private logout: AutoLogoutService,
     private snack: MatSnackBar,
     private storageServiceService: StorageServiceService
   ) {
@@ -63,7 +61,7 @@ export class ConfigFilterFormComponent {
  
   ngOnInit() {
     this.showTime = "both";
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
     this.selection
       .getPlant()
       .subscribe(

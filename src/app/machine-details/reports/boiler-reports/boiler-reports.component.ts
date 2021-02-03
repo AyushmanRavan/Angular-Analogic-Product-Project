@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 
 import { BoilerReportsService } from "./boiler-reports.service";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl, MatButton } from "@angular/material";
+import { MatPaginator } from "@angular/material/paginator";
 
 import { Router } from "@angular/router";
 
 
 import { NewPdfComponent } from '../../../new-pdf/new-pdf.component';
+import { MatButton } from '@angular/material/button';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
   position: number;
@@ -67,9 +69,14 @@ export class BoilerReportsComponent implements OnInit {
   constructor(private reportService: BoilerReportsService, private router: Router, private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    // this.paginator._intl.itemsPerPageLabel = "Records Per Page";
   }
 
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
   goTo(route: string) {
     this.router.navigate([`machinedetail/${route}`]);
   }

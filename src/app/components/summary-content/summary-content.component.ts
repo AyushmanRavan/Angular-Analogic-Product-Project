@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-summary-content',
@@ -6,10 +6,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./summary-content.component.scss']
 })
 export class SummaryContentComponent implements OnInit {
- @Input() testdata: string;
+  @Input() testdata: string;
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

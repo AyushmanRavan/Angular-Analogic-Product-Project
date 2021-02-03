@@ -1,8 +1,10 @@
-import { Component, AfterViewInit, AfterContentInit,AfterViewChecked,AfterContentChecked, OnInit, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl, MatButton } from '@angular/material';
+import { Component,  OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { PccReportService } from './pcc-report.service';
 import { DASHBOARD_BOX_DETAILS } from '../../../data';
 import {NewPdfComponent} from '../../../new-pdf/new-pdf.component';
+import { MatButton } from '@angular/material/button';
+import { MatTableDataSource } from '@angular/material/table';
 export interface PeriodicElement {
   position: number;
   name: string;
@@ -57,7 +59,12 @@ export class PccReportComponent implements OnInit {
   constructor(private pccReportService: PccReportService, private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+    // this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+  }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
   }
   onSelect(e) {
     if (this.btnRef === undefined) {

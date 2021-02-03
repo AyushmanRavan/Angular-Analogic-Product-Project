@@ -5,12 +5,15 @@ import { SharedModule } from "../shared/modules/shared.module";
 import { ProductRoutingModule } from "./product-routing.module";
 import { ProductComponent } from "./product.component";
 import { ProductService } from "./product.service";
+import { MaterialModule } from "../material/material.module";
 
 @NgModule({
   imports: [
     CommonModule,    
     ProductRoutingModule,
-    SharedModule
+    SharedModule,
+    MaterialModule
+ 
   ],
   declarations: [ProductComponent],
   providers: [ProductService]

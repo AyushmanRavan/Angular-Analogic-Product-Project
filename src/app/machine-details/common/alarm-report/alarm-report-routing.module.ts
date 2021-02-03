@@ -3,10 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {AlarmReportComponent} from "./alarm-report.component"
 
-const routes: Routes = [{
-  path: "",
-  component: AlarmReportComponent
-  
+const routes: Routes = [
+  {  path: "",  component: AlarmReportComponent  
 }];
 
 @NgModule({

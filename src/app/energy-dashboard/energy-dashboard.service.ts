@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
-import { groupBy, map, maxBy, minBy, sumBy,orderBy ,omit} from "lodash";
+import { groupBy, map as lodashMap, maxBy, minBy, sumBy,orderBy ,omit} from "lodash";
+import { map } from "rxjs/operators";
 import { GlobalErrorHandler } from "../core/services/error-handler";
-import { RestApi } from "../core/services/rest.service";
+import { RestService } from "../core/services/rest.service";
 import { Energy } from "./../energy-dashboard/energy-dashboard";
 class chartData {
   data: number[];
@@ -14,7 +15,7 @@ export class EnergyDashboardService {
   private nextInterval: any[] = [];
   private loggingTime:any[]=[];
   object: chartData[] = []; //object of Line Chart Data
-  constructor(private error: GlobalErrorHandler, private rest: RestApi) {}
+  constructor(private error: GlobalErrorHandler, private rest: RestService) {}
   
    
   getParameters(machineId: number) {
@@ -22,18 +23,31 @@ export class EnergyDashboardService {
   }
   
   getEnergyForTable = (machineId: number) =>
-  this.rest.get(`energyInformation/${machineId}`).map((data: any[]) => {
-    let tempData = [];
-    if (data)
-      data.forEach(item => {
-        tempData.push({
-          "Start Date-Time": item.start_time,
-          "End Date-Time": item.end_time,
-          ...omit(item, ["start_time","end_time","logging_time"])
-        });
-      });
-    return tempData;
-  });
+  this.rest.get(`energyInformation/${machineId}`).pipe(
+    map(data=>{
+      data.map(element=>{
+        return {
+          "Start Date-Time": element.start_time,
+          "End Date-Time": element.end_time,
+          ...omit(element, ["start_time","end_time","logging_time"])
+        }
+      })
+    })
+  )
+  
+  
+  // .map((data: any[]) => {
+  //   let tempData = [];
+  //   if (data)
+  //     data.forEach(item => {
+  //       tempData.push({
+  //         "Start Date-Time": item.start_time,
+  //         "End Date-Time": item.end_time,
+  //         ...omit(item, ["start_time","end_time","logging_time"])
+  //       });
+  //     });
+  //   return tempData;
+  // });
 
   getEnergyDetailsForChart = (machineId: number) =>
   this.rest.get(`energyInformationChart/${machineId}`);
@@ -103,7 +117,7 @@ export class EnergyDashboardService {
   }  
   
     temp.push(new Date(collection[0].logging_time).getHours()+':'+new Date(collection[0].logging_time).getMinutes()+':'+new Date(collection[0].logging_time).getSeconds());   //Pushing start time at zero index
-    map(collection, (item: any) => {
+    lodashMap(collection, (item: any) => {
     x11.push(new Date(item.logging_time).getHours());  //get hrs array
     temp.push(new Date(item.logging_time).getHours()+':'+new Date(item.logging_time).getMinutes()+':'+new Date(item.logging_time).getSeconds());
     kwhData.push(item.kwh);   
@@ -134,6 +148,6 @@ export class EnergyDashboardService {
   getTotalConsumed = data => sumBy(data, (item: any) => parseFloat(item.kwh));
 
   sortBy = (collection: Energy[], fields, by = ["desc"]) =>
-    orderBy(collection, [...fields], by);
+    orderBy(collection, [...fields], ["desc"]);
 
 }

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, Validators,FormBuilder} from '@angular/forms';
 import { ReportsService } from "../../../reports.service";
 import { MODE } from '../../../../configuration/shared/config'

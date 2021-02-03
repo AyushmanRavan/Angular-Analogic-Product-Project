@@ -6,14 +6,8 @@ import { SharedModule } from "./../shared/modules/shared.module";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { EnergyDashboardService } from './energy-dashboard.service';
 const routes: Routes = [
-  {
-    path: "",
-    component: EnergyDashboardComponent
-  },
-  {
-    path: ":machineName",
-    component: EnergyDashboardComponent
-  }
+  {    path: "",    component: EnergyDashboardComponent  },
+  {    path: ":machineName",    component: EnergyDashboardComponent  }
 ];
 
 @NgModule({

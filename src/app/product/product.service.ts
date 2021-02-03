@@ -2,14 +2,14 @@ import { Injectable } from "@angular/core";
 import { map, orderBy } from "lodash";
 import { GlobalErrorHandler } from "../core/services/error-handler";
 import { Product } from "./product";
-import { RestApi } from "../core/services/rest.service";
+import { RestService } from "../core/services/rest.service";
 
 /**
  * @author Hardik Pithva
  */
 @Injectable()
 export class ProductService {
-  constructor(private error: GlobalErrorHandler, private rest: RestApi) { }
+  constructor(private error: GlobalErrorHandler, private rest: RestService) { }
 
   getProductionDetails = (name: number, limit: number, offset: number) =>
     this.rest.get(`productionInformation/${name}/?limit=${limit}&offset=${offset}`);
@@ -75,7 +75,7 @@ export class ProductService {
   ];
 
   sortBy = (collection: Product[], fields, by = ["desc"]) =>
-    orderBy(collection, [...fields], by);
+    orderBy(collection, [...fields], ["desc"]);
 
   throwError = (error: any) => this.error.handleError(error);
 

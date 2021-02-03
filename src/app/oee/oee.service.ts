@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { GlobalErrorHandler } from "../core/services/error-handler";
-import { RestApi } from "../core/services/rest.service";
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import { groupBy, map, maxBy, minBy, sumBy, orderBy, sortBy } from "lodash";
-import { Oee } from './Oee';
+import { RestService } from "../core/services/rest.service";
+import { map, sumBy, orderBy, } from "lodash";
 import { Overall } from './overall-oee/overall';
 import { Productivity } from './productivity/productivity';
-import { Availability } from './availability/availability';
 import { Quality } from './quality/quality';
 @Injectable()
 export class OeeService {
@@ -20,7 +14,7 @@ export class OeeService {
   badpart: number;
   goodPercentage: any;
   total: any; badPercentage: any
-  constructor(private rest: RestApi, private error: GlobalErrorHandler) { }
+  constructor(private rest: RestService, private error: GlobalErrorHandler) { }
 
 
   getAvailabilityPieData1 = (id: number) => this.rest.get(`machineStatusInformation/` + id); //done
@@ -294,7 +288,7 @@ export class OeeService {
   ];
 
   sortBy = (collection: Productivity[], fields, by = ["desc"]) =>
-    orderBy(collection, [...fields], by);
+    orderBy(collection, [...fields], ["desc"]);
   //poductivity servieccall end
 
   //quality service call
@@ -389,7 +383,7 @@ export class OeeService {
     this.rest.get(`oeeInformation/${machineID}/?limit=${limit}&offset=${offset}`);
 
   sortByQuality = (collection: Quality[], fields, by = ["desc"]) =>
-    orderBy(collection, [...fields], by);
+    orderBy(collection, [...fields], ["desc"]);
 
 
   getTableColumnsQuality = () => [

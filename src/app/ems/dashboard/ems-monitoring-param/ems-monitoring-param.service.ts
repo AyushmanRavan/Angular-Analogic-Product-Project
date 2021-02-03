@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { omit, map, sumBy } from "lodash";
+import { omit, map as lodashMap, sumBy } from "lodash";
+import { map } from 'rxjs/operators';
 
 import { GlobalErrorHandler } from "../../../core/services/error-handler";
-import { RestApi } from "../../../core/services/rest.service";
+import { RestService } from "../../../core/services/rest.service";
 
 class chartData {
   data: number[];
@@ -15,7 +16,7 @@ export class EmsMonitoringParamService {
   object: chartData[] = []; //object of Line Chart Data
   // object:Array<chartData>=[];
   private nextInterval: any[] = [];
-  constructor(private error: GlobalErrorHandler, private rest: RestApi) { }
+  constructor(private error: GlobalErrorHandler, private rest: RestService) { }
 
 
   getMonitor(machineId: string) {
@@ -45,11 +46,11 @@ export class EmsMonitoringParamService {
     let tempData = [];
     value && value[0] && value.map(row => {
       let chartLabel;
-      headerWithColumns.map((chartHeader)  => {
-       if(row === chartHeader.value){
-         chartLabel =  chartHeader.headers;
-       }
-     });
+      headerWithColumns.map((chartHeader) => {
+        if (row === chartHeader.value) {
+          chartLabel = chartHeader.headers;
+        }
+      });
       let d = [];
       let x1: number[] = []; //this.getEmptyArray(24);
       data.map(c => {
@@ -93,19 +94,31 @@ export class EmsMonitoringParamService {
       .post(`dynamicReportForDashBoard/report`, {
         machineId,
         input_parameter
-      })
-      .map((data: any[]) => {
-        let tempData = [];
-        if (data)
-          data.forEach(item => {
-            tempData.push({
-              "Start Date-Time": item.StartTime,
-              "End Date-Time": item.EndTime,
-              ...omit(item, ["StartTime", "EndTime"])
-            });
-          });
-        return tempData;
-      });
+      }).pipe(
+        map(data => {
+          data.map(element => {
+            return {
+              "Start Date-Time": element.StartTime,
+              "End Date-Time": element.EndTime,
+              ...omit(element, ["StartTime", "EndTime"])
+            }
+          })
+        })
+      )
+
+
+  // .map((data: any[]) => {
+  //   let tempData = [];
+  //   if (data)
+  //     data.forEach(item => {
+  //       tempData.push({
+  //         "Start Date-Time": item.StartTime,
+  //         "End Date-Time": item.EndTime,
+  //         ...omit(item, ["StartTime", "EndTime"])
+  //       });
+  //     });
+  //   return tempData;
+  // });
 
   getChartOptions = () => {
     return {
@@ -225,7 +238,7 @@ export class EmsMonitoringParamService {
       }
     } //empty before get param
 
-    map(collection, (item: any) => {
+    lodashMap(collection, (item: any) => {
       this.nextInterval.push(
         new Date(item["End Date-Time"]).getHours() +
         ":" +
@@ -266,6 +279,6 @@ export class EmsMonitoringParamService {
 
   private getHours = n => Array.from(new Array(n), (x, i) => i);
 
-  
+
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource,MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
@@ -14,6 +14,8 @@ import { ConfigurationService } from '../../configuration.service';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ReportTableDialogComponent } from './report-table-dialog/report-table-dialog.component';
 import { ActivatedRoute, Params } from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-report-table',
   templateUrl: './report-table.component.html',

@@ -1,17 +1,13 @@
-import { omit } from 'lodash';
-import { Component, AfterViewInit, ViewChild, OnInit } from "@angular/core";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { AutoLogoutService } from './../../../auto-logout.service';
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
 import { BaseChartDirective } from "ng2-charts/ng2-charts";
 import { GlobalErrorHandler } from "../../../core/services/error-handler";
-import { Router, ActivatedRoute } from "@angular/router";
+import {  ActivatedRoute } from "@angular/router";
 import { MonitoringParamService } from "./monitoring-param.service";
 import { DATA } from 'src/app/core/data.enum';
 import { StorageServiceService } from 'src/app/core/services/auth/storage-service.service';
+import { MatTableDataSource } from "@angular/material/table";
 export interface PeriodicElement {
   position: number;
   name: string;
@@ -75,7 +71,6 @@ export class MonitoringParamComponent implements OnInit {
   constructor(
     private error: GlobalErrorHandler,
     private energy: MonitoringParamService, private _intl: MatPaginatorIntl,
-    private logout: AutoLogoutService,
     private route: ActivatedRoute,
     private storageServiceService: StorageServiceService
   ) {
@@ -91,7 +86,7 @@ export class MonitoringParamComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
     const routerParams = this.route.snapshot.queryParamMap.keys;
     routerParams.map((param) => {
       if (this.route.snapshot.queryParamMap.has(param)) {
@@ -100,6 +95,11 @@ export class MonitoringParamComponent implements OnInit {
     });
     
     //this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+  }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
   }
 
   onSelect(e) {
@@ -163,7 +163,7 @@ export class MonitoringParamComponent implements OnInit {
         // this.chart.ngOnDestroy();
         // this.chart.chart = this.chart.getChartBuilder(this.chart.ctx);
         this.chart.chart.destroy();
-        this.chart.chart = 0;
+        this.chart.chart.clear();
         this.chart.datasets = newChartData;
         // this.chart.labels = this.labels;
         this.chart.ngOnInit();
@@ -186,7 +186,7 @@ export class MonitoringParamComponent implements OnInit {
       if (this.chart !== undefined) {
 
         this.chart.chart.destroy();
-        this.chart.chart = 0;
+        this.chart.chart.clear();
         this.chart.datasets = dummyData;
         // this.chart.labels = this.labels;
         this.chart.ngOnInit();
@@ -307,7 +307,7 @@ export class MonitoringParamComponent implements OnInit {
           // this.chart.ngOnDestroy();
           // this.chart.chart = this.chart.getChartBuilder(this.chart.ctx);
           this.chart.chart.destroy();
-          this.chart.chart = 0;
+          this.chart.chart.clear();
           this.chart.datasets = this.chartData;
           // this.chart.labels = this.labels;
           this.chart.ngOnInit();

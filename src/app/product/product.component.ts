@@ -4,21 +4,13 @@ import {
   Component,
   OnInit,
   ViewChild,
-  AfterViewInit,
-  OnDestroy
 } from "@angular/core";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { ActivatedRoute, Params } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
-import { merge } from "rxjs/observable/merge";
-import { of as observableOf } from "rxjs/observable/of";
-import { catchError, startWith, switchMap } from "rxjs/operators";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { Product } from "./product";
 import { ProductService } from "./product.service";
-import { Observable } from 'rxjs/Observable';
-import { AutoLogoutService } from './../auto-logout.service';
 import { DATA } from "../core/data.enum";
 import { StorageServiceService } from "../core/services/auth/storage-service.service";
+import { MatTableDataSource } from "@angular/material/table";
 /**
  * @author Hardik Pithva
  */
@@ -57,16 +49,19 @@ export class ProductComponent implements OnInit {
 
   constructor(private product: ProductService,
     private _intl: MatPaginatorIntl, private error: GlobalErrorHandler,
-    private route: ActivatedRoute,
     private storageServiceService: StorageServiceService
-    ) {
+  ) {
     this.setupChart();
     this.displayedColumns = this.product.getTableColumns();
   }
 
   ngOnInit() {
-    this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
-    this.paginator._intl.itemsPerPageLabel = "Records Per Page";
+    this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
+  }
+
+  ngAfterViewInit() {
+    this._intl.itemsPerPageLabel = "Record per Page";
+    this.dataSource.paginator = this.paginator;
   }
 
   onSelect(e) {
@@ -100,7 +95,7 @@ export class ProductComponent implements OnInit {
   private setChartData(data: Product[] | any) {
     if (data != null) {
       this.barChartData = this.product.getChartData(data);
-    
+
       this.loaded = false;
       this.empty = false;
       this.loadedSpinner = false;
@@ -123,7 +118,7 @@ export class ProductComponent implements OnInit {
 
   //For Table
   private setData(data: Product[] | any) {
- 
+
     if (data != null) {
       this.dataSource = new MatTableDataSource<Product>(data);
       this.dataSource.paginator = this.paginator;

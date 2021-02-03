@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
-import { merge } from 'rxjs/observable/merge';
-import { of as observableOf } from 'rxjs/observable/of';
-import { catchError, startWith, switchMap } from 'rxjs/operators';
-import { omit } from 'lodash';
+import {  MatTableDataSource } from '@angular/material/table';
 import { ReportsService } from "../reports.service";
 import { DATA } from 'src/app/core/data.enum';
 import { StorageServiceService } from 'src/app/core/services/auth/storage-service.service';
@@ -72,7 +67,7 @@ export class PlantToPlantComparisonComponent implements OnInit {
   }
 
  ngOnInit() { 
-   this.storageServiceService.saveStorage(DATA.LAST_ACTION, Date.now().toString());
+   this.storageServiceService.setStorageItem(DATA.LAST_ACTION, Date.now().toString());
    this.rs.getPlant().subscribe( data =>
      {
            this.plantOptions1 = data;

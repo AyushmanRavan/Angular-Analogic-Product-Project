@@ -8,10 +8,12 @@ import {
   MODE
 } from "./../../shared/config";
 
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from "@angular/material";
-import { Subscription } from "rxjs/Subscription";
+import { MatPaginator,  MatPaginatorIntl } from "@angular/material/paginator";
+import { Subscription } from "rxjs";
 import { ParamViewAddComponent } from "./../../Parameter-Configuration/param-view/param-view-add/param-view-add.component";
 import { ConfigurationService } from "./../../../configuration/configuration.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "app-param-view",

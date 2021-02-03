@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import {  MatDialog  } from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { Subscription } from 'rxjs';
 import { ReportsService } from "../../reports.service";
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from "@angular/router";

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import { MccService } from './mcc.service';
-import { Observable } from 'rxjs';
 import { INTERVAL_TIME } from '../../../data';
 import { Router } from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
   position: number;
@@ -64,13 +64,19 @@ export class MccComponent implements OnInit {
   constructor(private mccService: MccService, private router: Router) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+    // this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
       setInterval(() => {
         if (this.selectedEvent) {
           this.onSelect(this.selectedEvent);
         }
       }, INTERVAL_TIME);
   }
+
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
+  
   getTimeString(seconds) {
     const hrs = Math.floor(seconds / 3600);
     seconds -= hrs * 3600;

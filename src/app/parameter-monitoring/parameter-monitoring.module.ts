@@ -7,14 +7,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ParameterMonitoringService } from './parameter-monitoring.service';
 
 const routes: Routes = [
-  {
-    path: "",
-    component: ParameterMonitoringComponent
-  },
-  {
-    path: ":machineName",
-    component: ParameterMonitoringComponent
-  }
+  {    path: "", component: ParameterMonitoringComponent  },
+  {    path: ":machineName",    component: ParameterMonitoringComponent  }
 ];
 
 @NgModule({

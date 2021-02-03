@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild,  ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { AirCompressorReportsService } from "./air-compressor-reports.service";
 import { Router } from "@angular/router";
-import { MatPaginator, MatTableDataSource, MatPaginatorIntl, MatButton } from "@angular/material";
+import { MatPaginator } from "@angular/material/paginator";
 import { NewPdfComponent } from '../../../new-pdf/new-pdf.component';
+import { MatButton } from '@angular/material/button';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
   position: number;
@@ -65,9 +67,13 @@ export class AirCompressorReportsComponent implements OnInit {
   constructor(private reportService: AirCompressorReportsService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
+    // this.paginator._intl.itemsPerPageLabel = 'Records Per Page';
   }
 
+  ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = "Record per Page";
+    // this.dataSource.paginator = this.paginator;
+  }
   goTo(route: string) {
     this.router.navigate([`machinedetail/${route}`]);
   }

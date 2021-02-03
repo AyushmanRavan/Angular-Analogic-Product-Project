@@ -1,14 +1,16 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource, } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   ADD_UPDATE_DIALOG_OPTIONS,
   DELETE_DIALOG_OPTIONS,
-  DIALOG_OPTIONS, 
+  DIALOG_OPTIONS,
   DIALOG_BUTTONS,
   DIALOG_HEADER,
-  MODE 
+  MODE
 } from '../../shared/config';
 import { ConfigurationService } from '../../configuration.service';
 import { ChartDialogComponent } from './chart-dialog/chart-dialog.component';
@@ -103,7 +105,7 @@ export class ChartComponent implements OnInit {
       mode, model, Object.assign({}, row), label
     );
   }
- 
+
   private _dialog(options: DIALOG_OPTIONS, mode: string, model: string, data, label) {
     this.actionMode = mode;
     this.dialogRef = this.dialog.open(ChartDialogComponent, {

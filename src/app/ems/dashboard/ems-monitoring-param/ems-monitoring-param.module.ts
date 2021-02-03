@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { EmsMonitoringParamRoutingModule } from './ems-monitoring-param-routing.module';
 import { EmsMonitoringParamComponent } from './ems-monitoring-param.component';
 import { EmsMonitoringParamService } from './ems-monitoring-param.service';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { EmsMonitoringParamService } from './ems-monitoring-param.service';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    EmsMonitoringParamRoutingModule
+    EmsMonitoringParamRoutingModule,
+    MaterialModule
   ],
   declarations: [EmsMonitoringParamComponent],
   providers : [EmsMonitoringParamService]

@@ -1,20 +1,20 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SummaryHighlightComponent } from './summary-highlight.component';
+import { SummaryComponent } from './summary.component';
 
-describe('SummaryHighlightComponent', () => {
-  let component: SummaryHighlightComponent;
-  let fixture: ComponentFixture<SummaryHighlightComponent>;
+describe('SummaryComponent', () => {
+  let component: SummaryComponent;
+  let fixture: ComponentFixture<SummaryComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SummaryHighlightComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ SummaryComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SummaryHighlightComponent);
+    fixture = TestBed.createComponent(SummaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,4 +1,4 @@
-import { ErrorHandler, Injectable, Inject } from "@angular/core";
+import { ErrorHandler, Injectable } from "@angular/core";
 import { has } from "lodash";
 
 import { AuthService } from "./auth/auth.service";
@@ -30,6 +30,12 @@ export class GlobalErrorHandler extends ErrorHandler {
     let msg = ERR.COMMON_ERR,
       id = errorId;
     switch (id) {
+
+
+      case 100:
+        msg = ERR.SERVER_DOWN_OR_INTERNET_DOWN;
+        break;
+
       case 1:
         msg = ERR.NO_DATA;
         break;
@@ -74,5 +80,6 @@ const ERR = {
     "It seems your browser has blocked the popup. Please disable blocking it to download excel.",
   UNAUTHORIZED: "You are not authorized or your session is expired.",
   UNIQUE: "Unable to create.already exist.",
-  SERVER_DOWN: "Oops, something went wrong. Server is down"
+  SERVER_DOWN: "Oops, something went wrong. Server is down",
+  SERVER_DOWN_OR_INTERNET_DOWN: "Oops server or internet is down"
 };
